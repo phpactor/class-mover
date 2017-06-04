@@ -16,6 +16,7 @@ use DTL\ClassMover\RefFinder\SourceNamespace;
 use DTL\ClassMover\RefFinder\QualifiedName as RefQualifiedName;
 use DTL\ClassMover\RefFinder\ClassRefList;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use Microsoft\PhpParser\Node\Expression\CallExpression;
 
 class TolerantRefFinder
 {
@@ -42,34 +43,39 @@ class TolerantRefFinder
         $nodes = $ast->getDescendantNodes();
 
         foreach ($nodes as $node) {
+            // we want QualifiedNames
             if (!$node instanceof QualifiedName) {
                 continue;
             }
 
+            // (the) namepspace definition is not interesting
             if ($node->getParent() instanceof NamespaceDefinition) {
                 continue;
             }
 
+            if ($node->getParent() instanceof CallExpression) {
+                continue;
+            }
+
+            // we want to replace all fully qualified use statements
             if ($node->getParent() instanceof NamespaceUseClause) {
                 $resolvedClassNames[] = FullyQualifiedName::fromString($node->getText());
                 continue;
             }
 
             $qualifiedName = RefQualifiedName::fromString($node->getText());
-
             $resolvedClassName = $env->resolveClassName($qualifiedName);
 
+            // if the name is aliased, then we can safely ignore it
             if ($env->isAliased($qualifiedName)) {
                 continue;
             }
+
+            // this is a fully qualified class name
             $resolvedClassNames[] = $resolvedClassName;
         }
 
         return ClassRefList::fromFullyQualifiedNames($resolvedClassNames);
-    }
-
-    private function getClassReferences(SourceFileNode $node)
-    {
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)

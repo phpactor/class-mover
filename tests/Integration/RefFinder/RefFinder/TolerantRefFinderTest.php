@@ -19,13 +19,15 @@ class TolerantRefFinderTest extends TestCase
         $source = FileSource::fromString(file_get_contents(__DIR__ . '/examples/TolerantExample.php'));
         $names = iterator_to_array($tolerantRefFinder->findIn($source));
 
-        $this->assertCount(5, $names);
+        $this->assertCount(7, $names);
 
         $this->assertEquals('Acme\\Foobar\\Warble', $names[0]->__toString());
         $this->assertEquals('Acme\\Foobar\\Barfoo', $names[1]->__toString());
         $this->assertEquals('Acme\\Barfoo', $names[2]->__toString());
         $this->assertEquals('Acme\\Foobar\\Warble', $names[3]->__toString());
         $this->assertEquals('Acme\\Demo', $names[4]->__toString());
+        $this->assertEquals('Acme\\Foobar\\Barfoo', $names[5]->__toString());
+        $this->assertEquals('Acme\\Foobar\\Barfoo', $names[6]->__toString());
     }
 
 

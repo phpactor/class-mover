@@ -15,5 +15,8 @@ class Hello
 
         //this should not be found as it is de-referenced (we wil replace the use statement instead)
         ZedZed::something();
+
+        assert(Barfoo::class === 'Foo');
+        Barfoo::foobar();
     }
 }
