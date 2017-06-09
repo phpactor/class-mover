@@ -4,6 +4,8 @@ namespace DTL\ClassMover\Finder;
 
 final class FilePath
 {
+    const PATH_NONE = '_|__<transient>__|_';
+
     private $path;
 
     public static function fromString(string $path)
@@ -18,6 +20,14 @@ final class FilePath
         }
 
         $new->path = $real;
+
+        return $new;
+    }
+
+    public static function none()
+    {
+        $new = new self();
+        $new->path = self::PATH_NONE;
 
         return $new;
     }

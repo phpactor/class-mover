@@ -64,6 +64,7 @@ class TolerantRefFinder implements RefFinder
             if ($node->getParent() instanceof NamespaceUseClause) {
                 $classRefs[] = ClassRef::fromNameAndPosition(
                     FullyQualifiedName::fromString($node->getText()),
+                    FullyQualifiedName::fromString($node->getText()),
                     Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
                 );
                 continue;
@@ -79,6 +80,7 @@ class TolerantRefFinder implements RefFinder
 
             // this is a fully qualified class name
             $classRefs[] = ClassRef::fromNameAndPosition(
+                $qualifiedName,
                 $resolvedClassName,
                 Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
             );
@@ -121,7 +123,7 @@ class TolerantRefFinder implements RefFinder
         $namespace = $ast->getFirstDescendantNode(NamespaceDefinition::class);
 
         if (null === $namespace) {
-            return '';
+            return SourceNamespace::root();
         }
 
         return SourceNamespace::fromString($namespace->name->getText());

@@ -3,6 +3,7 @@
 namespace DTL\ClassMover\RefFinder;
 
 use DTL\ClassMover\RefFinder\QualifiedName;
+use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
 class SourceEnvironment
 {
@@ -20,6 +21,10 @@ class SourceEnvironment
             if ($importedName->qualifies($name)) {
                 return $importedName->qualify($name);
             }
+        }
+
+        if (0 === strpos($name->__toString(), '\\')) {
+            return FullyQualifiedName::fromString($name->__toString());
         }
 
         return $this->namespace->qualify($name);

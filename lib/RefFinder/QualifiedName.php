@@ -8,19 +8,20 @@ class QualifiedName
 
     protected function __construct(array $parts)
     {
-        if (empty($parts)) {
-            throw new \InvalidArgumentException(
-                'Name cannot be empty'
-            );
-        }
-
         $this->parts = $parts;
+    }
+
+    public static function root()
+    {
+        return new static([]);
     }
 
     public static function fromString(string $string)
     {
         if (empty($string)) {
-            return new static([]);
+            throw new \InvalidArgumentException(
+                'Name cannot be empty'
+            );
         }
 
         $parts = explode('\\', trim($string));

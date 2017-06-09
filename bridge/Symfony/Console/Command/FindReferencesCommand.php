@@ -46,6 +46,11 @@ class FindReferencesCommand extends Command
     {
         $output->writeln((string) $classRefList->path());
         $table = new Table($output);
+        $table->setHeaders([
+            'name',
+            'start',
+            'end',
+        ]);
 
         foreach ($classRefList as $classRef) {
             $table->addRow([
