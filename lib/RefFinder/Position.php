@@ -1,0 +1,30 @@
+<?php
+
+namespace DTL\ClassMover\RefFinder;
+
+class Position
+{
+    private $start;
+    private $end;
+
+    private function __construct(int $start, int $end)
+    {
+        $this->start = $start;
+        $this->end = $end;
+    }
+
+    public static function fromStartAndEnd(int $start, int $end)
+    {
+        return new self($start, $end);
+    }
+
+    public function start(): int
+    {
+        return $this->start;
+    }
+
+    public function end(): int
+    {
+        return $this->end;
+    }
+}

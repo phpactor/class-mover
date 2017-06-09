@@ -7,7 +7,7 @@ use DTL\ClassMover\RefFinder\QualifiedName;
 class SourceEnvironment
 {
     private $namespace;
-    private $importedNames;
+    private $importedNames = [];
 
     public static function fromImportedNames(SourceNamespace $namespace, array $importedNames): SourceEnvironment
     {

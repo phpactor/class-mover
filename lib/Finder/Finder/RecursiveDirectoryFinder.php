@@ -4,8 +4,9 @@ namespace DTL\ClassMover\Finder\Finder;
 
 use DTL\ClassMover\Finder\SearchPath;
 use DTL\ClassMover\Finder\FileList;
+use DTL\ClassMover\Finder\Finder;
 
-class RecursiveDirectoryFinder
+class RecursiveDirectoryFinder implements Finder
 {
     public function findIn(SearchPath $path): FileList
     {

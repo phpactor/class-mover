@@ -2,27 +2,37 @@
 
 namespace DTL\ClassMover\RefFinder;
 
+use DTL\ClassMover\RefFinder\ClassRef;
+use DTL\ClassMover\Finder\FilePath;
+
 final class ClassRefList implements \IteratorAggregate
 {
-    private $names;
+    private $classRefs = array();
+    private $path;
 
-    public static function fromFullyQualifiedNames(array $names)
+    public static function fromClassRefs(FilePath $path, array $classRefs)
     {
         $new = new self();
-        foreach ($names as $name) {
-            $new->add($name);
+        $new->path = $path;
+        foreach ($classRefs as $classRef) {
+            $new->add($classRef);
         }
 
         return $new;
     }
 
-    public function getIterator()
+    public function path(): FilePath
     {
-        return new \ArrayIterator($this->names);
+        return $this->path;
     }
 
-    private function add(FullyQualifiedName $name)
+    public function getIterator()
     {
-        $this->names[] = $name;
+        return new \ArrayIterator($this->classRefs);
+    }
+
+    private function add(ClassRef $classRef)
+    {
+        $this->classRefs[] = $classRef;
     }
 }

@@ -17,14 +17,17 @@ use DTL\ClassMover\RefFinder\QualifiedName as RefQualifiedName;
 use DTL\ClassMover\RefFinder\ClassRefList;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
+use DTL\ClassMover\RefFinder\RefFinder;
+use DTL\ClassMover\RefFinder\Position;
+use DTL\ClassMover\RefFinder\ClassRef;
 
-class TolerantRefFinder
+class TolerantRefFinder implements RefFinder
 {
     private $parser;
 
-    public function __construct(Parser $parser)
+    public function __construct(Parser $parser = null)
     {
-        $this->parser = $parser;
+        $this->parser = $parser ?: new Parser();
     }
 
     public function findIn(FileSource $source): ClassRefList
@@ -34,12 +37,12 @@ class TolerantRefFinder
         $namespace = $this->getNamespace($ast);
         $sourceEnvironment  = $this->getClassEnvironment($namespace, $ast);
 
-        return $this->resolveClassNames($sourceEnvironment, $ast);
+        return $this->resolveClassNames($source, $sourceEnvironment, $ast);
     }
 
-    private function resolveClassNames(SourceEnvironment $env, $ast)
+    private function resolveClassNames($source, SourceEnvironment $env, $ast)
     {
-        $resolvedClassNames = [];
+        $classRefs = [];
         $nodes = $ast->getDescendantNodes();
 
         foreach ($nodes as $node) {
@@ -59,7 +62,10 @@ class TolerantRefFinder
 
             // we want to replace all fully qualified use statements
             if ($node->getParent() instanceof NamespaceUseClause) {
-                $resolvedClassNames[] = FullyQualifiedName::fromString($node->getText());
+                $classRefs[] = ClassRef::fromNameAndPosition(
+                    FullyQualifiedName::fromString($node->getText()),
+                    Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
+                );
                 continue;
             }
 
@@ -72,10 +78,13 @@ class TolerantRefFinder
             }
 
             // this is a fully qualified class name
-            $resolvedClassNames[] = $resolvedClassName;
+            $classRefs[] = ClassRef::fromNameAndPosition(
+                $resolvedClassName,
+                Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
+            );
         }
 
-        return ClassRefList::fromFullyQualifiedNames($resolvedClassNames);
+        return ClassRefList::fromClassRefs($source->path(), $classRefs);
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)

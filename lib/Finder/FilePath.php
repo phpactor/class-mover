@@ -24,6 +24,11 @@ final class FilePath
 
     public function getSource(): FileSource
     {
-        return new FileSource(file_get_contents($this->path));
+        return new FileSource($this, file_get_contents($this->path));
+    }
+
+    public function __toString()
+    {
+        return $this->path;
     }
 }

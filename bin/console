@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use DTL\ClassMover\Bridge\Symfony\Console\Command\FindReferencesCommand;
+use DTL\ClassMover\RefFinder\RefFinder\TolerantRefFinder;
+use DTL\ClassMover\Finder\Finder\RecursiveDirectoryFinder;
+
+$refFinder = new TolerantRefFinder();
+$finder = new RecursiveDirectoryFinder();
+
+$application = new Application();
+$application->add(new FindReferencesCommand($finder, $refFinder));
+$application->run();
+
