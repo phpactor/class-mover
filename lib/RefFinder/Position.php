@@ -27,4 +27,9 @@ class Position
     {
         return $this->end;
     }
+
+    public function length(): int
+    {
+        return $this->end - $this->start;
+    }
 }

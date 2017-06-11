@@ -25,6 +25,11 @@ final class FileSource
         return $this->path;
     }
 
+    public function replaceSource(string $source)
+    {
+        return new self($this->path, $source);
+    }
+
     public function __toString()
     {
         return $this->source;

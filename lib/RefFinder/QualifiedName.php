@@ -16,6 +16,11 @@ class QualifiedName
         return new static([]);
     }
 
+    public function isEqualTo(QualifiedName $name)
+    {
+        return $name->__toString() == $this->__toString();
+    }
+
     public static function fromString(string $string)
     {
         if (empty($string)) {
@@ -45,6 +50,23 @@ class QualifiedName
     public function head()
     {
         return end($this->parts);
+    }
+
+    public function transpose(QualifiedName $name)
+    {
+        $newParts = [];
+        $replaceParts = $name->parts();
+
+        for ($index = 0; $index < count($this->parts); $index++) {
+            $newParts[] = array_pop($replaceParts);
+        }
+
+        return new self(array_reverse(array_filter($newParts)));
+    }
+
+    public function parts()
+    {
+        return $this->parts;
     }
 
     public function isAlone()

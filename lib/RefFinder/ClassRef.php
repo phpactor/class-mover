@@ -31,4 +31,14 @@ final class ClassRef
     {
         return $this->position;
     }
+
+    public function name()
+    {
+        return $this->name;
+    }
+
+    public function fullName()
+    {
+        return $this->fullName;
+    }
 }

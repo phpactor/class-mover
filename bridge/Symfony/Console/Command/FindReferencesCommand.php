@@ -12,6 +12,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
 use DTL\ClassMover\Finder\FileSource;
 use DTL\ClassMover\RefFinder\ClassRefList;
+use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
 class FindReferencesCommand extends Command
 {
@@ -28,16 +29,27 @@ class FindReferencesCommand extends Command
     public function configure()
     {
         $this->setName('findrefs');
-        $this->addArgument('fqn', InputArgument::REQUIRED, 'Fully qualified class name to find references for');
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to find files in');
+        $this->addArgument('fqn', InputArgument::OPTIONAL, 'Fully qualified class name to find references for');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $fqn = $input->getArgument('fqn');
+
         $fileList = $this->finder->findIn(SearchPath::fromString($input->getArgument('path')));
 
         foreach ($fileList as $file) {
             $classRefList = $this->refFinder->findIn($file->getSource());
+
+            if ($fqn) {
+                $classRefList = $classRefList->filterForName(FullyQualifiedName::fromString($fqn));
+            }
+
+            if ($classRefList->isEmpty()) {
+                continue;
+            }
+
             $this->outputReferences($output, $classRefList);
         }
     }
