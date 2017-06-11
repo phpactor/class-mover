@@ -20,6 +20,7 @@ use Microsoft\PhpParser\Node\Expression\CallExpression;
 use DTL\ClassMover\RefFinder\RefFinder;
 use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\RefFinder\ClassRef;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -46,6 +47,18 @@ class TolerantRefFinder implements RefFinder
         $nodes = $ast->getDescendantNodes();
 
         foreach ($nodes as $node) {
+
+            if ($node instanceof ClassDeclaration) {
+                $namespace = $node->getNamespaceDefinition();
+                $name = $node->name->getText($node->getFileContents());
+                $classRefs[] = ClassRef::fromNameAndPosition(
+                    RefQualifiedName::fromString($name),
+                    FullyQualifiedName::fromString($namespace->name->getText() . '\\' . $name),
+                    Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1)
+                );
+                continue;
+            }
+
             // we want QualifiedNames
             if (!$node instanceof QualifiedName) {
                 continue;

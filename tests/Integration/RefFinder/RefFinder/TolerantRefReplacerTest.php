@@ -14,20 +14,26 @@ class TolerantRefRepalcerTest extends TestCase
 {
     /**
      * @testdox It finds all class references.
+     * @dataProvider provideTestFind
      */
-    public function testFind()
+    public function testFind($classFqn, $replaceWithFqn, $expectedSource)
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
         $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/TolerantExample.php'));
-        $names = $tolerantRefFinder->findIn($source)->filterForName(FullyQualifiedName::fromString('Acme\\Foobar\\Warble'));
+        $names = $tolerantRefFinder->findIn($source)->filterForName(FullyQualifiedName::fromString($classFqn));
         $replacer = new TolerantRefReplacer();
-        $source = $replacer->replaceReferences($source, $names, FullyQualifiedName::fromString('BarBar\\Hello'));
-        $this->assertEquals(<<<'EOT'
-<?php
+        $source = $replacer->replaceReferences($source, $names, FullyQualifiedName::fromString($replaceWithFqn));
+        $this->assertContains($expectedSource, $source->__toString());
+    }
 
-namespace Acme;
-
+    public function provideTestFind()
+    {
+        return [
+            [
+                'Acme\\Foobar\\Warble',
+                'BarBar\\Hello',
+                <<<'EOT'
 use BarBar\Hello;
 use Acme\Foobar\Barfoo;
 use Acme\Barfoo as ZedZed;
@@ -37,18 +43,24 @@ class Hello
     public function something()
     {
         $foo = new Hello();
-        $bar = new Demo();
-
-        //this should not be found as it is de-referenced (we wil replace the use statement instead)
-        ZedZed::something();
-
-        assert(Barfoo::class === 'Foo');
-        Barfoo::foobar();
-    }
-}
-
 EOT
-        , $source->__toString());
+            ],
+            [
+                'Acme\\Hello',
+                'Acme\\Definee',
+                <<<'EOT'
+<?php
+
+namespace Acme;
+
+use Acme\Foobar\Warble;
+use Acme\Foobar\Barfoo;
+use Acme\Barfoo as ZedZed;
+
+class Definee
+EOT
+            ],
+        ];
     }
 }
 
