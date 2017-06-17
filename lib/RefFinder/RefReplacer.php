@@ -4,5 +4,5 @@ namespace DTL\ClassMover\RefFinder;
 
 interface RefReplacer 
 {
-    public function replaceReferences(FullyQualifiedName $name, NamespacedClassRefList $refList);
+    public function replaceReferences(FullyQualifiedName $originalName, FullyQualifiedName $newName, NamespacedClassRefList $refList);
 }

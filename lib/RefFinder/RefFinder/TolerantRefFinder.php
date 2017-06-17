@@ -22,6 +22,7 @@ use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\RefFinder\ClassRef;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use DTL\ClassMover\RefFinder\NamespacedClassRefList;
+use DTL\ClassMover\RefFinder\NamespaceRef;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -36,13 +37,13 @@ class TolerantRefFinder implements RefFinder
     {
         $ast = $this->parser->parseSourceFile($source->__toString());
 
-        $namespace = $this->getNamespace($ast);
-        $sourceEnvironment  = $this->getClassEnvironment($namespace, $ast);
+        $namespaceRef = $this->getNamespaceRef($ast);
+        $sourceEnvironment  = $this->getClassEnvironment($namespaceRef->namespace(), $ast);
 
-        return $this->resolveClassNames($source, $sourceEnvironment, $ast);
+        return $this->resolveClassNames($namespaceRef, $source, $sourceEnvironment, $ast);
     }
 
-    private function resolveClassNames($source, SourceEnvironment $env, $ast)
+    private function resolveClassNames(NamespaceRef $namespaceRef, $source, SourceEnvironment $env, $ast)
     {
         $classRefs = [];
         $nodes = $ast->getDescendantNodes();
@@ -100,8 +101,7 @@ class TolerantRefFinder implements RefFinder
             );
         }
 
-
-        return NamespacedClassRefList::fromNamespaceAndClassRefs($env->namespace(), $source->path(), $classRefs);
+        return NamespacedClassRefList::fromNamespaceAndClassRefs($namespaceRef, $source->path(), $classRefs);
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)
@@ -133,7 +133,7 @@ class TolerantRefFinder implements RefFinder
         }
     }
 
-    private function getNamespace(SourceFileNode $ast): SourceNamespace
+    private function getNamespaceRef(SourceFileNode $ast): NamespaceRef
     {
         $namespace = $ast->getFirstDescendantNode(NamespaceDefinition::class);
 
@@ -141,6 +141,12 @@ class TolerantRefFinder implements RefFinder
             return SourceNamespace::root();
         }
 
-        return SourceNamespace::fromString($namespace->name->getText());
+        return NamespaceRef::fromNameAndPosition(
+            SourceNamespace::fromString($namespace->name->getText()),
+            Position::fromStartAndEnd(
+                $namespace->name->getStart(),
+                $namespace->name->getEndPosition()
+            )
+        );
     }
 }

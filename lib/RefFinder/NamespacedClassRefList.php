@@ -5,30 +5,31 @@ namespace DTL\ClassMover\RefFinder;
 use DTL\ClassMover\RefFinder\ClassRef;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\RefFinder\NamespaceRef;
 
 final class NamespacedClassRefList implements \IteratorAggregate
 {
     private $classRefs = array();
     private $path;
-    private $namespace;
+    private $namespaceRef;
 
-    private function __construct(SourceNamespace $namespace, FilePath $path, array $classRefs)
+    private function __construct(NamespaceRef $namespaceRef, FilePath $path, array $classRefs)
     {
-        $this->namespace = $namespace;
+        $this->namespaceRef = $namespaceRef;
         $this->path = $path;
         foreach ($classRefs as $classRef) {
             $this->add($classRef);
         }
     }
 
-    public static function fromNamespaceAndClassRefs(SourceNamespace $namespace, FilePath $path, array $classRefs)
+    public static function fromNamespaceAndClassRefs(NamespaceRef $namespace, FilePath $path, array $classRefs)
     {
         return new self($namespace, $path, $classRefs);
     }
 
     public function filterForName(FullyQualifiedName $name)
     {
-        return new self($this->namespace, $this->path, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
+        return new self($this->namespaceRef, $this->path, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);
         }));
     }
@@ -48,9 +49,9 @@ final class NamespacedClassRefList implements \IteratorAggregate
         return new \ArrayIterator($this->classRefs);
     }
 
-    public function namespace()
+    public function namespaceRef(): NamespaceRef
     {
-        return $this->namespace;
+        return $this->namespaceRef;
     }
 
     private function add(ClassRef $classRef)

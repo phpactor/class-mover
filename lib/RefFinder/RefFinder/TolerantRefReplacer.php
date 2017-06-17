@@ -10,16 +10,26 @@ use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 
 class TolerantRefReplacer
 {
-    public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $name)
+    public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
     {
         $edits = [];
+
+        if ($classRefList->namespaceRef()->namespace()->equals($originalName->parentNamespace())) {
+            $edits[] = new TextEdit(
+                $classRefList->namespaceRef()->position()->start(),
+                $classRefList->namespaceRef()->position()->length(),
+                $newName->parentNamespace()->__toString()
+            );
+        }
+
         foreach ($classRefList as $classRef) {
             $edits[] = new TextEdit(
                 $classRef->position()->start(),
                 $classRef->position()->length(),
-                $classRef->name()->transpose($name)->__toString()
+                $classRef->name()->transpose($newName)->__toString()
             );
         }
+
         return $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
     }
 }

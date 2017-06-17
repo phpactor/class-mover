@@ -47,6 +47,11 @@ class QualifiedName
         return new static($parts);
     }
 
+    public function equals(QualifiedName $qualifiedName)
+    {
+        return $qualifiedName->__toString() === $this->__toString();
+    }
+
     public function head()
     {
         return end($this->parts);

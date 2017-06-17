@@ -21,9 +21,11 @@ class TolerantRefRepalcerTest extends TestCase
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
         $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/TolerantExample.php'));
-        $names = $tolerantRefFinder->findIn($source)->filterForName(FullyQualifiedName::fromString($classFqn));
+        $originalName = FullyQualifiedName::fromString($classFqn);
+
+        $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
         $replacer = new TolerantRefReplacer();
-        $source = $replacer->replaceReferences($source, $names, FullyQualifiedName::fromString($replaceWithFqn));
+        $source = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
         $this->assertContains($expectedSource, $source->__toString());
     }
 
@@ -60,19 +62,19 @@ use Acme\Barfoo as ZedZed;
 class Definee
 EOT
             ],
-            'Change namespace of moved class' => [
+            'Change namespace of moved class 1' => [
                 'Acme\\Hello',
                 'Acme\\Definee\\Foobar',
                 <<<'EOT'
 <?php
 
-namespace Acme;
+namespace Acme\Definee;
 
 use Acme\Foobar\Warble;
 use Acme\Foobar\Barfoo;
 use Acme\Barfoo as ZedZed;
 
-class Definee
+class Foobar
 EOT
             ],
         ];

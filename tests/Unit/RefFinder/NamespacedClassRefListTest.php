@@ -10,6 +10,7 @@ use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\RefFinder\SourceNamespace;
+use DTL\ClassMover\RefFinder\NamespaceRef;
 
 class NamespacedClassRefListTest extends TestCase
 {
@@ -19,7 +20,7 @@ class NamespacedClassRefListTest extends TestCase
     public function testFilterForName()
     {
         $refList = NamespacedClassRefList::fromNamespaceAndClassRefs(
-            SourceNamespace::fromString('Foo'),
+            NamespaceRef::fromNameAndPosition(SourceNamespace::fromString('Foo'), Position::fromStartAndEnd(1,2)),
             FilePath::none(),
             [
                 ClassRef::fromNameAndPosition(
