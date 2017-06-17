@@ -3,6 +3,7 @@
 namespace DTL\ClassMover;
 
 use DTL\ClassFileConverter\ClassName as ConverterClassName;
+use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
 class ClassMover
 {
@@ -15,7 +16,7 @@ class ClassMover
         $this->filesystem = $filesystem;
     }
 
-    public function replaceReferences(SearchPath $searchPath, ClassName $class, ClassName $targetClass)
+    public function replaceReferences(SearchPath $searchPath, FullyQualifiedName $targetClas, FullyQualifiedName $newClass)
     {
         $files = $finder->findIn($searchPath);
 

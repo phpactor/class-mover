@@ -7,8 +7,9 @@ use DTL\ClassMover\RefFinder\ClassRefList;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
 use DTL\ClassMover\RefFinder\NamespacedClassRefList;
+use DTL\ClassMover\RefFinder\RefReplacer;
 
-class TolerantRefReplacer
+class TolerantRefReplacer implements RefReplacer
 {
     public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
     {

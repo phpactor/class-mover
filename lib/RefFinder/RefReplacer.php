@@ -2,7 +2,9 @@
 
 namespace DTL\ClassMover\RefFinder;
 
+use DTL\ClassMover\Finder\FileSource;
+
 interface RefReplacer 
 {
-    public function replaceReferences(FullyQualifiedName $originalName, FullyQualifiedName $newName, NamespacedClassRefList $refList);
+    public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName);
 }
