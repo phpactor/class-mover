@@ -4,6 +4,7 @@ namespace DTL\ClassMover\RefFinder;
 
 use DTL\ClassMover\RefFinder\QualifiedName;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\RefFinder\SourceNamespace;
 
 class SourceEnvironment
 {
@@ -28,6 +29,11 @@ class SourceEnvironment
         }
 
         return $this->namespace->qualify($name);
+    }
+
+    public function namespace(): SourceNamespace
+    {
+        return $this->namespace;
     }
 
     public function isAliased(QualifiedName $name)

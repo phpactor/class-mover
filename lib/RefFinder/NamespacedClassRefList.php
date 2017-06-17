@@ -6,27 +6,29 @@ use DTL\ClassMover\RefFinder\ClassRef;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
-final class ClassRefList implements \IteratorAggregate
+final class NamespacedClassRefList implements \IteratorAggregate
 {
     private $classRefs = array();
     private $path;
+    private $namespace;
 
-    private function __construct(FilePath $path, array $classRefs)
+    private function __construct(SourceNamespace $namespace, FilePath $path, array $classRefs)
     {
+        $this->namespace = $namespace;
         $this->path = $path;
         foreach ($classRefs as $classRef) {
             $this->add($classRef);
         }
     }
 
-    public static function fromClassRefs(FilePath $path, array $classRefs)
+    public static function fromNamespaceAndClassRefs(SourceNamespace $namespace, FilePath $path, array $classRefs)
     {
-        return new self($path, $classRefs);
+        return new self($namespace, $path, $classRefs);
     }
 
     public function filterForName(FullyQualifiedName $name)
     {
-        return new self($this->path, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
+        return new self($this->namespace, $this->path, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);
         }));
     }
@@ -44,6 +46,11 @@ final class ClassRefList implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->classRefs);
+    }
+
+    public function namespace()
+    {
+        return $this->namespace;
     }
 
     private function add(ClassRef $classRef)

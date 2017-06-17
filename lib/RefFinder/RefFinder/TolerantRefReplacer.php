@@ -6,10 +6,11 @@ use DTL\ClassMover\Finder\FileSource;
 use DTL\ClassMover\RefFinder\ClassRefList;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
+use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 
 class TolerantRefReplacer
 {
-    public function replaceReferences(FileSource $source, ClassRefList $classRefList, FullyQualifiedName $name)
+    public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $name)
     {
         $edits = [];
         foreach ($classRefList as $classRef) {

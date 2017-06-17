@@ -3,21 +3,23 @@
 namespace DTL\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\ClassRefList;
+use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 use DTL\ClassMover\RefFinder\ClassRef;
 use DTL\ClassMover\RefFinder\QualifiedName;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\Finder\FilePath;
+use DTL\ClassMover\RefFinder\SourceNamespace;
 
-class ClassRefListTest extends TestCase
+class NamespacedClassRefListTest extends TestCase
 {
     /**
      * It should filter for name.
      */
     public function testFilterForName()
     {
-        $refList = ClassRefList::fromClassRefs(
+        $refList = NamespacedClassRefList::fromNamespaceAndClassRefs(
+            SourceNamespace::fromString('Foo'),
             FilePath::none(),
             [
                 ClassRef::fromNameAndPosition(

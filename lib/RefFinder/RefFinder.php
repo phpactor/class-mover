@@ -9,5 +9,5 @@ use DTL\ClassMover\Finder\FileSource;
 
 interface RefFinder
 {
-    public function findIn(FileSource $source): ClassRefList;
+    public function findIn(FileSource $source): NamespacedClassRefList;
 }

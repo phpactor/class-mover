@@ -21,6 +21,7 @@ use DTL\ClassMover\RefFinder\RefFinder;
 use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\RefFinder\ClassRef;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -31,7 +32,7 @@ class TolerantRefFinder implements RefFinder
         $this->parser = $parser ?: new Parser();
     }
 
-    public function findIn(FileSource $source): ClassRefList
+    public function findIn(FileSource $source): NamespacedClassRefList
     {
         $ast = $this->parser->parseSourceFile($source->__toString());
 
@@ -99,7 +100,8 @@ class TolerantRefFinder implements RefFinder
             );
         }
 
-        return ClassRefList::fromClassRefs($source->path(), $classRefs);
+
+        return NamespacedClassRefList::fromNamespaceAndClassRefs($env->namespace(), $source->path(), $classRefs);
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)

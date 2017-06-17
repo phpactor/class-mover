@@ -30,7 +30,7 @@ class TolerantRefRepalcerTest extends TestCase
     public function provideTestFind()
     {
         return [
-            [
+            'Change references of moved class' => [
                 'Acme\\Foobar\\Warble',
                 'BarBar\\Hello',
                 <<<'EOT'
@@ -45,9 +45,24 @@ class Hello
         $foo = new Hello();
 EOT
             ],
-            [
+            'Changes class name of moved class' => [
                 'Acme\\Hello',
                 'Acme\\Definee',
+                <<<'EOT'
+<?php
+
+namespace Acme;
+
+use Acme\Foobar\Warble;
+use Acme\Foobar\Barfoo;
+use Acme\Barfoo as ZedZed;
+
+class Definee
+EOT
+            ],
+            'Change namespace of moved class' => [
+                'Acme\\Hello',
+                'Acme\\Definee\\Foobar',
                 <<<'EOT'
 <?php
 
