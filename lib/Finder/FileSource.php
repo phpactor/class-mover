@@ -30,6 +30,11 @@ final class FileSource
         return new self($this->path, $source);
     }
 
+    public function writeBackToFile()
+    {
+        file_put_contents($this->path->__toString(), $this->source);
+    }
+
     public function __toString()
     {
         return $this->source;

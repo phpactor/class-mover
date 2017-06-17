@@ -37,6 +37,7 @@ class FindReferencesCommand extends Command
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to find files in');
         $this->addArgument('fqn', InputArgument::OPTIONAL, 'Fully qualified class name to find references for');
         $this->addOption('replace', null, InputOption::VALUE_REQUIRED, 'Replace occurences');
+        $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'Output changes instead of writing them');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -65,7 +66,14 @@ class FindReferencesCommand extends Command
             $this->outputReferences($output, $classRefList);
 
             if ($replaceClass) {
-                $this->refReplacer->replace($targetClass, $replaceClass, $classRefList);
+                $source = $this->refReplacer->replaceReferences($file->getSource(), $classRefList, $targetClass, $replaceClass);
+
+                if ($input->getOption('dry-run')) {
+                    $output->writeln($source);
+                    continue;
+                }
+
+                $source->writeBackToFile();
             }
         }
     }

@@ -15,7 +15,7 @@ class TolerantRefReplacer implements RefReplacer
     {
         $edits = [];
 
-        if ($classRefList->namespaceRef()->namespace()->equals($originalName->parentNamespace())) {
+        if ($classRefList->classRef()->fullName()->equals($originalName)) {
             $edits[] = new TextEdit(
                 $classRefList->namespaceRef()->position()->start(),
                 $classRefList->namespaceRef()->position()->length(),
