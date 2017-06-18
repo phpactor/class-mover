@@ -15,15 +15,16 @@ class TolerantRefReplacer implements RefReplacer
     {
         $edits = [];
 
-        if ($classRefList->classRef()->fullName()->equals($originalName)) {
-            $edits[] = new TextEdit(
-                $classRefList->namespaceRef()->position()->start(),
-                $classRefList->namespaceRef()->position()->length(),
-                $newName->parentNamespace()->__toString()
-            );
-        }
-
         foreach ($classRefList as $classRef) {
+
+            if ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName)) {
+                $edits[] = new TextEdit(
+                    $classRefList->namespaceRef()->position()->start(),
+                    $classRefList->namespaceRef()->position()->length(),
+                    $newName->parentNamespace()->__toString()
+                );
+            }
+
             $edits[] = new TextEdit(
                 $classRef->position()->start(),
                 $classRef->position()->length(),

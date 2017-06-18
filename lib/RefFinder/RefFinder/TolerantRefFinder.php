@@ -56,7 +56,8 @@ class TolerantRefFinder implements RefFinder
                 $classRefs[] = ClassRef::fromNameAndPosition(
                     RefQualifiedName::fromString($name),
                     FullyQualifiedName::fromString($namespace->name->getText() . '\\' . $name),
-                    Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1)
+                    Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
+                    true
                 );
                 continue;
             }
