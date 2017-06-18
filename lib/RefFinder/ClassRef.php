@@ -12,13 +12,21 @@ final class ClassRef
     private $fullName;
     private $name;
     private $isClassDeclaration;
+    private $importedNameRef;
 
-    public static function fromNameAndPosition(QualifiedName $referencedName, FullyQualifiedName $fullName, Position $position, bool $isClassDeclaration = false)
+    public static function fromNameAndPosition(
+        QualifiedName $referencedName,
+        FullyQualifiedName $fullName,
+        Position $position,
+        ImportedNameRef $importedNameRef,
+        bool $isClassDeclaration = false
+    )
     {
         $new = new self();
         $new->position = $position;
         $new->name = $referencedName;
         $new->fullName = $fullName;
+        $new->importedNameRef = $importedNameRef;
         $new->isClassDeclaration = $isClassDeclaration;
 
         return $new;
@@ -42,6 +50,11 @@ final class ClassRef
     public function fullName(): FullyQualifiedName
     {
         return $this->fullName;
+    }
+
+    public function importedNameRef(): ImportedNameRef
+    {
+        return $this->importedNameRef;
     }
 
     public function isClassDeclaration(): bool

@@ -11,6 +11,7 @@ use DTL\ClassMover\RefFinder\Position;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\RefFinder\SourceNamespace;
 use DTL\ClassMover\RefFinder\NamespaceRef;
+use DTL\ClassMover\RefFinder\ImportedNameRef;
 
 class NamespacedClassRefListTest extends TestCase
 {
@@ -26,17 +27,20 @@ class NamespacedClassRefListTest extends TestCase
                 ClassRef::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
-                    Position::fromStartAndEnd(10, 12)
+                    Position::fromStartAndEnd(10, 12),
+                    ImportedNameRef::none()
                 ),
                 ClassRef::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
-                    Position::fromStartAndEnd(10, 12)
+                    Position::fromStartAndEnd(10, 12),
+                    ImportedNameRef::none()
                 ),
                 ClassRef::fromNameAndPosition(
                     QualifiedName::fromString('Bar'),
                     FullyQualifiedName::fromString('Bar\\Bar'),
-                    Position::fromStartAndEnd(10, 12)
+                    Position::fromStartAndEnd(10, 12),
+                    ImportedNameRef::none()
                 ),
             ]
         );

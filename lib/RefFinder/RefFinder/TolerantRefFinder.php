@@ -58,6 +58,7 @@ class TolerantRefFinder implements RefFinder
                     RefQualifiedName::fromString($name),
                     FullyQualifiedName::fromString(($namespace ? $namespace->name->getText() . '\\' : '') . $name),
                     Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
+                    ImportedNameRef::none(),
                     true
                 );
                 continue;
@@ -82,7 +83,8 @@ class TolerantRefFinder implements RefFinder
                 $classRefs[] = ClassRef::fromNameAndPosition(
                     FullyQualifiedName::fromString($node->getText()),
                     FullyQualifiedName::fromString($node->getText()),
-                    Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
+                    Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
+                    ImportedNameRef::none()
                 );
                 continue;
             }
@@ -99,7 +101,8 @@ class TolerantRefFinder implements RefFinder
             $classRefs[] = ClassRef::fromNameAndPosition(
                 $qualifiedName,
                 $resolvedClassName,
-                Position::fromStartAndEnd($node->getStart(), $node->getEndPosition())
+                Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
+                $env->isNameImported($qualifiedName) ? $env->getImportedNameRefFor($qualifiedName) : ImportedNameRef::none()
             );
         }
 

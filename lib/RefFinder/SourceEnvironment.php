@@ -16,6 +16,26 @@ class SourceEnvironment
         return new self($namespace, $importedNameRefs);
     }
 
+    public function isNameImported(QualifiedName $name)
+    {
+        foreach ($this->importedNameRefs as $importedNameRef) {
+            if ($importedNameRef->importedName()->qualifies($name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getImportedNameRefFor(QualifiedName $name): ImportedNameRef
+    {
+        foreach ($this->importedNameRefs as $importedNameRef) {
+            if ($importedNameRef->importedName()->qualifies($name)) {
+                return $importedNameRef;
+            }
+        }
+    }
+
     public function resolveClassName(QualifiedName $name)
     {
         foreach ($this->importedNameRefs as $importedNameRef) {
