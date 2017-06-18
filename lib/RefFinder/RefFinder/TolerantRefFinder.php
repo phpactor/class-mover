@@ -7,7 +7,7 @@ use DTL\ClassMover\Finder\FileSource;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
-use DTL\ClassMover\RefFinder\ImportedNamespaceName;
+use DTL\ClassMover\RefFinder\ImportedName;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\QualifiedName;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
@@ -55,7 +55,7 @@ class TolerantRefFinder implements RefFinder
                 $name = $node->name->getText($node->getFileContents());
                 $classRefs[] = ClassRef::fromNameAndPosition(
                     RefQualifiedName::fromString($name),
-                    FullyQualifiedName::fromString($namespace->name->getText() . '\\' . $name),
+                    FullyQualifiedName::fromString(($namespace ? $namespace->name->getText() . '\\' : '') . $name),
                     Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
                     true
                 );
@@ -122,7 +122,7 @@ class TolerantRefFinder implements RefFinder
     private function populateUseImports(NamespaceUseDeclaration $useDeclaration, &$useImports)
     {
         foreach ($useDeclaration->useClauses->getElements() as $useClause) {
-            $namespace = ImportedNamespaceName::fromString($useClause->namespaceName->getText());
+            $namespace = ImportedName::fromString($useClause->namespaceName->getText());
             $alias = $namespace;
 
             if ($useClause->namespaceAliasingClause) {
@@ -139,7 +139,7 @@ class TolerantRefFinder implements RefFinder
         $namespace = $ast->getFirstDescendantNode(NamespaceDefinition::class);
 
         if (null === $namespace) {
-            return SourceNamespace::root();
+            return NamespaceRef::forRoot();
         }
 
         return NamespaceRef::fromNameAndPosition(

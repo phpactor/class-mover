@@ -55,7 +55,7 @@ class SourceEnvironment
         }
     }
 
-    private function addImportedName(ImportedNamespaceName $name)
+    private function addImportedName(ImportedName $name)
     {
         $this->importedNames[] = $name;
     }

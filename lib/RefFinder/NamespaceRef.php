@@ -20,6 +20,14 @@ final class NamespaceRef
         return $new;
     }
 
+    public static function forRoot()
+    {
+        $new = new self();
+        $new->namespace = SourceNamespace::root();
+
+        return $new;
+    }
+
     public function __toString()
     {
         return (string) $this->fullName;

@@ -3,7 +3,7 @@
 namespace DTL\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\ImportedNamespaceName;
+use DTL\ClassMover\RefFinder\ImportedName;
 
 class ImportedNamespaceNameTest extends TestCase
 {
@@ -12,7 +12,7 @@ class ImportedNamespaceNameTest extends TestCase
      */
     public function testWithAlias()
     {
-        $imported = ImportedNamespaceName::fromString('Foobar\\Barfoo\\FooFoo');
+        $imported = ImportedName::fromString('Foobar\\Barfoo\\FooFoo');
         $imported = $imported->withAlias('BarBar');
         $this->assertEquals('Foobar\\Barfoo\\FooFoo', $imported->__toString());
     }
@@ -22,7 +22,7 @@ class ImportedNamespaceNameTest extends TestCase
      */
     public function testSinglePart()
     {
-        $imported = ImportedNamespaceName::fromString('Foobar');
+        $imported = ImportedName::fromString('Foobar');
         $this->assertEquals('Foobar', $imported->__toString());
     }
 
@@ -33,6 +33,6 @@ class ImportedNamespaceNameTest extends TestCase
      */
     public function testEmpty()
     {
-        ImportedNamespaceName::fromString('');
+        ImportedName::fromString('');
     }
 }
