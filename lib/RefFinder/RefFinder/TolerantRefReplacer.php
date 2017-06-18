@@ -8,6 +8,7 @@ use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
 use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 use DTL\ClassMover\RefFinder\RefReplacer;
+use DTL\ClassMover\RefFinder\ImportedNameRef;
 
 class TolerantRefReplacer implements RefReplacer
 {
