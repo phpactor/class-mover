@@ -9,18 +9,18 @@ use DTL\ClassMover\RefFinder\SourceNamespace;
 class SourceEnvironment
 {
     private $namespace;
-    private $importedNames = [];
+    private $importedNameRefs = [];
 
-    public static function fromImportedNames(SourceNamespace $namespace, array $importedNames): SourceEnvironment
+    public static function fromImportedNameRefs(SourceNamespace $namespace, array $importedNameRefs): SourceEnvironment
     {
-        return new self($namespace, $importedNames);
+        return new self($namespace, $importedNameRefs);
     }
 
     public function resolveClassName(QualifiedName $name)
     {
-        foreach ($this->importedNames as $importedName) {
-            if ($importedName->qualifies($name)) {
-                return $importedName->qualify($name);
+        foreach ($this->importedNameRefs as $importedNameRef) {
+            if ($importedNameRef->importedName()->qualifies($name)) {
+                return $importedNameRef->importedName()->qualify($name);
             }
         }
 
@@ -38,9 +38,9 @@ class SourceEnvironment
 
     public function isAliased(QualifiedName $name)
     {
-        foreach ($this->importedNames as $importedName) {
-            if ($importedName->qualifies($name)) {
-                return $importedName->isAlias();
+        foreach ($this->importedNameRefs as $importedNameRef) {
+            if ($importedNameRef->importedName()->qualifies($name)) {
+                return $importedNameRef->importedName()->isAlias();
             }
         }
 
@@ -55,8 +55,8 @@ class SourceEnvironment
         }
     }
 
-    private function addImportedName(ImportedName $name)
+    private function addImportedName(ImportedNameRef $importedNameRef)
     {
-        $this->importedNames[] = $name;
+        $this->importedNameRefs[] = $importedNameRef;
     }
 }

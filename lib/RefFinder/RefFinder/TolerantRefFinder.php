@@ -23,6 +23,7 @@ use DTL\ClassMover\RefFinder\ClassRef;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 use DTL\ClassMover\RefFinder\NamespaceRef;
+use DTL\ClassMover\RefFinder\ImportedNameRef;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -107,30 +108,34 @@ class TolerantRefFinder implements RefFinder
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)
     {
-        $uses = [];
+        $useImportRefs = [];
         foreach ($node->getChildNodes() as $childNode) {
             if (false === $childNode instanceof NamespaceUseDeclaration) {
                 continue;
             }
 
-            $this->populateUseImports($childNode, $uses);
+            $this->populateUseImportRefs($childNode, $useImportRefs);
         }
 
-        return SourceEnvironment::fromImportedNames($namespace, $uses);
+        return SourceEnvironment::fromImportedNameRefs($namespace, $useImportRefs);
     }
 
-    private function populateUseImports(NamespaceUseDeclaration $useDeclaration, &$useImports)
+    private function populateUseImportRefs(NamespaceUseDeclaration $useDeclaration, &$useImportRefs)
     {
         foreach ($useDeclaration->useClauses->getElements() as $useClause) {
-            $namespace = ImportedName::fromString($useClause->namespaceName->getText());
-            $alias = $namespace;
+            $importedName = ImportedName::fromString($useClause->namespaceName->getText());
+            $alias = $importedName;
 
             if ($useClause->namespaceAliasingClause) {
                 $alias = $useClause->namespaceAliasingClause->name->getText($useDeclaration->getFileContents());
-                $namespace = $namespace->withAlias($alias);
+                $importedName = $importedName->withAlias($alias);
             }
 
-            $useImports[] = $namespace;
+            $useImportRefs[] = ImportedNameRef::fromImportedNameAndPosition($importedName, Position::fromStartAndEnd(
+                $useDeclaration->getStart(),
+                $useDeclaration->getEndPosition()
+            ));
+
         }
     }
 
