@@ -5,9 +5,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
 use DTL\ClassMover\Bridge\Symfony\Console\Command\FindReferencesCommand;
-use DTL\ClassMover\RefFinder\RefFinder\TolerantRefFinder;
 use DTL\ClassMover\Finder\Finder\RecursiveDirectoryFinder;
-use DTL\ClassMover\RefFinder\RefFinder\TolerantRefReplacer;
+use DTL\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;
+use DTL\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefReplacer;
 
 $refFinder = new TolerantRefFinder();
 $refReplacer = new TolerantRefReplacer();
