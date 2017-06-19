@@ -8,7 +8,6 @@ use DTL\ClassMover\Finder\SearchPath;
 use DTL\ClassMover\Finder\FileList;
 use DTL\ClassMover\Finder\FilePath;
 
-
 class RecursiveDirectoryFinderTest extends IntegrationTestCase
 {
     public function setUp()

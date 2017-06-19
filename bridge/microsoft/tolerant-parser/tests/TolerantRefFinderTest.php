@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Integration\RefFinder\RefFinder;
+namespace DTL\ClassMover\Tests\Bridge\Microsoft\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
 use DTL\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;

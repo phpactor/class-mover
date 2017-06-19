@@ -26,13 +26,13 @@
     "autoload": {
         "psr-4": {
             "DTL\\ClassMover\\": "lib/",
-            "DTL\\ClassMover\\Bridge\\Microsoft\\TolerantParser\\": "bridge/tolerant-parser/lib/"
+            "DTL\\ClassMover\\Bridge\\Microsoft\\TolerantParser\\": "bridge/microsoft/tolerant-parser/lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "DTL\\ClassMover\\Tests\\": "tests/",
-            "DTL\\ClassMover\\Tests\\Bridge\\Microsoft\\TolerantParser\\": "bridge/tolerant-parser/tests/"
+            "DTL\\ClassMover\\Tests\\Bridge\\Microsoft\\TolerantParser\\": "bridge/microsoft/tolerant-parser/tests/"
         }
     },
     "extra": {
