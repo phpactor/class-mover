@@ -16,11 +16,11 @@ class TolerantRefRepalcerTest extends TestCase
      * @testdox It finds all class references.
      * @dataProvider provideTestFind
      */
-    public function testFind($classFqn, $replaceWithFqn, $expectedSource)
+    public function testFind($fileName, $classFqn, $replaceWithFqn, $expectedSource)
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
-        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/TolerantExample.php'));
+        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/' . $fileName));
         $originalName = FullyQualifiedName::fromString($classFqn);
 
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
@@ -33,6 +33,7 @@ class TolerantRefRepalcerTest extends TestCase
     {
         return [
             'Change references of moved class' => [
+                'Example1.php',
                 'Acme\\Foobar\\Warble',
                 'BarBar\\Hello',
                 <<<'EOT'
@@ -48,11 +49,10 @@ class Hello
 EOT
             ],
             'Changes class name of moved class' => [
+                'Example1.php',
                 'Acme\\Hello',
                 'Acme\\Definee',
                 <<<'EOT'
-<?php
-
 namespace Acme;
 
 use Acme\Foobar\Warble;
@@ -63,11 +63,10 @@ class Definee
 EOT
             ],
             'Change namespace of moved class 1' => [
+                'Example1.php',
                 'Acme\\Hello',
                 'Acme\\Definee\\Foobar',
                 <<<'EOT'
-<?php
-
 namespace Acme\Definee;
 
 use Acme\Foobar\Warble;
@@ -77,6 +76,24 @@ use Acme\Barfoo as ZedZed;
 class Foobar
 EOT
             ],
+            'Change namespace of class which has same namespace as current file' => [
+                'Example2.php',
+                'Acme\\Barfoo',
+                'Acme\\Definee\\Barfoo',
+                <<<'EOT'
+namespace Acme;
+
+use Acme\Definee\Barfoo;
+
+class Hello
+{
+    public function something()
+    {
+        Barfoo::foobar();
+    }
+}
+EOT
+            ]
         ];
     }
 }

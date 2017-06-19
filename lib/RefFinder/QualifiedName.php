@@ -49,7 +49,7 @@ class QualifiedName
 
     public function equals(QualifiedName $qualifiedName)
     {
-        return $qualifiedName->__toString() === $this->__toString();
+        return $qualifiedName->__toString() == $this->__toString();
     }
 
     public function head()

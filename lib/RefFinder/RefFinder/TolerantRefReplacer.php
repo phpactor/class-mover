@@ -15,8 +15,15 @@ class TolerantRefReplacer implements RefReplacer
     public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
     {
         $edits = [];
+        $addUse = false;
 
         foreach ($classRefList as $classRef) {
+            if (
+                ImportedNameRef::none() == $classRef->importedNameRef() &&
+                false === ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName))
+            ) {
+                $addUse = true;
+            }
 
             if ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName)) {
                 $edits[] = new TextEdit(
@@ -26,6 +33,7 @@ class TolerantRefReplacer implements RefReplacer
                 );
             }
 
+
             $edits[] = new TextEdit(
                 $classRef->position()->start(),
                 $classRef->position()->length(),
@@ -33,6 +41,12 @@ class TolerantRefReplacer implements RefReplacer
             );
         }
 
-        return $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
+        $source = $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
+        if (true === $addUse) {
+            $source = $source->addUseStatement($newName);
+        }
+
+        return $source;
+
     }
 }

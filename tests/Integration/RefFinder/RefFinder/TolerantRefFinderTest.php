@@ -17,7 +17,7 @@ class TolerantRefFinderTest extends TestCase
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
-        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/TolerantExample.php'));
+        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/Example1.php'));
         $names = iterator_to_array($tolerantRefFinder->findIn($source));
 
         $this->assertCount(8, $names);
