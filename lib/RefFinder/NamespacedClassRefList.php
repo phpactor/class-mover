@@ -2,10 +2,7 @@
 
 namespace DTL\ClassMover\RefFinder;
 
-use DTL\ClassMover\RefFinder\ClassRef;
 use DTL\ClassMover\Finder\FilePath;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\NamespaceRef;
 
 final class NamespacedClassRefList implements \IteratorAggregate
 {

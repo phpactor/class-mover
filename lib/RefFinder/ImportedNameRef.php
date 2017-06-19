@@ -2,11 +2,6 @@
 
 namespace DTL\ClassMover\RefFinder;
 
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\Position;
-use DTL\ClassMover\RefFinder\QualifiedName;
-use DTL\ClassMover\RefFinder\ImportedName;
-
 final class ImportedNameRef
 {
     private $position;

@@ -10,8 +10,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use DTL\ClassMover\Finder\SearchPath;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
-use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\RefFinder\ClassRefList;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use DTL\ClassMover\RefFinder\NamespacedClassRefList;
 use Symfony\Component\Console\Input\InputOption;

@@ -14,13 +14,14 @@ final class ImportedName extends SourceNamespace
     public function qualifies(QualifiedName $name)
     {
         $head = $this->alias ?: $this->head();
-        $qualifies =  $head === $name->base();
+        $qualifies = $head === $name->base();
+
         return $qualifies;
     }
 
     public function qualify(QualifiedName $name): FullyQualifiedName
     {
-        return FullyQualifiedName::fromString($this->parentNamespace()->__toString() . '\\' . $name->__toString());
+        return FullyQualifiedName::fromString($this->parentNamespace()->__toString().'\\'.$name->__toString());
     }
 
     public function withAlias(string $alias)

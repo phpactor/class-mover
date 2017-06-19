@@ -2,10 +2,6 @@
 
 namespace DTL\ClassMover\RefFinder;
 
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\Position;
-use DTL\ClassMover\RefFinder\QualifiedName;
-
 final class ClassRef
 {
     private $position;
@@ -20,8 +16,7 @@ final class ClassRef
         Position $position,
         ImportedNameRef $importedNameRef,
         bool $isClassDeclaration = false
-    )
-    {
+    ) {
         $new = new self();
         $new->position = $position;
         $new->name = $referencedName;

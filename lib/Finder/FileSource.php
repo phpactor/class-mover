@@ -2,7 +2,6 @@
 
 namespace DTL\ClassMover\Finder;
 
-use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
 final class FileSource
@@ -24,7 +23,7 @@ final class FileSource
     public function addUseStatement(FullyQualifiedName $classToUse): FileSource
     {
         $lines = explode(PHP_EOL, $this->source);
-        $useStmt = 'use ' . $classToUse->__toString() . ';';
+        $useStmt = 'use '.$classToUse->__toString().';';
 
         $namespaceLineNb = null;
         $lastUseLineNb = null;
@@ -49,11 +48,11 @@ final class FileSource
         }
 
         if ($namespaceLineNb) {
-            return $this->insertAfter($namespaceLineNb, PHP_EOL . $useStmt);
+            return $this->insertAfter($namespaceLineNb, PHP_EOL.$useStmt);
         }
 
         if (null !== $phpDeclarationLineNb) {
-            return $this->insertAfter($phpDeclarationLineNb, PHP_EOL . $useStmt);
+            return $this->insertAfter($phpDeclarationLineNb, PHP_EOL.$useStmt);
         }
 
         throw new \InvalidArgumentException(

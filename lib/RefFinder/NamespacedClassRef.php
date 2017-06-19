@@ -13,7 +13,7 @@ class NamespacedClassRef
         $this->classRef = $classRef;
     }
 
-    static public function fromNamespaceRefAndClassRef(NamespaceRef $namespaceRef, ClassRef $classRef)
+    public static function fromNamespaceRefAndClassRef(NamespaceRef $namespaceRef, ClassRef $classRef)
     {
         return new self($namespaceRef, $classRef);
     }

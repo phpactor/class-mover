@@ -68,7 +68,7 @@ class QualifiedName
         $newParts = [];
         $replaceParts = $name->parts();
 
-        for ($index = 0; $index < count($this->parts); $index++) {
+        for ($index = 0; $index < count($this->parts); ++$index) {
             $newParts[] = array_pop($replaceParts);
         }
 

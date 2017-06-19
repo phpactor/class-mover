@@ -2,15 +2,13 @@
 
 namespace DTL\ClassMover\RefFinder;
 
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use DTL\ClassMover\RefFinder\Position;
-use DTL\ClassMover\RefFinder\QualifiedName;
 
 final class NamespaceRef
 {
     private $position;
     private $namespace;
-    
+
     public static function fromNameAndPosition(SourceNamespace $namespace, Position $position)
     {
         $new = new self();

@@ -2,7 +2,6 @@
 
 namespace DTL\ClassMover;
 
-use DTL\ClassFileConverter\ClassName as ConverterClassName;
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 
 class ClassMover
