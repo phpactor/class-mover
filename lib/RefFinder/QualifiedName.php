@@ -59,6 +59,12 @@ class QualifiedName
 
     public function transpose(QualifiedName $name)
     {
+        // both fully qualified names? great, nothing to see here.
+        if ($this instanceof FullyQualifiedName && $name instanceof FullyQualifiedName) {
+            return $name;
+        }
+
+        // pretty sure there are some holes in this logic..
         $newParts = [];
         $replaceParts = $name->parts();
 

@@ -33,7 +33,6 @@ class TolerantRefReplacer implements RefReplacer
                 );
             }
 
-
             $edits[] = new TextEdit(
                 $classRef->position()->start(),
                 $classRef->position()->length(),

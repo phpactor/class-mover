@@ -93,7 +93,15 @@ class Hello
     }
 }
 EOT
-            ]
+            ],
+            'Change namespace of long class' => [
+                'Example3.php',
+                'Acme\\ClassMover\\RefFinder\\RefFinder\\TolerantRefFinder',
+                'Acme\\ClassMover\\Bridge\\Microsoft\\TolerantParser\\TolerantRefFinder',
+                <<<'EOT'
+use Acme\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;
+EOT
+            ],
         ];
     }
 }
