@@ -3,43 +3,41 @@
 namespace DTL\ClassMover;
 
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Finder\FilePath;
+use DTL\ClassMover\RefFinder\FileSource;
 
+/**
+ * Facade.
+ */
 class ClassMover
 {
-    private $classToFile;
-    private $filesystem;
+    private $finder;
+    private $replacer;
 
-    public function __construct(ClassToFileTransformer $classToFile, Filesystem $filesystem)
+    public function __construct(RefFinder $finder, RefReplacer $replacer)
     {
-        $this->classToFile = $classToFile;
-        $this->filesystem = $filesystem;
+        $this->finder = $finder;
+        $this->replacer = $replacer;
     }
 
-    public function replaceReferences(SearchPath $searchPath, FullyQualifiedName $targetClas, FullyQualifiedName $newClass)
+    public function findReferences(string $source, string $fullyQualifiedName): FoundReferences
     {
-        $files = $finder->findIn($searchPath);
+        $source = FileSource::fromFilePathAndString(FilePath::none(), $source);
+        $name = FullyQualifiedName::fromString($fullyQualifiedName);
+        $source = FileSource::fromString($source);
+        $references = $this->finder->findIn($source)->filterForName($name);
 
-        $referencesToReplace = [];
-        foreach ($files as $file) {
-            $classReferences = $this->refFinder->findClassReferences($file);
-
-            foreach ($classReferences as $classReference) {
-                if ($classReference->getFqn() === $class->getFqn()) {
-                    $referencesToReplace[] = $classReference;
-                }
-            }
-
-            $this->modifier->replaceClassReferences($referencesToReplace, $targetClass);
-        }
-
-        $this->classReplacer->replace($class, $targetClass, $files);
+        return new FoundReferences($source, $name, $references);
     }
 
-    public function moveFile(ClassName $class, ClassName $targetClass)
+    public function replaceReferences(FoundReferences $foundReferences, string $newFullyQualifiedName)
     {
-        $sourcePath = $this->classToFile($class);
-        $targetPath = $this->classToFile($targetClass);
-
-        $this->filesystem->move($sourcePath, $targetPath);
+        $newName = FullyQualifiedName::fromString($newFullyQualifiedName);
+        $this->replacer->replaceReferences(
+            $foundReferences->source(),
+            $foundReferences->references(),
+            $foundReferences->targetName(),
+            $newName
+        );
     }
 }
