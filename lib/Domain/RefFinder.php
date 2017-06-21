@@ -1,10 +1,11 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
 
 
 use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
 
 interface RefFinder
 {

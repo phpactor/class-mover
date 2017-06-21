@@ -5,7 +5,7 @@ namespace DTL\ClassMover\Tests\Unit\Finder;
 use PHPUnit\Framework\TestCase;
 use DTL\ClassMover\Finder\FileSource;
 use DTL\ClassMover\Finder\FilePath;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 
 class FileSourceTest extends TestCase
 {

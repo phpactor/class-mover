@@ -3,11 +3,11 @@
 namespace DTL\ClassMover\Bridge\Microsoft\TolerantParser;
 
 use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
-use DTL\ClassMover\RefFinder\RefReplacer;
-use DTL\ClassMover\RefFinder\ImportedNameRef;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
+use DTL\ClassMover\Domain\RefReplacer;
+use DTL\ClassMover\Domain\ImportedNameRef;
 
 class TolerantRefReplacer implements RefReplacer
 {

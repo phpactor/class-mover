@@ -3,14 +3,14 @@
 namespace DTL\ClassMover\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\RefFinder;
-use DTL\ClassMover\RefFinder\RefReplacer;
+use DTL\ClassMover\Domain\RefFinder;
+use DTL\ClassMover\Domain\RefReplacer;
 use DTL\ClassMover\ClassMover;
 use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
 use Prophecy\Argument;
-use DTL\ClassMover\RefFinder\FoundReferences;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FoundReferences;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 
 class ClassMoverTest extends TestCase
 {

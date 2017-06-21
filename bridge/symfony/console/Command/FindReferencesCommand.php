@@ -3,17 +3,17 @@
 namespace DTL\ClassMover\Bridge\Symfony\Console\Command;
 
 use DTL\ClassMover\Finder\Finder;
-use DTL\ClassMover\RefFinder\RefFinder;
+use DTL\ClassMover\Domain\RefFinder;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use DTL\ClassMover\Finder\SearchPath;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
 use Symfony\Component\Console\Input\InputOption;
-use DTL\ClassMover\RefFinder\RefReplacer;
+use DTL\ClassMover\Domain\RefReplacer;
 
 class FindReferencesCommand extends Command
 {

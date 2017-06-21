@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
 class Position
 {

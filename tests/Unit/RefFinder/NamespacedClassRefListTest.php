@@ -3,15 +3,15 @@
 namespace DTL\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
-use DTL\ClassMover\RefFinder\ClassRef;
-use DTL\ClassMover\RefFinder\QualifiedName;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\Position;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
+use DTL\ClassMover\Domain\ClassRef;
+use DTL\ClassMover\Domain\QualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\Position;
 use DTL\ClassMover\Finder\FilePath;
-use DTL\ClassMover\RefFinder\SourceNamespace;
-use DTL\ClassMover\RefFinder\NamespaceRef;
-use DTL\ClassMover\RefFinder\ImportedNameRef;
+use DTL\ClassMover\Domain\SourceNamespace;
+use DTL\ClassMover\Domain\NamespaceRef;
+use DTL\ClassMover\Domain\ImportedNameRef;
 
 class NamespacedClassRefListTest extends TestCase
 {

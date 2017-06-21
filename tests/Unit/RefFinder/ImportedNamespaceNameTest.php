@@ -3,7 +3,7 @@
 namespace DTL\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\ImportedName;
+use DTL\ClassMover\Domain\ImportedName;
 
 class ImportedNamespaceNameTest extends TestCase
 {

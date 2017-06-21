@@ -1,8 +1,11 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
 use DTL\ClassMover\Finder\FilePath;
+use DTL\ClassMover\Domain\ClassRef;
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\NamespaceRef;
 
 final class NamespacedClassRefList implements \IteratorAggregate
 {

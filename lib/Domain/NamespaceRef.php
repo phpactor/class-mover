@@ -1,8 +1,8 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
-use DTL\ClassMover\RefFinder\Position;
+use DTL\ClassMover\Domain\Position;
 
 final class NamespaceRef
 {

@@ -3,7 +3,7 @@
 namespace DTL\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\RefFinder\QualifiedName;
+use DTL\ClassMover\Domain\QualifiedName;
 
 class QualifiedNameTest extends TestCase
 {

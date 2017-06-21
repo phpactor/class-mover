@@ -7,21 +7,21 @@ use DTL\ClassMover\Finder\FileSource;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
-use DTL\ClassMover\RefFinder\ImportedName;
+use DTL\ClassMover\Domain\ImportedName;
 use Microsoft\PhpParser\Node\QualifiedName;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
-use DTL\ClassMover\RefFinder\SourceEnvironment;
-use DTL\ClassMover\RefFinder\SourceNamespace;
-use DTL\ClassMover\RefFinder\QualifiedName as RefQualifiedName;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\SourceEnvironment;
+use DTL\ClassMover\Domain\SourceNamespace;
+use DTL\ClassMover\Domain\QualifiedName as RefQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
-use DTL\ClassMover\RefFinder\RefFinder;
-use DTL\ClassMover\RefFinder\Position;
-use DTL\ClassMover\RefFinder\ClassRef;
+use DTL\ClassMover\Domain\RefFinder;
+use DTL\ClassMover\Domain\Position;
+use DTL\ClassMover\Domain\ClassRef;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
-use DTL\ClassMover\RefFinder\NamespaceRef;
-use DTL\ClassMover\RefFinder\ImportedNameRef;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
+use DTL\ClassMover\Domain\NamespaceRef;
+use DTL\ClassMover\Domain\ImportedNameRef;
 
 class TolerantRefFinder implements RefFinder
 {

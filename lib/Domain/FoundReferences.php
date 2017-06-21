@@ -1,10 +1,10 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
 use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\NamespacedClassRefList;
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\NamespacedClassRefList;
 
 final class FoundReferences
 {

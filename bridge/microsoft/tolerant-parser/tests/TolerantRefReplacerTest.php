@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use DTL\ClassMover\Finder\FileSource;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefReplacer;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 
 class TolerantRefRepalcerTest extends TestCase
 {

@@ -1,10 +1,12 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
 
-use DTL\ClassMover\RefFinder\QualifiedName;
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
-use DTL\ClassMover\RefFinder\SourceNamespace;
+use DTL\ClassMover\Domain\QualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\SourceNamespace;
+use DTL\ClassMover\Domain\ImportedNameRef;
+use DTL\ClassMover\Domain\SourceEnvironment;
 
 class SourceEnvironment
 {

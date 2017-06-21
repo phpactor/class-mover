@@ -1,6 +1,8 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
+
+use DTL\ClassMover\Domain\ImportedName;
 
 final class ImportedNameRef
 {

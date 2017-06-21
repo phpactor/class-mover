@@ -1,6 +1,9 @@
 <?php
 
-namespace DTL\ClassMover\RefFinder;
+namespace DTL\ClassMover\Domain;
+
+use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\QualifiedName;
 
 class QualifiedName
 {

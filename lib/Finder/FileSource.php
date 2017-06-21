@@ -2,7 +2,7 @@
 
 namespace DTL\ClassMover\Finder;
 
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 
 final class FileSource
 {

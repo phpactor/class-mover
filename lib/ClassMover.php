@@ -2,12 +2,12 @@
 
 namespace DTL\ClassMover;
 
-use DTL\ClassMover\RefFinder\FullyQualifiedName;
+use DTL\ClassMover\Domain\FullyQualifiedName;
 use DTL\ClassMover\Finder\FilePath;
 use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\RefFinder\RefFinder;
-use DTL\ClassMover\RefFinder\RefReplacer;
-use DTL\ClassMover\RefFinder\FoundReferences;
+use DTL\ClassMover\Domain\RefFinder;
+use DTL\ClassMover\Domain\RefReplacer;
+use DTL\ClassMover\Domain\FoundReferences;
 
 /**
  * Facade.
