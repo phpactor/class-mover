@@ -2,7 +2,9 @@
 
 namespace DTL\ClassMover\Tests\Integration;
 
-class ClassMoverTest extends IntegrationTestCase
+use DTL\ClassMover\Tests\Adapter\AdapterTestCase;
+
+class ClassMoverTest extends AdapterTestCase
 {
     public function setUp()
     {

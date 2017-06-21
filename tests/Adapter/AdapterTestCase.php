@@ -1,11 +1,11 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Integration;
+namespace DTL\ClassMover\Tests\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class IntegrationTestCase extends TestCase
+abstract class AdapterTestCase extends TestCase
 {
     protected function initWorkspace()
     {
@@ -19,12 +19,12 @@ abstract class IntegrationTestCase extends TestCase
 
     protected function workspacePath()
     {
-        return __DIR__ . '/workspace';
+        return __DIR__ . '/../Assets/workspace';
     }
 
     protected function loadProject()
     {
-        $projectPath = __DIR__ . '/project';
+        $projectPath = __DIR__ . '/../Assets/project';
         $filesystem = new Filesystem();
         $filesystem->mirror($projectPath, $this->workspacePath());
         chdir($this->workspacePath());
