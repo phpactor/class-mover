@@ -16,10 +16,10 @@ class ClassMover
     private $finder;
     private $replacer;
 
-    public function __construct(RefFinder $finder, RefReplacer $replacer)
+    public function __construct(RefFinder $finder = null, RefReplacer $replacer = null)
     {
-        $this->finder = $finder;
-        $this->replacer = $replacer;
+        $this->finder = $finder ?: new TolerantRefFinder();
+        $this->replacer = $replacer ?: new TolerantRefReplacer();
     }
 
     public function findReferences(string $source, string $fullyQualifiedName): FoundReferences
