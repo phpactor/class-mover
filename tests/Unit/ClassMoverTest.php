@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use DTL\ClassMover\Domain\RefFinder;
 use DTL\ClassMover\Domain\RefReplacer;
 use DTL\ClassMover\ClassMover;
-use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Domain\NamespacedClassRefList;
 use Prophecy\Argument;
 use DTL\ClassMover\Domain\FoundReferences;
@@ -38,7 +38,7 @@ class ClassMoverTest extends TestCase
         $fullName = 'Something';
         $refList = NamespacedClassRefList::empty();
 
-        $this->finder->findIn(Argument::type(FileSource::class))->willReturn($refList);
+        $this->finder->findIn(Argument::type(SourceCode::class))->willReturn($refList);
 
         $references = $this->mover->findReferences($source, $fullName);
 

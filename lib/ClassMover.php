@@ -3,8 +3,7 @@
 namespace DTL\ClassMover;
 
 use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Finder\FilePath;
-use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Domain\RefFinder;
 use DTL\ClassMover\Domain\RefReplacer;
 use DTL\ClassMover\Domain\FoundReferences;
@@ -25,9 +24,9 @@ class ClassMover
 
     public function findReferences(string $source, string $fullyQualifiedName): FoundReferences
     {
-        $source = FileSource::fromFilePathAndString(FilePath::none(), $source);
+        $source = SourceCode::fromString($source);
         $name = FullyQualifiedName::fromString($fullyQualifiedName);
-        $source = FileSource::fromString($source);
+        $source = SourceCode::fromString($source);
         $references = $this->finder->findIn($source)->filterForName($name);
 
         return new FoundReferences($source, $name, $references);

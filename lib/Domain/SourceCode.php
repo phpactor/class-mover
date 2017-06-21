@@ -1,31 +1,25 @@
 <?php
 
-namespace DTL\ClassMover\Finder;
+namespace DTL\ClassMover\Domain;
 
 use DTL\ClassMover\Domain\FullyQualifiedName;
+use DTL\ClassMover\Domain\SourceCode;
 
-final class FileSource
+final class SourceCode
 {
     private $source;
-    private $path;
 
-    public function __construct(FilePath $path, string $source)
+    public function __construct(string $source)
     {
         $this->source = $source;
-        $this->path = $path;
-    }
-
-    public static function fromFilePathAndString(FilePath $path, string $source)
-    {
-        return new self($path, $source);
     }
 
     public static function fromString(string $source)
     {
-        return new self(FilePath::none(), $source);
+        return new self($source);
     }
 
-    public function addUseStatement(FullyQualifiedName $classToUse): FileSource
+    public function addUseStatement(FullyQualifiedName $classToUse): SourceCode
     {
         $lines = explode(PHP_EOL, $this->source);
         $useStmt = 'use '.$classToUse->__toString().';';
@@ -83,19 +77,9 @@ final class FileSource
         return $this->replaceSource(implode(PHP_EOL, $newLines));
     }
 
-    public function path(): FilePath
-    {
-        return $this->path;
-    }
-
     public function replaceSource(string $source)
     {
-        return new self($this->path, $source);
-    }
-
-    public function writeBackToFile()
-    {
-        file_put_contents($this->path->__toString(), $this->source);
+        return new self($source);
     }
 
     public function __toString()

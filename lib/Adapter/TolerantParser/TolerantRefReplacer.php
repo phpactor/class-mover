@@ -2,7 +2,7 @@
 
 namespace DTL\ClassMover\Adapter\TolerantParser;
 
-use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
 use DTL\ClassMover\Domain\NamespacedClassRefList;
@@ -11,7 +11,7 @@ use DTL\ClassMover\Domain\ImportedNameRef;
 
 class TolerantRefReplacer implements RefReplacer
 {
-    public function replaceReferences(FileSource $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
+    public function replaceReferences(SourceCode $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
     {
         $edits = [];
         $addUse = false;

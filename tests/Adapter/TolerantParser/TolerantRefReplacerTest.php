@@ -5,8 +5,7 @@ namespace DTL\ClassMover\Tests\Microsoft\TolerantParser;
 use Microsoft\PhpParser\Parser;
 use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\Finder\FilePath;
+use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
 use DTL\ClassMover\Domain\FullyQualifiedName;
 
@@ -20,7 +19,7 @@ class TolerantRefRepalcerTest extends TestCase
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
-        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/' . $fileName));
+        $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/' . $fileName));
         $originalName = FullyQualifiedName::fromString($classFqn);
 
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);

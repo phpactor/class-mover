@@ -5,8 +5,7 @@ namespace DTL\ClassMover\Tests\Adapter\TolerantParser;
 use Microsoft\PhpParser\Parser;
 use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Finder\FileSource;
-use DTL\ClassMover\Finder\FilePath;
+use DTL\ClassMover\Domain\SourceCode;
 
 class TolerantRefFinderTest extends TestCase
 {
@@ -17,7 +16,7 @@ class TolerantRefFinderTest extends TestCase
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantRefFinder($parser);
-        $source = FileSource::fromFilePathAndString(FilePath::none(), file_get_contents(__DIR__ . '/examples/Example1.php'));
+        $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/Example1.php'));
         $names = iterator_to_array($tolerantRefFinder->findIn($source));
 
         $this->assertCount(8, $names);

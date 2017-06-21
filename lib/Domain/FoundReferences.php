@@ -2,7 +2,7 @@
 
 namespace DTL\ClassMover\Domain;
 
-use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Domain\FullyQualifiedName;
 use DTL\ClassMover\Domain\NamespacedClassRefList;
 
@@ -12,14 +12,14 @@ final class FoundReferences
     private $name;
     private $references;
 
-    public function __construct(FileSource $source, FullyQualifiedName $name, NamespacedClassRefList $list)
+    public function __construct(SourceCode $source, FullyQualifiedName $name, NamespacedClassRefList $list)
     {
         $this->source = $source;
         $this->name = $name;
         $this->references = $list;
     }
 
-    public function source(): FileSource
+    public function source(): SourceCode
     {
         return $this->source;
     }

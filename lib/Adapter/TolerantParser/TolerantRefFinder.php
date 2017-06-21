@@ -3,7 +3,7 @@
 namespace DTL\ClassMover\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\Domain\SourceCode;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
@@ -32,7 +32,7 @@ class TolerantRefFinder implements RefFinder
         $this->parser = $parser ?: new Parser();
     }
 
-    public function findIn(FileSource $source): NamespacedClassRefList
+    public function findIn(SourceCode $source): NamespacedClassRefList
     {
         $ast = $this->parser->parseSourceFile($source->__toString());
 
@@ -103,7 +103,7 @@ class TolerantRefFinder implements RefFinder
             );
         }
 
-        return NamespacedClassRefList::fromNamespaceAndClassRefs($namespaceRef, $source->path(), $classRefs);
+        return NamespacedClassRefList::fromNamespaceAndClassRefs($namespaceRef, $classRefs);
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)
