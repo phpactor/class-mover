@@ -4,7 +4,10 @@ namespace DTL\ClassMover;
 
 use DTL\ClassMover\RefFinder\FullyQualifiedName;
 use DTL\ClassMover\Finder\FilePath;
-use DTL\ClassMover\RefFinder\FileSource;
+use DTL\ClassMover\Finder\FileSource;
+use DTL\ClassMover\RefFinder\RefFinder;
+use DTL\ClassMover\RefFinder\RefReplacer;
+use DTL\ClassMover\RefFinder\FoundReferences;
 
 /**
  * Facade.

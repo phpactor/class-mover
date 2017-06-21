@@ -24,6 +24,11 @@ final class NamespacedClassRefList implements \IteratorAggregate
         return new self($namespace, $path, $classRefs);
     }
 
+    public static function empty()
+    {
+        return new self(NamespaceRef::forRoot(), FilePath::none(), []);
+    }
+
     public function filterForName(FullyQualifiedName $name)
     {
         return new self($this->namespaceRef, $this->path, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {

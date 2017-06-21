@@ -20,6 +20,11 @@ final class FileSource
         return new self($path, $source);
     }
 
+    public static function fromString(string $source)
+    {
+        return new self(FilePath::none(), $source);
+    }
+
     public function addUseStatement(FullyQualifiedName $classToUse): FileSource
     {
         $lines = explode(PHP_EOL, $this->source);
