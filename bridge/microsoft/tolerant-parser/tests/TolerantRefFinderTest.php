@@ -3,7 +3,7 @@
 namespace DTL\ClassMover\Tests\Bridge\Microsoft\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;
+use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
 use DTL\ClassMover\Finder\FileSource;
 use DTL\ClassMover\Finder\FilePath;

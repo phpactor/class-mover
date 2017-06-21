@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\ClassMover\Bridge\Microsoft\TolerantParser;
+namespace DTL\ClassMover\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
 use DTL\ClassMover\Finder\FileSource;
