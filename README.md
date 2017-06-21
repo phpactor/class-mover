@@ -6,12 +6,13 @@ Class Mover
 
 This is a library dedicated to refactoring class locations.
 
-It can take care of:
+It takes care of:
 
-- **Physically moving the class**: Based on the class name and composer
-  configuration.
 - **Replacing references to the class**: Update any references in the code
   (using a given method, e.g. all under a path or all files in the git repo).
+- **Modifying use statements**: update any use statements for the replaced
+  class.
+- **Adding use cases**: where necessary.
 
 Why?
 ----
@@ -26,19 +27,22 @@ of that to a temporary file and then moving that temporary file to overwrite
 the old one. And that doesn't always work well.
 
 This package aims to provide a solid way of doing this, and can, for example,
-be packaged in an CLI application.
+be packaged in an 
 
 Usage
 -----
 
-This is a work in progress, but the essence of this library can be expressed
-as:
-
 ```bash
-$classMover = ClassMover::fromAutoloader(require(__DIR__ . '/vendor/autoload.php'));
-$classMover->moveClass(
-    ClassName::fromString('Current\\Class\\Name'),
-    ClassName::fromString('New\\Class\\Name'),
-    __DIR__ . '/src'
+$targetClass = 'Acme\Blog\Post';
+$replacementClass = 'Acme\Blog\Article';
+$sourceCode = file_get_contents('SomeSource.php');
+
+$classMover = new ClassMover();
+
+$source = $classMover->replaceReferences(
+    $classMover->findReferences($sourceCode, $targetClass)
+    $replacementClass
 );
+
+echo (string) $source;
 ```
