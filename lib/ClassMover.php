@@ -7,6 +7,8 @@ use DTL\ClassMover\Domain\SourceCode;
 use DTL\ClassMover\Domain\RefFinder;
 use DTL\ClassMover\Domain\RefReplacer;
 use DTL\ClassMover\Domain\FoundReferences;
+use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use DTL\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
 
 /**
  * Facade.
