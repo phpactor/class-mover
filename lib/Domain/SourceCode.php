@@ -5,7 +5,7 @@ namespace DTL\ClassMover\Domain;
 use DTL\ClassMover\Domain\FullyQualifiedName;
 use DTL\ClassMover\Domain\SourceCode;
 
-final class SourceCode
+class SourceCode
 {
     private $source;
 

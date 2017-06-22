@@ -34,11 +34,11 @@ class ClassMoverTest extends TestCase
      */
     public function testFindReferences()
     {
-        $source = '<?php echo "hello";';
+        $source = SourceCode::fromString('<?php echo "hello";');
         $fullName = 'Something';
         $refList = NamespacedClassRefList::empty();
 
-        $this->finder->findIn(Argument::type(SourceCode::class))->willReturn($refList);
+        $this->finder->findIn($source)->willReturn($refList);
 
         $references = $this->mover->findReferences($source, $fullName);
 

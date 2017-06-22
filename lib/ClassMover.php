@@ -32,10 +32,10 @@ class ClassMover
         return new FoundReferences($source, $name, $references);
     }
 
-    public function replaceReferences(FoundReferences $foundReferences, string $newFullyQualifiedName)
+    public function replaceReferences(FoundReferences $foundReferences, string $newFullyQualifiedName): SourceCode
     {
         $newName = FullyQualifiedName::fromString($newFullyQualifiedName);
-        $this->replacer->replaceReferences(
+        return $this->replacer->replaceReferences(
             $foundReferences->source(),
             $foundReferences->references(),
             $foundReferences->targetName(),

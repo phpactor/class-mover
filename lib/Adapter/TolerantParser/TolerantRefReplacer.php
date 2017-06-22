@@ -11,7 +11,12 @@ use DTL\ClassMover\Domain\ImportedNameRef;
 
 class TolerantRefReplacer implements RefReplacer
 {
-    public function replaceReferences(SourceCode $source, NamespacedClassRefList $classRefList, FullyQualifiedName $originalName, FullyQualifiedName $newName)
+    public function replaceReferences(
+        SourceCode $source,
+        NamespacedClassRefList $classRefList,
+        FullyQualifiedName $originalName,
+        FullyQualifiedName $newName
+    ): SourceCode
     {
         $edits = [];
         $addUse = false;
