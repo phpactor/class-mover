@@ -101,6 +101,14 @@ EOT
 use Acme\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;
 EOT
             ],
+            'Change name of class expansion' => [
+                'Example4.php',
+                'Acme\\ClassMover\\RefFinder\\RefFinder\\TolerantRefFinder',
+                'Acme\\ClassMover\\RefFinder\\RefFinder\\Foobar',
+                <<<'EOT'
+Foobar::class
+EOT
+            ],
         ];
     }
 }
