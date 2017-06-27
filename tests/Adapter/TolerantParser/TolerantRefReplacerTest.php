@@ -109,6 +109,14 @@ EOT
 namespace DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar;
 EOT
             ],
+            'Change namespace of trait' => [
+                'Example6.php',
+                'DTL\ClassMover\Tests\Adapter\TolerantParser\ExampleTrait',
+                'DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarTrait',
+                <<<'EOT'
+namespace DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar;
+EOT
+            ],
             'Change name of class expansion' => [
                 'Example4.php',
                 'Acme\\ClassMover\\RefFinder\\RefFinder\\TolerantRefFinder',
