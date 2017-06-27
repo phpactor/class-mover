@@ -101,6 +101,14 @@ EOT
 use Acme\ClassMover\Bridge\Microsoft\TolerantParser\TolerantRefFinder;
 EOT
             ],
+            'Change namespace of interface' => [
+                'Example5.php',
+                'DTL\ClassMover\Tests\Adapter\TolerantParser\Example5Interface',
+                'DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarInterface',
+                <<<'EOT'
+namespace DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar;
+EOT
+            ],
             'Change name of class expansion' => [
                 'Example4.php',
                 'Acme\\ClassMover\\RefFinder\\RefFinder\\TolerantRefFinder',

@@ -22,6 +22,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use DTL\ClassMover\Domain\NamespacedClassRefList;
 use DTL\ClassMover\Domain\NamespaceRef;
 use DTL\ClassMover\Domain\ImportedNameRef;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -48,7 +49,10 @@ class TolerantRefFinder implements RefFinder
         $nodes = $ast->getDescendantNodes();
 
         foreach ($nodes as $node) {
-            if ($node instanceof ClassDeclaration) {
+            if (
+                $node instanceof ClassDeclaration ||
+                $node instanceof InterfaceDeclaration
+            ) {
                 $namespace = $node->getNamespaceDefinition();
                 $name = $node->name->getText($node->getFileContents());
                 $classRefs[] = ClassRef::fromNameAndPosition(
