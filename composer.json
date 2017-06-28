@@ -15,7 +15,6 @@
         }
     ],
     "require": {
-        "dtl/class-to-file": "dev-master",
         "symfony/filesystem": "^2.7|^3.0",
         "microsoft/tolerant-php-parser": "@dev"
     },
