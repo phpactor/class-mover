@@ -1,16 +1,16 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Unit;
+namespace Phpactor\ClassMover\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\RefFinder;
-use DTL\ClassMover\Domain\RefReplacer;
-use DTL\ClassMover\ClassMover;
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\RefFinder;
+use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\ClassMover;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
 use Prophecy\Argument;
-use DTL\ClassMover\Domain\FoundReferences;
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\FoundReferences;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 
 class ClassMoverTest extends TestCase
 {

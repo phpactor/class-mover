@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\QualifiedName;
-use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Domain\SourceNamespace;
-use DTL\ClassMover\Domain\ImportedNameRef;
-use DTL\ClassMover\Domain\SourceEnvironment;
+use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\SourceEnvironment;
 
 class SourceEnvironment
 {

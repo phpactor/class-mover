@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
 class Position
 {

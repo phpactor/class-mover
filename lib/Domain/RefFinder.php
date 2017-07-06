@@ -1,11 +1,11 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
 
 
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
 
 interface RefFinder
 {

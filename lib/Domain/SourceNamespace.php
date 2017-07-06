@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\QualifiedName;
 
 class SourceNamespace extends QualifiedName
 {

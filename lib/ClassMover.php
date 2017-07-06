@@ -1,14 +1,14 @@
 <?php
 
-namespace DTL\ClassMover;
+namespace Phpactor\ClassMover;
 
-use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Domain\RefFinder;
-use DTL\ClassMover\Domain\RefReplacer;
-use DTL\ClassMover\Domain\FoundReferences;
-use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
-use DTL\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\RefFinder;
+use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\Domain\FoundReferences;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
 
 /**
  * Facade.

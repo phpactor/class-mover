@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Adapter\TolerantParser;
+namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 
 trait ExampleTrait
 {

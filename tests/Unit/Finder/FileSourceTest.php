@@ -1,10 +1,10 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Unit\Finder;
+namespace Phpactor\ClassMover\Tests\Unit\Finder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 
 class FileSourceTest extends TestCase
 {

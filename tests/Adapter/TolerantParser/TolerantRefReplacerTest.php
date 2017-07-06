@@ -1,13 +1,13 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Microsoft\TolerantParser;
+namespace Phpactor\ClassMover\Tests\Microsoft\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 
 class TolerantRefRepalcerTest extends TestCase
 {
@@ -103,18 +103,18 @@ EOT
             ],
             'Change namespace of interface' => [
                 'Example5.php',
-                'DTL\ClassMover\Tests\Adapter\TolerantParser\Example5Interface',
-                'DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarInterface',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\Example5Interface',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarInterface',
                 <<<'EOT'
-namespace DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar;
+namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser\BarBar;
 EOT
             ],
             'Change namespace of trait' => [
                 'Example6.php',
-                'DTL\ClassMover\Tests\Adapter\TolerantParser\ExampleTrait',
-                'DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarTrait',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\ExampleTrait',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\BarBar\FoobarTrait',
                 <<<'EOT'
-namespace DTL\ClassMover\Tests\Adapter\TolerantParser\BarBar;
+namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser\BarBar;
 EOT
             ],
             'Change name of class expansion' => [

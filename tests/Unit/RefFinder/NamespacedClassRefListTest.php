@@ -1,16 +1,16 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Unit\RefFinder;
+namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\NamespacedClassRefList;
-use DTL\ClassMover\Domain\ClassRef;
-use DTL\ClassMover\Domain\QualifiedName;
-use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Domain\Position;
-use DTL\ClassMover\Domain\SourceNamespace;
-use DTL\ClassMover\Domain\NamespaceRef;
-use DTL\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Position;
+use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\NamespaceRef;
+use Phpactor\ClassMover\Domain\ImportedNameRef;
 
 class NamespacedClassRefListTest extends TestCase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\Position;
+use Phpactor\ClassMover\Domain\Position;
 
 final class NamespaceRef
 {

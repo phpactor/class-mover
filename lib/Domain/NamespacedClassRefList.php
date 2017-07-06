@@ -1,10 +1,10 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\ClassRef;
-use DTL\ClassMover\Domain\FullyQualifiedName;
-use DTL\ClassMover\Domain\NamespaceRef;
+use Phpactor\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\NamespaceRef;
 
 final class NamespacedClassRefList implements \IteratorAggregate
 {

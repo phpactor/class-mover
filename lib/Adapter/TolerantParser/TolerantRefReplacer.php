@@ -1,13 +1,13 @@
 <?php
 
-namespace DTL\ClassMover\Adapter\TolerantParser;
+namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
-use DTL\ClassMover\Domain\SourceCode;
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
-use DTL\ClassMover\Domain\NamespacedClassRefList;
-use DTL\ClassMover\Domain\RefReplacer;
-use DTL\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\Domain\ImportedNameRef;
 
 class TolerantRefReplacer implements RefReplacer
 {

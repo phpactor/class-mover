@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Unit\RefFinder;
+namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\QualifiedName;
 
 class QualifiedNameTest extends TestCase
 {

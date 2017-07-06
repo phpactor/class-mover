@@ -1,8 +1,8 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 
 final class ImportedName extends SourceNamespace
 {

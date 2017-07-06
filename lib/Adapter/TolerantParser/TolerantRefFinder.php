@@ -1,27 +1,27 @@
 <?php
 
-namespace DTL\ClassMover\Adapter\TolerantParser;
+namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\SourceCode;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
-use DTL\ClassMover\Domain\ImportedName;
+use Phpactor\ClassMover\Domain\ImportedName;
 use Microsoft\PhpParser\Node\QualifiedName;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
-use DTL\ClassMover\Domain\SourceEnvironment;
-use DTL\ClassMover\Domain\SourceNamespace;
-use DTL\ClassMover\Domain\QualifiedName as RefQualifiedName;
-use DTL\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\SourceEnvironment;
+use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\QualifiedName as RefQualifiedName;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
-use DTL\ClassMover\Domain\RefFinder;
-use DTL\ClassMover\Domain\Position;
-use DTL\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\RefFinder;
+use Phpactor\ClassMover\Domain\Position;
+use Phpactor\ClassMover\Domain\ClassRef;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use DTL\ClassMover\Domain\NamespacedClassRefList;
-use DTL\ClassMover\Domain\NamespaceRef;
-use DTL\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\NamespaceRef;
+use Phpactor\ClassMover\Domain\ImportedNameRef;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 

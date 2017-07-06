@@ -1,11 +1,11 @@
 <?php
 
-namespace DTL\ClassMover\Tests\Adapter\TolerantParser;
+namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
-use DTL\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\SourceCode;
 
 class TolerantRefFinderTest extends TestCase
 {

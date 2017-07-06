@@ -1,8 +1,8 @@
 <?php
 
-namespace DTL\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain;
 
-use DTL\ClassMover\Domain\ImportedName;
+use Phpactor\ClassMover\Domain\ImportedName;
 
 final class ImportedNameRef
 {
