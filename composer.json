@@ -1,5 +1,5 @@
 {
-    "name": "dantleech/class-mover",
+    "name": "phpactor/class-mover",
     "description": "Library for moving classes",
     "license": "MIT",
     "authors": [
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DTL\\ClassMover\\": "lib/"
+            "Phpactor\\ClassMover\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DTL\\ClassMover\\Tests\\": "tests/"
+            "Phpactor\\ClassMover\\Tests\\": "tests/"
         }
     },
     "extra": {
