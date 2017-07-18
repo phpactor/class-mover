@@ -29,6 +29,7 @@ class TolerantRefReplacer implements RefReplacer
                 $addUse = true;
             }
 
+            // if the class is the original instance, change its namespace
             if ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName)) {
                 $edits[] = new TextEdit(
                     $classRefList->namespaceRef()->position()->start(),
@@ -43,6 +44,11 @@ class TolerantRefReplacer implements RefReplacer
                 $classRef->name()->transpose($newName)->__toString()
             );
         }
+
+        // make sure the edits are ordered
+        usort($edits, function (TextEdit $a, TextEdit $b) {
+            return $a->start <=> $b->start;
+        });
 
         $source = $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
         if (true === $addUse) {

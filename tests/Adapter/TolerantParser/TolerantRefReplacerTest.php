@@ -125,6 +125,14 @@ EOT
 Foobar::class
 EOT
             ],
+            'Class which includes use statement for itself' => [
+                'Example7.php',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\Example7',
+                'Phpactor\ClassMover\Tests\Adapter\TolerantParser\Example8',
+                <<<'EOT'
+class Example8
+EOT
+            ],
         ];
     }
 }
