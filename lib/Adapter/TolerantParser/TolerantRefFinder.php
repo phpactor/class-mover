@@ -56,10 +56,11 @@ class TolerantRefFinder implements RefFinder
                 $node instanceof TraitDeclaration
             ) {
                 $namespace = $node->getNamespaceDefinition();
+
                 $name = $node->name->getText($node->getFileContents());
                 $classRefs[] = ClassRef::fromNameAndPosition(
                     RefQualifiedName::fromString($name),
-                    FullyQualifiedName::fromString(($namespace ? $namespace->name->getText().'\\' : '').$name),
+                    FullyQualifiedName::fromString(($namespace && $namespace->name ? $namespace->name->getText().'\\' : '').$name),
                     Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
                     ImportedNameRef::none(),
                     true
@@ -149,6 +150,10 @@ class TolerantRefFinder implements RefFinder
         $namespace = $ast->getFirstDescendantNode(NamespaceDefinition::class);
 
         if (null === $namespace) {
+            return NamespaceRef::forRoot();
+        }
+
+        if (null === $namespace->name) {
             return NamespaceRef::forRoot();
         }
 

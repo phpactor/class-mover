@@ -29,7 +29,7 @@ final class NamespacedClassRefList implements \IteratorAggregate
         return new self(NamespaceRef::forRoot(), []);
     }
 
-    public function filterForName(FullyQualifiedName $name)
+    public function filterForName(FullyQualifiedName $name): NamespacedClassRefList
     {
         return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);
