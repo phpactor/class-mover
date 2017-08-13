@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Reference;
 
 class Position
 {

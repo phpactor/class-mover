@@ -1,10 +1,10 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\ClassReference;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\NamespaceReference;
+use Phpactor\ClassMover\Domain\Reference\ClassReference;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Reference\NamespaceReference;
 
 final class NamespacedClassReferences implements \IteratorAggregate
 {

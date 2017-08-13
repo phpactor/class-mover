@@ -3,7 +3,7 @@
 namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\ImportedName;
+use Phpactor\ClassMover\Domain\Name\ImportedName;
 
 class ImportedNamespaceNameTest extends TestCase
 {

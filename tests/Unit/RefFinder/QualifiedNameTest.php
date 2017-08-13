@@ -3,7 +3,7 @@
 namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
 
 class QualifiedNameTest extends TestCase
 {

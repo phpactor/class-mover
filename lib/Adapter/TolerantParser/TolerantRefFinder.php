@@ -12,18 +12,18 @@ use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Parser;
-use Phpactor\ClassMover\Domain\ClassReference;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\ImportedName;
-use Phpactor\ClassMover\Domain\ImportedNameReference;
-use Phpactor\ClassMover\Domain\NamespaceReference;
-use Phpactor\ClassMover\Domain\NamespacedClassReferences;
-use Phpactor\ClassMover\Domain\Position;
-use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\Reference\ClassReference;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\ImportedName;
+use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
+use Phpactor\ClassMover\Domain\Reference\NamespaceReference;
+use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\Reference\Position;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
 use Phpactor\ClassMover\Domain\RefFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\SourceImportTable;
-use Phpactor\ClassMover\Domain\Namespace_;
+use Phpactor\ClassMover\Domain\Name\NameImportTable;
+use Phpactor\ClassMover\Domain\Name\Namespace_;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -46,7 +46,7 @@ class TolerantRefFinder implements RefFinder
         return NamespacedClassReferences::fromNamespaceAndClassRefs($namespaceRef, $classRefs);
     }
 
-    private function resolveClassNames($source, SourceImportTable $env, $ast): array
+    private function resolveClassNames($source, NameImportTable $env, $ast): array
     {
         $classRefs = [];
         $nodes = $ast->getDescendantNodes();
@@ -126,7 +126,7 @@ class TolerantRefFinder implements RefFinder
             $this->populateUseImportRefs($childNode, $useImportRefs);
         }
 
-        return SourceImportTable::fromImportedNameRefs($namespace, $useImportRefs);
+        return NameImportTable::fromImportedNameRefs($namespace, $useImportRefs);
     }
 
     private function populateUseImportRefs(NamespaceUseDeclaration $useDeclaration, &$useImportRefs)

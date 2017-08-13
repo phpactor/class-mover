@@ -2,10 +2,8 @@
 
 namespace Phpactor\ClassMover\Domain;
 
-
-
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 
 interface RefFinder
 {

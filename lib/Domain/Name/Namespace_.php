@@ -1,9 +1,9 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Name;
 
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
 
 class Namespace_ extends QualifiedName
 {

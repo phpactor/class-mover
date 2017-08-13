@@ -2,7 +2,7 @@
 
 namespace Phpactor\ClassMover;
 
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\RefFinder;
 use Phpactor\ClassMover\Domain\RefReplacer;

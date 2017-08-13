@@ -1,9 +1,9 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Position;
-use Phpactor\ClassMover\Domain\Namespace_;
+use Phpactor\ClassMover\Domain\Reference\Position;
+use Phpactor\ClassMover\Domain\Name\Namespace_;
 
 final class NamespaceReference
 {

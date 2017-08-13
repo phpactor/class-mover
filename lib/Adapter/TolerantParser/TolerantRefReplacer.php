@@ -3,11 +3,11 @@
 namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
-use Phpactor\ClassMover\Domain\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\RefReplacer;
-use Phpactor\ClassMover\Domain\ImportedNameReference;
+use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 
 class TolerantRefReplacer implements RefReplacer
 {

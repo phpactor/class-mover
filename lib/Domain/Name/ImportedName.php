@@ -1,9 +1,9 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Name;
 
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Namespace_;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\Namespace_;
 
 final class ImportedName extends Namespace_
 {

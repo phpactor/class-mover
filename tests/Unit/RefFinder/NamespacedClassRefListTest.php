@@ -3,14 +3,14 @@
 namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\NamespacedClassReferences;
-use Phpactor\ClassMover\Domain\ClassReference;
-use Phpactor\ClassMover\Domain\QualifiedName;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Position;
-use Phpactor\ClassMover\Domain\Namespace_;
-use Phpactor\ClassMover\Domain\NamespaceReference;
-use Phpactor\ClassMover\Domain\ImportedNameReference;
+use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\Reference\ClassReference;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Reference\Position;
+use Phpactor\ClassMover\Domain\Name\Namespace_;
+use Phpactor\ClassMover\Domain\Reference\NamespaceReference;
+use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 
 class NamespacedClassRefListTest extends TestCase
 {

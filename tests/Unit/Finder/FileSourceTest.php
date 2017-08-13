@@ -4,7 +4,7 @@ namespace Phpactor\ClassMover\Tests\Unit\Finder;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 class FileSourceTest extends TestCase
 {

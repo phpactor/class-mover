@@ -1,19 +1,19 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover\Domain\Name;
 
-use Phpactor\ClassMover\Domain\QualifiedName;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Namespace_;
-use Phpactor\ClassMover\Domain\ImportedNameReference;
-use Phpactor\ClassMover\Domain\SourceImportTable;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\Namespace_;
+use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
+use Phpactor\ClassMover\Domain\Name\NameImportTable;
 
-class SourceImportTable
+class NameImportTable
 {
     private $namespace;
     private $importedNameRefs = [];
 
-    public static function fromImportedNameRefs(Namespace_ $namespace, array $importedNameRefs): SourceImportTable
+    public static function fromImportedNameRefs(Namespace_ $namespace, array $importedNameRefs): NameImportTable
     {
         return new self($namespace, $importedNameRefs);
     }

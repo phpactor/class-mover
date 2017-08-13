@@ -7,7 +7,7 @@ use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 class TolerantRefRepalcerTest extends TestCase
 {

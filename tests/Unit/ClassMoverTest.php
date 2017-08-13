@@ -7,10 +7,10 @@ use Phpactor\ClassMover\Domain\RefFinder;
 use Phpactor\ClassMover\Domain\RefReplacer;
 use Phpactor\ClassMover\ClassMover;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Prophecy\Argument;
 use Phpactor\ClassMover\Domain\FoundReferences;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 class ClassMoverTest extends TestCase
 {
