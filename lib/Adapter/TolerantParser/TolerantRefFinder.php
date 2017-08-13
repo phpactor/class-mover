@@ -2,28 +2,28 @@
 
 namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
-use Microsoft\PhpParser\Parser;
-use Phpactor\ClassMover\Domain\SourceCode;
+use Microsoft\PhpParser\Node\Expression\CallExpression;
+use Microsoft\PhpParser\Node\NamespaceUseClause;
+use Microsoft\PhpParser\Node\QualifiedName as ParserQualifiedName;
+use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
-use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
+use Microsoft\PhpParser\Parser;
+use Phpactor\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\ImportedName;
-use Microsoft\PhpParser\Node\QualifiedName;
-use Microsoft\PhpParser\Node\NamespaceUseClause;
+use Phpactor\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\NamespaceRef;
+use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\Position;
+use Phpactor\ClassMover\Domain\QualifiedName;
+use Phpactor\ClassMover\Domain\RefFinder;
+use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\SourceEnvironment;
 use Phpactor\ClassMover\Domain\SourceNamespace;
-use Phpactor\ClassMover\Domain\QualifiedName as RefQualifiedName;
-use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Microsoft\PhpParser\Node\Expression\CallExpression;
-use Phpactor\ClassMover\Domain\RefFinder;
-use Phpactor\ClassMover\Domain\Position;
-use Phpactor\ClassMover\Domain\ClassRef;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Phpactor\ClassMover\Domain\NamespacedClassRefList;
-use Phpactor\ClassMover\Domain\NamespaceRef;
-use Phpactor\ClassMover\Domain\ImportedNameRef;
-use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
-use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -41,10 +41,12 @@ class TolerantRefFinder implements RefFinder
         $namespaceRef = $this->getNamespaceRef($ast);
         $sourceEnvironment = $this->getClassEnvironment($namespaceRef->namespace(), $ast);
 
-        return $this->resolveClassNames($namespaceRef, $source, $sourceEnvironment, $ast);
+        $classRefs = $this->resolveClassNames($source, $sourceEnvironment, $ast);
+
+        return NamespacedClassRefList::fromNamespaceAndClassRefs($namespaceRef, $classRefs);
     }
 
-    private function resolveClassNames(NamespaceRef $namespaceRef, $source, SourceEnvironment $env, $ast)
+    private function resolveClassNames($source, SourceEnvironment $env, $ast): array
     {
         $classRefs = [];
         $nodes = $ast->getDescendantNodes();
@@ -59,7 +61,7 @@ class TolerantRefFinder implements RefFinder
 
                 $name = $node->name->getText($node->getFileContents());
                 $classRefs[] = ClassRef::fromNameAndPosition(
-                    RefQualifiedName::fromString($name),
+                    QualifiedName::fromString($name),
                     FullyQualifiedName::fromString(($namespace && $namespace->name ? $namespace->name->getText().'\\' : '').$name),
                     Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
                     ImportedNameRef::none(),
@@ -69,7 +71,7 @@ class TolerantRefFinder implements RefFinder
             }
 
             // we want QualifiedNames
-            if (!$node instanceof QualifiedName) {
+            if (!$node instanceof ParserQualifiedName) {
                 continue;
             }
 
@@ -93,7 +95,7 @@ class TolerantRefFinder implements RefFinder
                 continue;
             }
 
-            $qualifiedName = RefQualifiedName::fromString($node->getText());
+            $qualifiedName = QualifiedName::fromString($node->getText());
             $resolvedClassName = $env->resolveClassName($qualifiedName);
 
             // if the name is aliased, then we can safely ignore it
@@ -110,7 +112,7 @@ class TolerantRefFinder implements RefFinder
             );
         }
 
-        return NamespacedClassRefList::fromNamespaceAndClassRefs($namespaceRef, $classRefs);
+        return $classRefs;
     }
 
     private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)
