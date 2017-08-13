@@ -4,16 +4,16 @@ namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\QualifiedName;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\Namespace_;
 use Phpactor\ClassMover\Domain\ImportedNameReference;
-use Phpactor\ClassMover\Domain\ClassImportTable;
+use Phpactor\ClassMover\Domain\SourceImportTable;
 
-class ClassImportTable
+class SourceImportTable
 {
     private $namespace;
     private $importedNameRefs = [];
 
-    public static function fromImportedNameRefs(SourceNamespace $namespace, array $importedNameRefs): ClassImportTable
+    public static function fromImportedNameRefs(Namespace_ $namespace, array $importedNameRefs): SourceImportTable
     {
         return new self($namespace, $importedNameRefs);
     }
@@ -53,7 +53,7 @@ class ClassImportTable
         return $this->namespace->qualify($name);
     }
 
-    public function namespace(): SourceNamespace
+    public function namespace(): Namespace_
     {
         return $this->namespace;
     }
@@ -69,7 +69,7 @@ class ClassImportTable
         return false;
     }
 
-    private function __construct(SourceNamespace $namespace, array $importedNamespaceNames)
+    private function __construct(Namespace_ $namespace, array $importedNamespaceNames)
     {
         $this->namespace = $namespace;
         foreach ($importedNamespaceNames as $importedNamespaceName) {

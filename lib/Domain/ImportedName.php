@@ -3,8 +3,9 @@
 namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
+use Phpactor\ClassMover\Domain\Namespace_;
 
-final class ImportedName extends SourceNamespace
+final class ImportedName extends Namespace_
 {
     private $alias;
 

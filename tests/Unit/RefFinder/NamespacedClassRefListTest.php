@@ -8,7 +8,7 @@ use Phpactor\ClassMover\Domain\ClassReference;
 use Phpactor\ClassMover\Domain\QualifiedName;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\Position;
-use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\Namespace_;
 use Phpactor\ClassMover\Domain\NamespaceReference;
 use Phpactor\ClassMover\Domain\ImportedNameReference;
 
@@ -20,7 +20,7 @@ class NamespacedClassRefListTest extends TestCase
     public function testFilterForName()
     {
         $refList = NamespacedClassReferences::fromNamespaceAndClassRefs(
-            NamespaceReference::fromNameAndPosition(SourceNamespace::fromString('Foo'), Position::fromStartAndEnd(1,2)),
+            NamespaceReference::fromNameAndPosition(Namespace_::fromString('Foo'), Position::fromStartAndEnd(1,2)),
             [
                 ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),

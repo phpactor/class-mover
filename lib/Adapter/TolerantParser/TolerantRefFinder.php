@@ -22,8 +22,8 @@ use Phpactor\ClassMover\Domain\Position;
 use Phpactor\ClassMover\Domain\QualifiedName;
 use Phpactor\ClassMover\Domain\RefFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\ClassImportTable;
-use Phpactor\ClassMover\Domain\SourceNamespace;
+use Phpactor\ClassMover\Domain\SourceImportTable;
+use Phpactor\ClassMover\Domain\Namespace_;
 
 class TolerantRefFinder implements RefFinder
 {
@@ -46,7 +46,7 @@ class TolerantRefFinder implements RefFinder
         return NamespacedClassReferences::fromNamespaceAndClassRefs($namespaceRef, $classRefs);
     }
 
-    private function resolveClassNames($source, ClassImportTable $env, $ast): array
+    private function resolveClassNames($source, SourceImportTable $env, $ast): array
     {
         $classRefs = [];
         $nodes = $ast->getDescendantNodes();
@@ -115,7 +115,7 @@ class TolerantRefFinder implements RefFinder
         return $classRefs;
     }
 
-    private function getClassEnvironment(SourceNamespace $namespace, SourceFileNode $node)
+    private function getClassEnvironment(Namespace_ $namespace, SourceFileNode $node)
     {
         $useImportRefs = [];
         foreach ($node->getChildNodes() as $childNode) {
@@ -126,7 +126,7 @@ class TolerantRefFinder implements RefFinder
             $this->populateUseImportRefs($childNode, $useImportRefs);
         }
 
-        return ClassImportTable::fromImportedNameRefs($namespace, $useImportRefs);
+        return SourceImportTable::fromImportedNameRefs($namespace, $useImportRefs);
     }
 
     private function populateUseImportRefs(NamespaceUseDeclaration $useDeclaration, &$useImportRefs)
@@ -160,7 +160,7 @@ class TolerantRefFinder implements RefFinder
         }
 
         return NamespaceReference::fromNameAndPosition(
-            SourceNamespace::fromString($namespace->name->getText()),
+            Namespace_::fromString($namespace->name->getText()),
             Position::fromStartAndEnd(
                 $namespace->name->getStart(),
                 $namespace->name->getEndPosition()

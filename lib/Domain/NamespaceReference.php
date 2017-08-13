@@ -3,13 +3,14 @@
 namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\Position;
+use Phpactor\ClassMover\Domain\Namespace_;
 
 final class NamespaceReference
 {
     private $position;
     private $namespace;
 
-    public static function fromNameAndPosition(SourceNamespace $namespace, Position $position)
+    public static function fromNameAndPosition(Namespace_ $namespace, Position $position)
     {
         $new = new self();
         $new->position = $position;
@@ -21,7 +22,7 @@ final class NamespaceReference
     public static function forRoot()
     {
         $new = new self();
-        $new->namespace = SourceNamespace::root();
+        $new->namespace = Namespace_::root();
 
         return $new;
     }
