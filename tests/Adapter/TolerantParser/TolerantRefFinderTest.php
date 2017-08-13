@@ -3,7 +3,7 @@
 namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 
@@ -15,7 +15,7 @@ class TolerantRefFinderTest extends TestCase
     public function testFind()
     {
         $parser = new Parser();
-        $tolerantRefFinder = new TolerantRefFinder($parser);
+        $tolerantRefFinder = new TolerantClassFinder($parser);
         $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/Example1.php'));
         $names = iterator_to_array($tolerantRefFinder->findIn($source));
 

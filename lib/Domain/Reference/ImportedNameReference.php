@@ -3,7 +3,6 @@
 namespace Phpactor\ClassMover\Domain\Reference;
 
 use Phpactor\ClassMover\Domain\Name\ImportedName;
-use Phpactor\ClassMover\Domain\Reference\Position;
 
 final class ImportedNameReference
 {

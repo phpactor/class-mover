@@ -36,4 +36,3 @@ abstract class AdapterTestCase extends TestCase
         return require(__DIR__ . '/project/vendor/autoload.php');
     }
 }
-

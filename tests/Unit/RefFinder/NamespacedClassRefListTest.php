@@ -20,7 +20,7 @@ class NamespacedClassRefListTest extends TestCase
     public function testFilterForName()
     {
         $refList = NamespacedClassReferences::fromNamespaceAndClassRefs(
-            NamespaceReference::fromNameAndPosition(Namespace_::fromString('Foo'), Position::fromStartAndEnd(1,2)),
+            NamespaceReference::fromNameAndPosition(Namespace_::fromString('Foo'), Position::fromStartAndEnd(1, 2)),
             [
                 ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
@@ -46,6 +46,5 @@ class NamespacedClassRefListTest extends TestCase
         $this->assertCount(2, $refList->filterForName(
             FullyQualifiedName::fromString('Foo\\Bar')
         ));
-
     }
 }

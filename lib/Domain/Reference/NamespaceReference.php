@@ -2,7 +2,6 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Name\Namespace_;
 
 final class NamespaceReference

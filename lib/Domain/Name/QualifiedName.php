@@ -2,9 +2,6 @@
 
 namespace Phpactor\ClassMover\Domain\Name;
 
-use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Name\QualifiedName;
-
 class QualifiedName
 {
     protected $parts;

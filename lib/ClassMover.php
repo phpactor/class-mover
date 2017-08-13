@@ -4,24 +4,21 @@ namespace Phpactor\ClassMover;
 
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\RefFinder;
-use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\Domain\ClassFinder;
+use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Domain\FoundReferences;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 
-/**
- * Facade.
- */
 class ClassMover
 {
     private $finder;
     private $replacer;
 
-    public function __construct(RefFinder $finder = null, RefReplacer $replacer = null)
+    public function __construct(ClassFinder $finder = null, ClassReplacer $replacer = null)
     {
-        $this->finder = $finder ?: new TolerantRefFinder();
-        $this->replacer = $replacer ?: new TolerantRefReplacer();
+        $this->finder = $finder ?: new TolerantClassFinder();
+        $this->replacer = $replacer ?: new TolerantClassReplacer();
     }
 
     public function findReferences(string $source, string $fullyQualifiedName): FoundReferences

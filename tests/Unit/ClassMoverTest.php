@@ -3,12 +3,11 @@
 namespace Phpactor\ClassMover\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\RefFinder;
-use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\Domain\ClassFinder;
+use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\ClassMover;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
-use Prophecy\Argument;
 use Phpactor\ClassMover\Domain\FoundReferences;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
@@ -20,8 +19,8 @@ class ClassMoverTest extends TestCase
 
     public function setUp()
     {
-        $this->finder = $this->prophesize(RefFinder::class);
-        $this->replacer = $this->prophesize(RefReplacer::class);
+        $this->finder = $this->prophesize(ClassFinder::class);
+        $this->replacer = $this->prophesize(ClassReplacer::class);
 
         $this->mover = new ClassMover(
             $this->finder->reveal(),

@@ -2,10 +2,8 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 use Phpactor\ClassMover\Domain\Name\QualifiedName;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Reference\Position;
 
 final class ClassReference
 {

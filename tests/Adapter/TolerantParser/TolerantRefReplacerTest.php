@@ -3,10 +3,10 @@
 namespace Phpactor\ClassMover\Tests\Microsoft\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefFinder;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantRefReplacer;
+use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 class TolerantRefRepalcerTest extends TestCase
@@ -18,12 +18,12 @@ class TolerantRefRepalcerTest extends TestCase
     public function testFind($fileName, $classFqn, $replaceWithFqn, $expectedSource)
     {
         $parser = new Parser();
-        $tolerantRefFinder = new TolerantRefFinder($parser);
+        $tolerantRefFinder = new TolerantClassFinder($parser);
         $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/' . $fileName));
         $originalName = FullyQualifiedName::fromString($classFqn);
 
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
-        $replacer = new TolerantRefReplacer();
+        $replacer = new TolerantClassReplacer();
         $source = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
         $this->assertContains($expectedSource, $source->__toString());
     }
@@ -136,4 +136,3 @@ EOT
         ];
     }
 }
-

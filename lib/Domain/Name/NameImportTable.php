@@ -2,11 +2,7 @@
 
 namespace Phpactor\ClassMover\Domain\Name;
 
-use Phpactor\ClassMover\Domain\Name\QualifiedName;
-use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Name\Namespace_;
 use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
-use Phpactor\ClassMover\Domain\Name\NameImportTable;
 
 class NameImportTable
 {

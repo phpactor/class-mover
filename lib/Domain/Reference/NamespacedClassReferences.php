@@ -2,9 +2,7 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Reference\ClassReference;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Reference\NamespaceReference;
 
 final class NamespacedClassReferences implements \IteratorAggregate
 {

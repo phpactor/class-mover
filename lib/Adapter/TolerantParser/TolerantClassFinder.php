@@ -20,12 +20,12 @@ use Phpactor\ClassMover\Domain\Reference\NamespaceReference;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Name\QualifiedName;
-use Phpactor\ClassMover\Domain\RefFinder;
+use Phpactor\ClassMover\Domain\ClassFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Name\NameImportTable;
 use Phpactor\ClassMover\Domain\Name\Namespace_;
 
-class TolerantRefFinder implements RefFinder
+class TolerantClassFinder implements ClassFinder
 {
     private $parser;
 

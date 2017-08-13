@@ -6,18 +6,17 @@ use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
-use Phpactor\ClassMover\Domain\RefReplacer;
+use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 
-class TolerantRefReplacer implements RefReplacer
+class TolerantClassReplacer implements ClassReplacer
 {
     public function replaceReferences(
         SourceCode $source,
         NamespacedClassReferences $classRefList,
         FullyQualifiedName $originalName,
         FullyQualifiedName $newName
-    ): SourceCode
-    {
+    ): SourceCode {
         $edits = [];
         $addUse = false;
 

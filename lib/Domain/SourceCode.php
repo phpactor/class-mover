@@ -3,7 +3,6 @@
 namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\SourceCode;
 
 class SourceCode
 {
