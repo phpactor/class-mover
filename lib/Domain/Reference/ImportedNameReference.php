@@ -6,25 +6,38 @@ use Phpactor\ClassMover\Domain\Name\ImportedName;
 
 final class ImportedNameReference
 {
+    /**
+     * @var Position
+     */
     private $position;
+
+    /**
+     * @var ImportedName
+     */
     private $importedName;
-    private $exists = true;
+
+    /**
+     * @var bool
+     */
+    private $exists;
+
+    private function __construct(Position $position = null, ImportedName $importedName = null)
+    {
+        $this->position = $position;
+        $this->importedName = $importedName;
+    }
 
     public static function none()
     {
-        $new = new self([]);
+        $new = new self();
         $new->exists = false;
 
         return $new;
     }
 
-    public static function fromImportedNameAndPosition(ImportedName $importedName, Position $position)
+    public static function fromImportedNameAndPosition(ImportedName $importedName, Position $position): ImportedNameReference
     {
-        $new = new self();
-        $new->position = $position;
-        $new->importedName = $importedName;
-
-        return $new;
+        return new self($position, $importedName);
     }
 
     public function exists()
@@ -34,7 +47,7 @@ final class ImportedNameReference
 
     public function __toString()
     {
-        return (string) $this->fullName;
+        return (string) $this->importedName;
     }
 
     public function position(): Position
@@ -47,3 +60,4 @@ final class ImportedNameReference
         return $this->importedName;
     }
 }
+

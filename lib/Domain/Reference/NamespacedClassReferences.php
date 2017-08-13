@@ -17,7 +17,7 @@ final class NamespacedClassReferences implements \IteratorAggregate
         }
     }
 
-    public static function fromNamespaceAndClassRefs(NamespaceReference $namespace, array $classRefs)
+    public static function fromNamespaceAndClassRefs(NamespaceReference $namespace, array $classRefs): NamespacedClassReferences
     {
         return new self($namespace, $classRefs);
     }
@@ -27,7 +27,7 @@ final class NamespacedClassReferences implements \IteratorAggregate
         return new self(NamespaceReference::forRoot(), []);
     }
 
-    public function filterForName(FullyQualifiedName $name): NamespacedClassRefList
+    public function filterForName(FullyQualifiedName $name): NamespacedClassReferences
     {
         return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassReference $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);

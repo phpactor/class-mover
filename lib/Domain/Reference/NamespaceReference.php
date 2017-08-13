@@ -28,7 +28,7 @@ final class NamespaceReference
 
     public function __toString()
     {
-        return (string) $this->fullName;
+        return (string) $this->namespace;
     }
 
     public function position()
