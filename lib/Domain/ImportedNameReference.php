@@ -4,7 +4,7 @@ namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\ImportedName;
 
-final class ImportedNameRef
+final class ImportedNameReference
 {
     private $position;
     private $importedName;

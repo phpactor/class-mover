@@ -4,7 +4,7 @@ namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\NamespacedClassReferences;
 
 final class FoundReferences
 {
@@ -12,7 +12,7 @@ final class FoundReferences
     private $name;
     private $references;
 
-    public function __construct(SourceCode $source, FullyQualifiedName $name, NamespacedClassRefList $list)
+    public function __construct(SourceCode $source, FullyQualifiedName $name, NamespacedClassReferences $list)
     {
         $this->source = $source;
         $this->name = $name;
@@ -29,7 +29,7 @@ final class FoundReferences
         return $this->name;
     }
 
-    public function references(): NamespacedClassRefList
+    public function references(): NamespacedClassReferences
     {
         return $this->references;
     }

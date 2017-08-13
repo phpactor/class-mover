@@ -7,7 +7,7 @@ use Phpactor\ClassMover\Domain\RefFinder;
 use Phpactor\ClassMover\Domain\RefReplacer;
 use Phpactor\ClassMover\ClassMover;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\NamespacedClassReferences;
 use Prophecy\Argument;
 use Phpactor\ClassMover\Domain\FoundReferences;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
@@ -36,7 +36,7 @@ class ClassMoverTest extends TestCase
     {
         $source = SourceCode::fromString('<?php echo "hello";');
         $fullName = 'Something';
-        $refList = NamespacedClassRefList::empty();
+        $refList = NamespacedClassReferences::empty();
 
         $this->finder->findIn($source)->willReturn($refList);
 

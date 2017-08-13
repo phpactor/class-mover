@@ -2,7 +2,9 @@
 
 namespace Phpactor\ClassMover\Domain;
 
-final class ClassRef
+use Phpactor\ClassMover\Domain\ImportedNameReference;
+
+final class ClassReference
 {
     private $position;
     private $fullName;
@@ -14,7 +16,7 @@ final class ClassRef
         QualifiedName $referencedName,
         FullyQualifiedName $fullName,
         Position $position,
-        ImportedNameRef $importedNameRef,
+        ImportedNameReference $importedNameRef,
         bool $isClassDeclaration = false
     ) {
         $new = new self();
@@ -47,7 +49,7 @@ final class ClassRef
         return $this->fullName;
     }
 
-    public function importedNameRef(): ImportedNameRef
+    public function importedNameRef(): ImportedNameReference
     {
         return $this->importedNameRef;
     }

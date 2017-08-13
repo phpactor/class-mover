@@ -5,15 +5,15 @@ namespace Phpactor\ClassMover\Adapter\TolerantParser;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Microsoft\PhpParser\TextEdit;
-use Phpactor\ClassMover\Domain\NamespacedClassRefList;
+use Phpactor\ClassMover\Domain\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\RefReplacer;
-use Phpactor\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\ImportedNameReference;
 
 class TolerantRefReplacer implements RefReplacer
 {
     public function replaceReferences(
         SourceCode $source,
-        NamespacedClassRefList $classRefList,
+        NamespacedClassReferences $classRefList,
         FullyQualifiedName $originalName,
         FullyQualifiedName $newName
     ): SourceCode
@@ -23,7 +23,7 @@ class TolerantRefReplacer implements RefReplacer
 
         foreach ($classRefList as $classRef) {
             if (
-                ImportedNameRef::none() == $classRef->importedNameRef() &&
+                ImportedNameReference::none() == $classRef->importedNameRef() &&
                 false === ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName))
             ) {
                 $addUse = true;

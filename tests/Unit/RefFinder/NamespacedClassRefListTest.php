@@ -3,14 +3,14 @@
 namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\NamespacedClassRefList;
-use Phpactor\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\ClassReference;
 use Phpactor\ClassMover\Domain\QualifiedName;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\Position;
 use Phpactor\ClassMover\Domain\SourceNamespace;
-use Phpactor\ClassMover\Domain\NamespaceRef;
-use Phpactor\ClassMover\Domain\ImportedNameRef;
+use Phpactor\ClassMover\Domain\NamespaceReference;
+use Phpactor\ClassMover\Domain\ImportedNameReference;
 
 class NamespacedClassRefListTest extends TestCase
 {
@@ -19,26 +19,26 @@ class NamespacedClassRefListTest extends TestCase
      */
     public function testFilterForName()
     {
-        $refList = NamespacedClassRefList::fromNamespaceAndClassRefs(
-            NamespaceRef::fromNameAndPosition(SourceNamespace::fromString('Foo'), Position::fromStartAndEnd(1,2)),
+        $refList = NamespacedClassReferences::fromNamespaceAndClassRefs(
+            NamespaceReference::fromNameAndPosition(SourceNamespace::fromString('Foo'), Position::fromStartAndEnd(1,2)),
             [
-                ClassRef::fromNameAndPosition(
+                ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameRef::none()
+                    ImportedNameReference::none()
                 ),
-                ClassRef::fromNameAndPosition(
+                ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameRef::none()
+                    ImportedNameReference::none()
                 ),
-                ClassRef::fromNameAndPosition(
+                ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Bar'),
                     FullyQualifiedName::fromString('Bar\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameRef::none()
+                    ImportedNameReference::none()
                 ),
             ]
         );

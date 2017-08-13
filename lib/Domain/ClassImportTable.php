@@ -5,15 +5,15 @@ namespace Phpactor\ClassMover\Domain;
 use Phpactor\ClassMover\Domain\QualifiedName;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\SourceNamespace;
-use Phpactor\ClassMover\Domain\ImportedNameRef;
-use Phpactor\ClassMover\Domain\SourceEnvironment;
+use Phpactor\ClassMover\Domain\ImportedNameReference;
+use Phpactor\ClassMover\Domain\ClassImportTable;
 
-class SourceEnvironment
+class ClassImportTable
 {
     private $namespace;
     private $importedNameRefs = [];
 
-    public static function fromImportedNameRefs(SourceNamespace $namespace, array $importedNameRefs): SourceEnvironment
+    public static function fromImportedNameRefs(SourceNamespace $namespace, array $importedNameRefs): ClassImportTable
     {
         return new self($namespace, $importedNameRefs);
     }
@@ -29,7 +29,7 @@ class SourceEnvironment
         return false;
     }
 
-    public function getImportedNameRefFor(QualifiedName $name): ImportedNameRef
+    public function getImportedNameRefFor(QualifiedName $name): ImportedNameReference
     {
         foreach ($this->importedNameRefs as $importedNameRef) {
             if ($importedNameRef->importedName()->qualifies($name)) {
@@ -77,7 +77,7 @@ class SourceEnvironment
         }
     }
 
-    private function addImportedName(ImportedNameRef $importedNameRef)
+    private function addImportedName(ImportedNameReference $importedNameRef)
     {
         $this->importedNameRefs[] = $importedNameRef;
     }

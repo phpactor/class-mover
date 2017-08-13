@@ -2,16 +2,16 @@
 
 namespace Phpactor\ClassMover\Domain;
 
-use Phpactor\ClassMover\Domain\ClassRef;
+use Phpactor\ClassMover\Domain\ClassReference;
 use Phpactor\ClassMover\Domain\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\NamespaceRef;
+use Phpactor\ClassMover\Domain\NamespaceReference;
 
-final class NamespacedClassRefList implements \IteratorAggregate
+final class NamespacedClassReferences implements \IteratorAggregate
 {
     private $classRefs = array();
     private $namespaceRef;
 
-    private function __construct(NamespaceRef $namespaceRef, array $classRefs)
+    private function __construct(NamespaceReference $namespaceRef, array $classRefs)
     {
         $this->namespaceRef = $namespaceRef;
         foreach ($classRefs as $classRef) {
@@ -19,19 +19,19 @@ final class NamespacedClassRefList implements \IteratorAggregate
         }
     }
 
-    public static function fromNamespaceAndClassRefs(NamespaceRef $namespace, array $classRefs)
+    public static function fromNamespaceAndClassRefs(NamespaceReference $namespace, array $classRefs)
     {
         return new self($namespace, $classRefs);
     }
 
     public static function empty()
     {
-        return new self(NamespaceRef::forRoot(), []);
+        return new self(NamespaceReference::forRoot(), []);
     }
 
     public function filterForName(FullyQualifiedName $name): NamespacedClassRefList
     {
-        return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassRef $classRef) use ($name) {
+        return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassReference $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);
         }));
     }
@@ -46,12 +46,12 @@ final class NamespacedClassRefList implements \IteratorAggregate
         return new \ArrayIterator($this->classRefs);
     }
 
-    public function namespaceRef(): NamespaceRef
+    public function namespaceRef(): NamespaceReference
     {
         return $this->namespaceRef;
     }
 
-    private function add(ClassRef $classRef)
+    private function add(ClassReference $classRef)
     {
         $this->classRefs[] = $classRef;
     }

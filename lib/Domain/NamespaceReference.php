@@ -4,7 +4,7 @@ namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\Position;
 
-final class NamespaceRef
+final class NamespaceReference
 {
     private $position;
     private $namespace;
