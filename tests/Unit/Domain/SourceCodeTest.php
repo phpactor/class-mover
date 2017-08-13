@@ -1,12 +1,12 @@
 <?php
 
-namespace Phpactor\ClassMover\Tests\Unit\Finder;
+namespace Phpactor\ClassMover\Tests\Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
-class FileSourceTest extends TestCase
+class SourceCodeTest extends TestCase
 {
     /**
      * It should add a use statement.
