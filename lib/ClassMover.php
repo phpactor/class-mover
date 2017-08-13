@@ -6,7 +6,7 @@ use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\ClassFinder;
 use Phpactor\ClassMover\Domain\ClassReplacer;
-use Phpactor\ClassMover\Domain\FoundReferences;
+use Phpactor\ClassMover\FoundReferences;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 

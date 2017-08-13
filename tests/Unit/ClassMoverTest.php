@@ -8,7 +8,7 @@ use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\ClassMover;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
-use Phpactor\ClassMover\Domain\FoundReferences;
+use Phpactor\ClassMover\FoundReferences;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 class ClassMoverTest extends TestCase
