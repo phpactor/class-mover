@@ -7,12 +7,12 @@ use Phpactor\ClassMover\Domain\Name\ImportedName;
 final class ImportedNameReference
 {
     /**
-     * @var Position
+     * @var Position|null
      */
     private $position;
 
     /**
-     * @var ImportedName
+     * @var ImportedName|null
      */
     private $importedName;
 
@@ -50,12 +50,12 @@ final class ImportedNameReference
         return (string) $this->importedName;
     }
 
-    public function position(): Position
+    public function position()
     {
         return $this->position;
     }
 
-    public function importedName(): ImportedName
+    public function importedName()
     {
         return $this->importedName;
     }
