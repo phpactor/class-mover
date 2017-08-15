@@ -3,6 +3,7 @@
 namespace Phpactor\ClassMover\Domain\Model;
 
 use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 final class ClassMethod
 {
@@ -25,6 +26,11 @@ final class ClassMethod
     public static function fromClassAndMethodName(Class_ $class, MethodName $methodName): ClassMethod
     {
          return new self($class, $methodName);
+    }
+
+    public static function fromScalarClassAndMethodName(string $className, string $methodName): ClassMethod
+    {
+        return new self(Class_::fromFullyQualifiedName(FullyQualifiedName::fromString($className)), MethodName::fromString($methodName));
     }
 
     public function __toString()

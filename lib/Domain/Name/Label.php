@@ -21,7 +21,7 @@ class Label
 
     public static function fromString(string $methodName): Label
     {
-         return new self($methodName);
+         return new static($methodName);
     }
 
     public function __toString()
