@@ -33,6 +33,16 @@ final class ClassMethod
         return new self(Class_::fromFullyQualifiedName(FullyQualifiedName::fromString($className)), MethodName::fromString($methodName));
     }
 
+    public function methodName(): MethodName
+    {
+        return $this->methodName;
+    }
+
+    public function class(): Class_
+    {
+        return $this->class;
+    }
+
     public function __toString()
     {
         return $this->class;
