@@ -116,6 +116,7 @@ EOT
                 ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 2
             ],
+
             'From return types' => [
                 <<<'EOT'
 <?php
@@ -135,8 +136,49 @@ EOT
                 ClassMethod::fromScalarClassAndMethodName('Goobee', 'catma'),
                 1
             ],
+
+            'Reference from parent class' => [
+                <<<'EOT'
+<?php
+
+class Foobar
+{
+    public function foobar()
+    {
+    }
+}
+
+class Boofar()
+{
+}
+
+$foobar = new Barfoo();
+$foobar->foobar();
+
+EOT
+                , 
+                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                1
+            ],
         ];
 
+    }
+
+    /**
+     * @dataProvider provideOffset
+     */
+    public function testOffset(string $source, ClassMethod $classMethod, int $start, int $end)
+    {
+        $this->markTestIncomplete('ODO');
+    }
+
+    public function provideOffset()
+    {
+        return [
+            [
+                '', ClassMethod::fromScalarClassAndMethodName('Foobar', 'barfoo'), 1, 2
+            ]
+        ];
     }
 
     private function createFinder(string $source): MethodFinder
