@@ -12,6 +12,7 @@ use Phpactor\ClassMover\Domain\Model\ClassMethod;
 use Phpactor\ClassMover\Domain\Model\Class_;
 use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReference;
+use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 
 class WorseTolerantMethodFinderTest extends TestCase
 {
@@ -78,7 +79,7 @@ EOT
                 <<<'EOT'
 <?php
 
-class Foobar { public foobar() {} }
+elass Foobar { public foobar() {} }
 class Barfoo {}
 
 $foobar = new Barfoo();
@@ -202,17 +203,47 @@ EOT
     /**
      * @dataProvider provideOffset
      */
-    public function testOffset(string $source, ClassMethod $classMethod, int $start, int $end)
+    public function testOffset(string $source, ClassMethod $classMethod, \Closure $assertion)
     {
-        $this->markTestIncomplete('ODO');
+        $finder = $this->createFinder($source);
+        $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
+        $assertion(iterator_to_array($methods));
     }
 
     public function provideOffset()
     {
         return [
-            [
-                '', ClassMethod::fromScalarClassAndMethodName('Foobar', 'barfoo'), 1, 2
-            ]
+            'Start and end from static call' => [
+                <<<'EOT'
+<?php
+
+Foobar::foobar();
+EOT
+                , 
+                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                function ($methods) {
+                    $first = reset($methods);
+                    $this->assertEquals(15, $first->position()->start());
+                    $this->assertEquals(21, $first->position()->end());
+                }
+            ],
+            'Start and end from instance call' => [
+                <<<'EOT'
+<?php
+
+class Foobar () { public function foobar() {} }
+
+$foobar = new Foobar();
+$foobar->foobar();
+EOT
+                , 
+                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                function ($methods) {
+                    $first = reset($methods);
+                    $this->assertEquals(89, $first->position()->start());
+                    $this->assertEquals(95, $first->position()->end());
+                }
+            ],
         ];
     }
 

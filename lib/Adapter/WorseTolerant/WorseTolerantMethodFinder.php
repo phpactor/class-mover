@@ -46,7 +46,13 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $references = [];
         foreach ($expressions as $expression) {
-            $references[] = MethodReference::fromMethodAndPosition($method, Position::fromStartAndEnd($expression->getStart(), $expression->getEndPosition()));
+            $references[] = MethodReference::fromMethodAndPosition(
+                $method,
+                Position::fromStartAndEnd(
+                    $expression->memberName->start,
+                    $expression->memberName->start + $expression->memberName->length
+                )
+            );
         }
 
         return MethodReferences::fromMethodReferences($references);
@@ -97,17 +103,14 @@ class WorseTolerantMethodFinder implements MethodFinder
     private function collectCallExpressions(Node $node, ClassMethod $method): array
     {
         $expressions = [];
-        if ($node instanceof CallExpression) {
-            if ($node->callableExpression) {
-                $methodName = null;
-                if ($node->callableExpression instanceof MemberAccessExpression || $node->callableExpression instanceof ScopedPropertyAccessExpression) {
-                    $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
-                }
+        $methodName = null;
 
-                if ($methodName == (string) $method->methodName()) {
-                    $expressions[] = $node->callableExpression;
-                }
-            }
+        if ($this->isMethodCall($node)) {
+            $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
+        }
+
+        if ($methodName == (string) $method->methodName()) {
+            $expressions[] = $node->callableExpression;
         }
 
         foreach ($node->getChildNodes() as $childNode) {
@@ -115,6 +118,19 @@ class WorseTolerantMethodFinder implements MethodFinder
         }
 
         return $expressions;
+    }
+    
+    private function isMethodCall(Node $node)
+    {
+        if (false === $node instanceof CallExpression) {
+            return false;
+        }
+
+        if (null === $node->callableExpression) {
+            return false;
+        }
+
+        return $node->callableExpression instanceof MemberAccessExpression || $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 }
 

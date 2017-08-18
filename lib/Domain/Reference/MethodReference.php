@@ -27,5 +27,15 @@ class MethodReference
     {
         return new self($method, $position);
     }
+
+    public function method(): ClassMethod
+    {
+        return $this->method;
+    }
+
+    public function position(): Position
+    {
+        return $this->position;
+    }
 }
 
