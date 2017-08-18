@@ -18,6 +18,7 @@ use Phpactor\WorseReflection\Core\Offset;
 use Phpactor\ClassMover\Domain\Model\Class_;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Microsoft\PhpParser\Node\Expression\ScopedPropertyAccessExpression;
+use Phpactor\WorseReflection\Core\ClassName;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -73,14 +74,20 @@ class WorseTolerantMethodFinder implements MethodFinder
         return false;
     }
 
-    private function isMemberAccessExpressionMemberOfClass($class, MemberAccessExpression $expression)
+    private function isMemberAccessExpressionMemberOfClass(Class_ $class, MemberAccessExpression $expression)
     {
         $offset = $this->reflector->reflectOffset(
             WorseSourceCode::fromString($expression->getFileContents()),
             Offset::fromInt($expression->dereferencableExpression->getEndPosition())
         );
 
-        if ((string) $offset->value()->type() == (string) $class) {
+        if (false === $offset->value()->type()->isDefined()) {
+            return false;
+        }
+
+        $reflectionClass = $this->reflector->reflectClass($offset->value()->type()->className());
+
+        if ($reflectionClass->isInstanceOf(ClassName::fromString((string) $class))) {
             return true;
         }
 
@@ -92,7 +99,10 @@ class WorseTolerantMethodFinder implements MethodFinder
         $expressions = [];
         if ($node instanceof CallExpression) {
             if ($node->callableExpression) {
-                $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
+                $methodName = null;
+                if ($node->callableExpression instanceof MemberAccessExpression || $node->callableExpression instanceof ScopedPropertyAccessExpression) {
+                    $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
+                }
 
                 if ($methodName == (string) $method->methodName()) {
                     $expressions[] = $node->callableExpression;

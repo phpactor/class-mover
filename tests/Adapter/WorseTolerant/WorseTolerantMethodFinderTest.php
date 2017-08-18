@@ -65,6 +65,7 @@ EOT
             'Reference for instantiated instance' => [
                 <<<'EOT'
 <?php
+class Foobar {}
 
 $foobar = new Foobar();
 $foobar->foobar();
@@ -77,6 +78,9 @@ EOT
                 <<<'EOT'
 <?php
 
+class Foobar { public foobar() {} }
+class Barfoo {}
+
 $foobar = new Barfoo();
 $foobar->foobar();
 EOT
@@ -88,6 +92,8 @@ EOT
             'Instance in method call in class' => [
                 <<<'EOT'
 <?php
+
+class Beer {}
 
 class Foobar
 {
@@ -104,6 +110,8 @@ EOT
             'Multiple references with false positives' => [
                 <<<'EOT'
 <?php
+class Dardar {}
+class Foobar {}
 
 $doobar = new Dardar();
 $doobar->foobar();
@@ -120,6 +128,8 @@ EOT
             'From return types' => [
                 <<<'EOT'
 <?php
+class Goobee {}
+class Foobar {}
 
 class Foobar
 {
@@ -148,8 +158,33 @@ class Foobar
     }
 }
 
-class Boofar()
+class Barfoo extends Foobar
 {
+}
+
+$foobar = new Barfoo();
+$foobar->foobar();
+
+EOT
+                , 
+                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                1
+            ],
+
+            'Reference to interface' => [
+                <<<'EOT'
+<?php
+
+interface Foobar
+{
+    public function foobar();
+}
+
+class Barfoo implements Foobar
+{
+    public function foobar()
+    {
+    }
 }
 
 $foobar = new Barfoo();
