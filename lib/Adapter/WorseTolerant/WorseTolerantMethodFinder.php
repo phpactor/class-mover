@@ -19,6 +19,7 @@ use Phpactor\ClassMover\Domain\Model\Class_;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Microsoft\PhpParser\Node\Expression\ScopedPropertyAccessExpression;
 use Phpactor\WorseReflection\Core\ClassName;
+use Phpactor\ClassMover\Domain\Name\MethodName;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -49,8 +50,8 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $references = [];
         foreach ($expressions as $expression) {
-            $references[] = MethodReference::fromMethodAndPosition(
-                $query,
+            $references[] = MethodReference::fromMethodNameAndPosition(
+                MethodName::fromString((string) $expression->memberName->getText($expression->getFileContents())),
                 Position::fromStartAndEnd(
                     $expression->memberName->start,
                     $expression->memberName->start + $expression->memberName->length

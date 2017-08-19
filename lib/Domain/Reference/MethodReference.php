@@ -4,11 +4,12 @@ namespace Phpactor\ClassMover\Domain\Reference;
 
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
+use Phpactor\ClassMover\Domain\Name\MethodName;
 
 class MethodReference
 {
     /**
-     * @var ClassMethod
+     * @var MethodName
      */
     private $method;
 
@@ -17,18 +18,18 @@ class MethodReference
      */
     private $position;
 
-    private function __construct(ClassMethodQuery $method, Position $position)
+    private function __construct(MethodName $method, Position $position)
     {
         $this->method = $method;
         $this->position = $position;
     }
 
-    public function fromMethodAndPosition(ClassMethodQuery $method, Position $position)
+    public function fromMethodNameAndPosition(MethodName $method, Position $position)
     {
         return new self($method, $position);
     }
 
-    public function method(): ClassMethodQuery
+    public function methodName(): MethodName
     {
         return $this->method;
     }
