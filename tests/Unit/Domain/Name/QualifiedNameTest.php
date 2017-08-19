@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpactor\ClassMover\Tests\Unit\RefFinder;
+namespace Phpactor\ClassMover\Tests\Unit\Domain\Name;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\Name\QualifiedName;

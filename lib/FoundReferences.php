@@ -1,9 +1,10 @@
 <?php
 
-namespace Phpactor\ClassMover\Domain;
+namespace Phpactor\ClassMover;
 
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
+use Phpactor\ClassMover\Domain\SourceCode;
 
 final class FoundReferences
 {

@@ -7,7 +7,7 @@ use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 
-class TolerantRefFinderTest extends TestCase
+class TolerantClassFinderTest extends TestCase
 {
     /**
      * @testdox It finds all class references.

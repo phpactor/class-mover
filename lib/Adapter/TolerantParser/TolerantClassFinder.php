@@ -149,6 +149,7 @@ class TolerantClassFinder implements ClassFinder
 
     private function getNamespaceRef(SourceFileNode $ast): NamespaceReference
     {
+        /** @var $namespace NamespaceDefinition|null */
         $namespace = $ast->getFirstDescendantNode(NamespaceDefinition::class);
 
         if (null === $namespace) {
