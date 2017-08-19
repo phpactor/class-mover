@@ -234,6 +234,49 @@ EOT
                 ClassMethodQuery::all(),
                 3
             ],
+
+            'Ignores dynamic calls' => [
+                <<<'EOT'
+<?php
+
+class Barfoo
+{
+}
+
+$foobar = new Barfoo();
+$foobar->$foobarName();
+
+EOT
+                , 
+                ClassMethodQuery::all(),
+                0
+            ],
+
+            'Ignores calls made on non-class types' => [
+                <<<'EOT'
+<?php
+
+$foobar = 'hello';
+$foobar->foobar();
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClass('Foobar'),
+                0
+            ],
+
+            'Ignores non-existing classes' => [
+                <<<'EOT'
+<?php
+
+$foobar = new HarHar();
+$foobar->foobar();
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClass('Foobar'),
+                0
+            ],
         ];
 
     }
