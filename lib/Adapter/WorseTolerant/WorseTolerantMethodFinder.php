@@ -20,6 +20,8 @@ use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Microsoft\PhpParser\Node\Expression\ScopedPropertyAccessExpression;
 use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\WorseReflection\Core\Exception\NotFound;
+use Microsoft\PhpParser\Token;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -50,6 +52,11 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $references = [];
         foreach ($expressions as $expression) {
+            if (false === $expression->memberName instanceof Token) {
+                // todo: Log this
+                continue;
+            }
+
             $references[] = MethodReference::fromMethodNameAndPosition(
                 MethodName::fromString((string) $expression->memberName->getText($expression->getFileContents())),
                 Position::fromStartAndEnd(
@@ -91,11 +98,15 @@ class WorseTolerantMethodFinder implements MethodFinder
             Offset::fromInt($expression->dereferencableExpression->getEndPosition())
         );
 
-        if (false === $offset->value()->type()->isDefined()) {
+        if (false === $offset->value()->type()->isClass() || false === $offset->value()->type()->isDefined()) {
             return false;
         }
 
-        $reflectionClass = $this->reflector->reflectClass($offset->value()->type()->className());
+        try {
+            $reflectionClass = $this->reflector->reflectClass($offset->value()->type()->className());
+        } catch (NotFound $notFound) {
+            return false;
+        }
 
         if ($reflectionClass->isInstanceOf(ClassName::fromString((string) $class))) {
             return true;
