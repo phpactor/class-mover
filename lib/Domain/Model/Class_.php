@@ -16,7 +16,7 @@ class Class_
         $this->name = $name;
     }
 
-    public function fromFullyQualifiedName(FullyQualifiedName $name)
+    public static function fromFullyQualifiedName(FullyQualifiedName $name)
     {
         return new self($name);
     }

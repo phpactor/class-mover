@@ -24,7 +24,7 @@ class MethodReference
         $this->position = $position;
     }
 
-    public function fromMethodNameAndPosition(MethodName $method, Position $position)
+    public static function fromMethodNameAndPosition(MethodName $method, Position $position)
     {
         return new self($method, $position);
     }

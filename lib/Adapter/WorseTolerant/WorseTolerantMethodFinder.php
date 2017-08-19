@@ -37,7 +37,7 @@ class WorseTolerantMethodFinder implements MethodFinder
 
     public function __construct(Reflector $reflector = null, Parser $parser = null)
     {
-        $this->reflector = $reflector ?: Reflector::create(StringSourceLocator::fromString(''));
+        $this->reflector = $reflector ?: Reflector::create(new StringSourceLocator(WorseSourceCode::fromString('')));
         $this->parser = $parser ?: new Parser();
     }
 
@@ -129,7 +129,7 @@ class WorseTolerantMethodFinder implements MethodFinder
         }
 
         foreach ($node->getChildNodes() as $childNode) {
-            $expressions = array_merge($expressions, $this->collectCallExpressions($childNode, $query, $expressions));
+            $expressions = array_merge($expressions, $this->collectCallExpressions($childNode, $query));
         }
 
         return $expressions;
