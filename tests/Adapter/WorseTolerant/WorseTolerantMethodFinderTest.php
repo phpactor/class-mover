@@ -8,7 +8,7 @@ use Phpactor\WorseReflection\Reflector;
 use Phpactor\ClassMover\Domain\MethodFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
-use Phpactor\ClassMover\Domain\Model\ClassMethod;
+use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
 use Phpactor\ClassMover\Domain\Model\Class_;
 use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReference;
@@ -19,7 +19,7 @@ class WorseTolerantMethodFinderTest extends TestCase
     /**
      * @dataProvider provideFindMethod
      */
-    public function testFindMethod(string $source, ClassMethod $classMethod, int $expectedCount)
+    public function testFindMethod(string $source, ClassMethodQuery $classMethod, int $expectedCount)
     {
         $finder = $this->createFinder($source);
         $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
@@ -37,7 +37,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 0,
             ],
             'It returns zero references when there are no matching methods' => [
@@ -51,7 +51,7 @@ $foobar = new Foobar();
 $foobar->barfoo();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 0,
             ],
             'Reference for static call' => [
@@ -60,7 +60,7 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 1
             ],
             'Reference for instantiated instance' => [
@@ -72,7 +72,7 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 1
             ],
             'Reference for instantiated instance of wrong class' => [
@@ -86,7 +86,7 @@ $foobar = new Barfoo();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 0
             ],
 
@@ -105,7 +105,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Beer', 'giveMe'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Beer', 'giveMe'),
                 1
             ],
             'Multiple references with false positives' => [
@@ -122,7 +122,7 @@ $foobar->foobar();
 ($foobar->foobar())->foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 2
             ],
 
@@ -144,7 +144,7 @@ $foobar->goobee()->catma();
 
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Goobee', 'catma'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Goobee', 'catma'),
                 1
             ],
 
@@ -168,7 +168,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 1
             ],
 
@@ -193,8 +193,46 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 1
+            ],
+
+            'Returns all methods if no method specified' => [
+                <<<'EOT'
+<?php
+
+class Barfoo
+{
+}
+
+$foobar = new Barfoo();
+$foobar->foobar();
+$foobar->bar();
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClass('Barfoo'),
+                2
+            ],
+
+            'Returns all methods for all classes' => [
+                <<<'EOT'
+<?php
+
+class Barfoo
+{
+}
+
+$foobar = new Barfoo();
+$foobar->foobar();
+$foobar->bar();
+$stdClass = new \stdClass;
+$stdClass->foobar();
+
+EOT
+                , 
+                ClassMethodQuery::all(),
+                3
             ],
         ];
 
@@ -203,7 +241,7 @@ EOT
     /**
      * @dataProvider provideOffset
      */
-    public function testOffset(string $source, ClassMethod $classMethod, \Closure $assertion)
+    public function testOffset(string $source, ClassMethodQuery $classMethod, \Closure $assertion)
     {
         $finder = $this->createFinder($source);
         $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
@@ -220,7 +258,7 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 function ($methods) {
                     $first = reset($methods);
                     $this->assertEquals(15, $first->position()->start());
@@ -237,7 +275,7 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethod::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 function ($methods) {
                     $first = reset($methods);
                     $this->assertEquals(89, $first->position()->start());

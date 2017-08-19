@@ -5,7 +5,7 @@ namespace Phpactor\ClassMover\Adapter\WorseTolerant;
 use Phpactor\ClassMover\Domain\MethodFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\Model\ClassMethod;
+use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
@@ -38,16 +38,19 @@ class WorseTolerantMethodFinder implements MethodFinder
         $this->parser = $parser ?: new Parser();
     }
 
-    public function findMethods(SourceCode $source, ClassMethod $method): MethodReferences
+    public function findMethods(SourceCode $source, ClassMethodQuery $query): MethodReferences
     {
         $rootNode = $this->parser->parseSourceFile((string) $source);
-        $expressions = $this->collectCallExpressions($rootNode, $method);
-        $expressions = $this->filterByClass($method->class(), $expressions);
+        $expressions = $this->collectCallExpressions($rootNode, $query);
+
+        if ($query->hasClass()) {
+            $expressions = $this->filterByClass($query->class(), $expressions);
+        }
 
         $references = [];
         foreach ($expressions as $expression) {
             $references[] = MethodReference::fromMethodAndPosition(
-                $method,
+                $query,
                 Position::fromStartAndEnd(
                     $expression->memberName->start,
                     $expression->memberName->start + $expression->memberName->length
@@ -100,21 +103,21 @@ class WorseTolerantMethodFinder implements MethodFinder
         return false;
     }
 
-    private function collectCallExpressions(Node $node, ClassMethod $method): array
+    private function collectCallExpressions(Node $node, ClassMethodQuery $query): array
     {
         $expressions = [];
         $methodName = null;
 
         if ($this->isMethodCall($node)) {
             $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
-        }
 
-        if ($methodName == (string) $method->methodName()) {
-            $expressions[] = $node->callableExpression;
+            if ($query->matchesMethodName($methodName)) {
+                $expressions[] = $node->callableExpression;
+            }
         }
 
         foreach ($node->getChildNodes() as $childNode) {
-            $expressions = array_merge($expressions, $this->collectCallExpressions($childNode, $method, $expressions));
+            $expressions = array_merge($expressions, $this->collectCallExpressions($childNode, $query, $expressions));
         }
 
         return $expressions;
