@@ -8,6 +8,10 @@ This is a library dedicated to refactoring class locations.
 
 It takes care of:
 
+- **Finding references to a class**: Find all references to a class (or
+  classes).
+- **Finding refnereces to class methods**: Find references to a class method,
+  or all method calls on a class, or all method calls ever.
 - **Replacing references to the class**: Update any references in the code
   (using a given method, e.g. all under a path or all files in the git repo).
 - **Modifying use statements**: update any use statements for the replaced
