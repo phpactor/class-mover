@@ -98,12 +98,13 @@ class WorseTolerantMethodFinder implements MethodFinder
             Offset::fromInt($expression->dereferencableExpression->getEndPosition())
         );
 
-        if (false === $offset->value()->type()->isClass() || false === $offset->value()->type()->isDefined()) {
+        $type = $offset->symbolInformation()->type();
+        if (false === $type->isClass() || false === $type->isDefined()) {
             return false;
         }
 
         try {
-            $reflectionClass = $this->reflector->reflectClass($offset->value()->type()->className());
+            $reflectionClass = $this->reflector->reflectClass($type->className());
         } catch (NotFound $notFound) {
             return false;
         }
