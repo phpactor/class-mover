@@ -14,7 +14,7 @@ use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReference;
 use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 
-class WorseTolerantMethodFinderTest extends TestCase
+class WorseTolerantMethodFinderTest extends WorseTolerantTestCase
 {
     /**
      * @dataProvider provideFindMethod
@@ -326,12 +326,5 @@ EOT
                 }
             ],
         ];
-    }
-
-    private function createFinder(string $source): MethodFinder
-    {
-        $locator = new StringSourceLocator(WorseSourceCode::fromString($source));
-
-        return new WorseTolerantMethodFinder(Reflector::create($locator));
     }
 }
