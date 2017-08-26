@@ -67,7 +67,7 @@ class WorseTolerantMethodFinder implements MethodFinder
                     MethodName::fromString((string) $expression->name->getText($expression->getFileContents())),
                     Position::fromStartAndEnd(
                         $expression->name->start,
-                        $expression->name->start + $expression->name->length
+                        $expression->name->start + $expression->name->length - 1
                     )
                 );
                 continue;

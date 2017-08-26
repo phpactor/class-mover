@@ -363,6 +363,20 @@ EOT
                     $this->assertEquals(95, $first->position()->end());
                 }
             ],
+            'Start and end from method declaration' => [
+                <<<'EOT'
+<?php
+
+class Foobar { public function foobar() {} }
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                function ($methods) {
+                    $first = reset($methods);
+                    $this->assertEquals(38, $first->position()->start());
+                    $this->assertEquals(44, $first->position()->end());
+                }
+            ],
         ];
     }
 }

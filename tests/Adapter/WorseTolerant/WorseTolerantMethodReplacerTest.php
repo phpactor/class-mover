@@ -62,6 +62,19 @@ EOT
 $foobar->barfoo();
 EOT
             ],
+            'It replaces method declarations' => [
+                'Foobar', 'foobar', 'barfoo',
+                <<<'EOT'
+<?php
+class Foobar { function foobar() {} }
+
+$foobar = new Foobar();
+$foobar->foobar();
+EOT
+                , <<<'EOT'
+class Foobar { function barfoo() {} }
+EOT
+            ],
         ];
     }
 }
