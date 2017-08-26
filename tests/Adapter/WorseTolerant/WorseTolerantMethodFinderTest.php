@@ -108,6 +108,24 @@ EOT
                 ClassMethodQuery::fromScalarClassAndMethodName('Beer', 'giveMe'),
                 1
             ],
+            'Includes method declarations' => [
+                <<<'EOT'
+<?php
+
+class Beer {}
+
+class Foobar
+{
+    public function hello(Beer $beer)
+    {
+        $this->hello($beer);
+    }
+}
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'hello'),
+                2
+            ],
             'Multiple references with false positives' => [
                 <<<'EOT'
 <?php
@@ -169,9 +187,30 @@ $foobar->foobar();
 EOT
                 , 
                 ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
-                1
+                2
             ],
+            'Reference to overridden method' => [
+                <<<'EOT'
+<?php
 
+class Foobar
+{
+    public function foobar()
+    {
+    }
+}
+
+class Barfoo extends Foobar
+{
+    public function foobar()
+    {
+    }
+}
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
+                2
+            ],
             'Reference to interface' => [
                 <<<'EOT'
 <?php
@@ -194,7 +233,7 @@ $foobar->foobar();
 EOT
                 , 
                 ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
-                1
+                3
             ],
 
             'Returns all methods if no method specified' => [
@@ -264,7 +303,6 @@ EOT
                 ClassMethodQuery::fromScalarClass('Foobar'),
                 0
             ],
-
             'Ignores non-existing classes' => [
                 <<<'EOT'
 <?php

@@ -58,6 +58,15 @@ final class ClassMethodQuery
         return $methodName == (string) $this->methodName;
     }
 
+    public function matchesClass(string $className)
+    {
+        if (null === $this->class) {
+            return true;
+        }
+
+        return $className == (string) $this->class;
+    }
+
     public function class(): Class_
     {
         return $this->class;

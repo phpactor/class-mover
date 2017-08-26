@@ -22,6 +22,10 @@ use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\ClassMover\Domain\Name\MethodName;
 use Phpactor\WorseReflection\Core\Exception\NotFound;
 use Microsoft\PhpParser\Token;
+use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -52,6 +56,23 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $references = [];
         foreach ($expressions as $expression) {
+            if ($expression instanceof MethodDeclaration) {
+
+                if (false === $expression->name instanceof Token) {
+                    // todo: Log this
+                    continue;
+                }
+
+                $references[] = MethodReference::fromMethodNameAndPosition(
+                    MethodName::fromString((string) $expression->name->getText($expression->getFileContents())),
+                    Position::fromStartAndEnd(
+                        $expression->name->start,
+                        $expression->name->start + $expression->name->length
+                    )
+                );
+                continue;
+            }
+
             if (false === $expression->memberName instanceof Token) {
                 // todo: Log this
                 continue;
@@ -78,6 +99,11 @@ class WorseTolerantMethodFinder implements MethodFinder
 
             if ($expression instanceof ScopedPropertyAccessExpression) {
                 return $this->isScopedPropertyAccessExpressionMemberOfClass($class, $expression);
+            }
+
+            if ($expression instanceof MethodDeclaration) {
+                // already matched
+                return true;
             }
         });
     }
@@ -121,6 +147,12 @@ class WorseTolerantMethodFinder implements MethodFinder
         $expressions = [];
         $methodName = null;
 
+        if ($node instanceof MethodDeclaration) {
+            if ($this->isMatchingMethodDeclaration($node, $query)) {
+                $expressions[] = $node;
+            }
+        }
+
         if ($this->isMethodCall($node)) {
             $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
 
@@ -135,6 +167,34 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         return $expressions;
     }
+
+    private function isMatchingMethodDeclaration(MethodDeclaration $node, ClassMethodQuery $query)
+    {
+        if (false === $query->matchesMethodName($node->name->getText($node->getFileContents()))) {
+            return false;
+
+        }
+
+        $classNode = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
+
+        if (null === $classNode) {
+            return false;
+        }
+
+        $className = ClassName::fromString($classNode->getNamespacedName());
+
+        try {
+            $reflectionClass = $this->reflector->reflectClass($className);
+        } catch (NotFound $notFound) {
+            return false;
+        }
+
+        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+            return false;
+        }
+
+        return true;
+    }
     
     private function isMethodCall(Node $node)
     {
@@ -146,7 +206,9 @@ class WorseTolerantMethodFinder implements MethodFinder
             return false;
         }
 
-        return $node->callableExpression instanceof MemberAccessExpression || $node->callableExpression instanceof ScopedPropertyAccessExpression;
+        return 
+            $node->callableExpression instanceof MemberAccessExpression || 
+            $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 }
 
