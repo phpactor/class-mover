@@ -175,6 +175,10 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         }
 
+        if (false === $query->hasClass()) {
+            return true;
+        }
+
         $classNode = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
 
         if (null === $classNode) {
