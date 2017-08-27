@@ -256,6 +256,31 @@ EOT
                 2
             ],
 
+            'Returns all methods if no method specified, ignores unknown or other classes' => [
+                <<<'EOT'
+<?php
+
+class Barfoo
+{
+}
+
+class Foobar
+{
+}
+
+$barfoo = new Foobar();
+$barfoo->barbar();
+$undefined->gatgat();
+$foobar = new Barfoo();
+$foobar->foobar();
+$foobar->bar();
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClass('Barfoo'),
+                2
+            ],
+
             'Returns all methods for all classes' => [
                 <<<'EOT'
 <?php
@@ -273,8 +298,8 @@ $stdClass->foobar();
 EOT
                 , 
                 ClassMethodQuery::all(),
-                3,
-                0
+                2,
+                1
             ],
 
             'Ignores dynamic calls' => [
@@ -306,7 +331,7 @@ EOT
                 ClassMethodQuery::fromScalarClass('Foobar'),
                 0
             ],
-            'Does not ignore non-existing classes' => [
+            'Ignore non-existing classes' => [
                 <<<'EOT'
 <?php
 
@@ -316,7 +341,8 @@ $foobar->foobar();
 EOT
                 , 
                 ClassMethodQuery::fromScalarClass('Foobar'),
-                1,
+                0,
+                1
             ],
             'Collects unknown methods' => [
                 <<<'EOT'
@@ -326,7 +352,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::fromScalarClass('Foobar', 'foobar'),
+                ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
                 0,
                 1
             ],

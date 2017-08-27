@@ -60,5 +60,10 @@ class MethodReference
     {
         return new self($this->method, $this->position, $class);
     }
+
+    public function class(): Class_
+    {
+        return $this->class;
+    }
 }
 

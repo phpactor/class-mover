@@ -203,15 +203,13 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $type = $offset->symbolInformation()->type();
 
-        if (Type::unknown() == $type) {
+        if ($query->hasMethod() && Type::unknown() == $type) {
             return $reference;
         }
 
         if (false === $type->isClass()) {
             return false;
         }
-
-        $reference = $reference->withClass(Class_::fromString((string) $type->className()));
 
         try {
             $reflectionClass = $this->reflector->reflectClass($type->className());
@@ -220,8 +218,9 @@ class WorseTolerantMethodFinder implements MethodFinder
                 return;
             }
         } catch (NotFound $notFound) {
+            return $reference;
         }
 
-        return $reference;
+        return $reference->withClass(Class_::fromString((string) $type->className()));
     }
 }

@@ -31,7 +31,7 @@ final class ClassMethodQuery
 
     public static function fromScalarClassAndMethodName(string $className, string $methodName): ClassMethodQuery
     {
-        return new self(Class_::fromFullyQualifiedName(FullyQualifiedName::fromString($className)), MethodName::fromString($methodName));
+        return new self(Class_::fromString($className), MethodName::fromString($methodName));
     }
 
     public static function fromScalarClass(string $className): ClassMethodQuery
@@ -75,6 +75,11 @@ final class ClassMethodQuery
     public function hasClass(): bool
     {
         return null !== $this->class;
+    }
+
+    public function hasMethod(): bool
+    {
+        return null !== $this->methodName;
     }
 
     public function __toString()
