@@ -17,7 +17,8 @@
     ],
     "require": {
         "symfony/filesystem": "^2.7|^3.0",
-        "microsoft/tolerant-php-parser": "@dev"
+        "microsoft/tolerant-php-parser": "@dev",
+        "psr/log": "^1.0@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2",

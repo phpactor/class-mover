@@ -298,8 +298,8 @@ $stdClass->foobar();
 EOT
                 , 
                 ClassMethodQuery::all(),
-                2,
-                1
+                3,
+                0
             ],
 
             'Ignores dynamic calls' => [

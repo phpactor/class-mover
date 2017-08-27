@@ -65,5 +65,10 @@ class MethodReference
     {
         return $this->class;
     }
+
+    public function __toString()
+    {
+        return sprintf('[%s:%s] %s', $this->position->start(), $this->position->end(), (string) $this->methodName);
+    }
 }
 

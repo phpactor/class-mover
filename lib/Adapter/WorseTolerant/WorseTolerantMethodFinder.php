@@ -27,6 +27,8 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\WorseReflection\Core\Type;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -40,10 +42,16 @@ class WorseTolerantMethodFinder implements MethodFinder
      */
     private $parser;
 
-    public function __construct(Reflector $reflector = null, Parser $parser = null)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(Reflector $reflector = null, Parser $parser = null, LoggerInterface $logger = null)
     {
         $this->reflector = $reflector ?: Reflector::create(new StringSourceLocator(WorseSourceCode::fromString('')));
         $this->parser = $parser ?: new Parser();
+        $this->logger = $logger ?: new NullLogger();
     }
 
     public function findMethods(SourceCode $source, ClassMethodQuery $query): MethodReferences
@@ -123,6 +131,7 @@ class WorseTolerantMethodFinder implements MethodFinder
     {
         // we don't handle Variable calls yet.
         if (false === $methodNode->name instanceof Token) {
+            $this->logger->warning('Do not know how to infer method name from variable');
             return;
         }
 
@@ -136,8 +145,8 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $classNode = $methodNode->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
 
-        // if no class node found, then this is not valid
-        // TODO: Log this.
+        // if no class node found, then this is not valid, don't know how to reproduce this, probably
+        // not a possible scenario with the parser.
         if (null === $classNode) {
             return;
         }
@@ -145,9 +154,14 @@ class WorseTolerantMethodFinder implements MethodFinder
         $className = ClassName::fromString($classNode->getNamespacedName());
         $reference = $reference->withClass(Class_::fromString($className));
 
+        if (false === $query->hasClass()) {
+            return $reference;
+        }
+
         try {
             $reflectionClass = $this->reflector->reflectClass($className);
         } catch (NotFound $notFound) {
+            $this->logger->warning(sprintf('Could not find class "%s" for method declaration, ignoring it', (string) $query->class()));
             return;
         }
 
@@ -168,7 +182,7 @@ class WorseTolerantMethodFinder implements MethodFinder
     {
         $className = $methodNode->scopeResolutionQualifier->getResolvedName();
 
-        if ($className != (string) $query->class()) {
+        if ($query->hasClass() && $className != (string) $query->class()) {
             return;
         }
 
@@ -185,6 +199,7 @@ class WorseTolerantMethodFinder implements MethodFinder
     private function getMemberAccessReference(ClassMethodQuery $query, MemberAccessExpression $methodNode)
     {
         if (false === $methodNode->memberName instanceof Token) {
+            $this->logger->warning('Do not know how to infer method name from variable');
             return;
         }
 
@@ -208,19 +223,27 @@ class WorseTolerantMethodFinder implements MethodFinder
         }
 
         if (false === $type->isClass()) {
-            return false;
+            return;
+        }
+
+
+        if (false === $query->hasClass()) {
+            $reference = $reference->withClass(Class_::fromString((string) $type->className()));
+            return $reference;
         }
 
         try {
             $reflectionClass = $this->reflector->reflectClass($type->className());
 
-            if ($query->hasClass() && false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+            if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
                 return;
             }
         } catch (NotFound $notFound) {
+            $this->logger->warning(sprintf('Could not find class "%s", logging as risky', (string) $query->class()));
             return $reference;
         }
 
         return $reference->withClass(Class_::fromString((string) $type->className()));
     }
 }
+
