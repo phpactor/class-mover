@@ -5,6 +5,7 @@ namespace Phpactor\ClassMover\Domain\Reference;
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
 use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Model\Class_;
 
 class MethodReference
 {
@@ -18,15 +19,26 @@ class MethodReference
      */
     private $position;
 
-    private function __construct(MethodName $method, Position $position)
+    /**
+     * @var Class_
+     */
+    private $class;
+
+    private function __construct(MethodName $method, Position $position, Class_ $class = null)
     {
         $this->method = $method;
         $this->position = $position;
+        $this->class = $class;
     }
 
-    public static function fromMethodNameAndPosition(MethodName $method, Position $position)
+    public static function fromMethodNameAndPosition(MethodName $method, Position $position): MethodReference
     {
         return new self($method, $position);
+    }
+
+    public static function fromMethodNameAndPositionAndClass(MethodName $method, Position $position, Class_ $class): MethodReference
+    {
+        return new self($method, $position, $class);
     }
 
     public function methodName(): MethodName
@@ -37,6 +49,16 @@ class MethodReference
     public function position(): Position
     {
         return $this->position;
+    }
+
+    public function hasClass(): bool
+    {
+        return null !== $this->class;
+    }
+
+    public function withClass(Class_ $class)
+    {
+        return new self($this->method, $this->position, $class);
     }
 }
 

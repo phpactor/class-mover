@@ -19,11 +19,12 @@ class WorseTolerantMethodFinderTest extends WorseTolerantTestCase
     /**
      * @dataProvider provideFindMethod
      */
-    public function testFindMethod(string $source, ClassMethodQuery $classMethod, int $expectedCount)
+    public function testFindMethod(string $source, ClassMethodQuery $classMethod, int $expectedCount, int $expectedRiskyCount = 0)
     {
         $finder = $this->createFinder($source);
         $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
-        $this->assertCount($expectedCount, $methods);
+        $this->assertCount($expectedCount, $methods->withClasses());
+        $this->assertCount($expectedRiskyCount, $methods->withoutClasses());
     }
 
     public function provideFindMethod()
@@ -79,7 +80,7 @@ EOT
                 <<<'EOT'
 <?php
 
-elass Foobar { public foobar() {} }
+class Foobar { public foobar() {} }
 class Barfoo {}
 
 $foobar = new Barfoo();
@@ -141,7 +142,8 @@ $foobar->foobar();
 EOT
                 , 
                 ClassMethodQuery::fromScalarClassAndMethodName('Foobar', 'foobar'),
-                2
+                2,
+                1
             ],
 
             'From return types' => [
@@ -271,7 +273,8 @@ $stdClass->foobar();
 EOT
                 , 
                 ClassMethodQuery::all(),
-                3
+                3,
+                0
             ],
 
             'Ignores dynamic calls' => [
@@ -303,7 +306,7 @@ EOT
                 ClassMethodQuery::fromScalarClass('Foobar'),
                 0
             ],
-            'Ignores non-existing classes' => [
+            'Does not ignore non-existing classes' => [
                 <<<'EOT'
 <?php
 
@@ -313,7 +316,19 @@ $foobar->foobar();
 EOT
                 , 
                 ClassMethodQuery::fromScalarClass('Foobar'),
-                0
+                1,
+            ],
+            'Collects unknown methods' => [
+                <<<'EOT'
+<?php
+
+$foobar->foobar();
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClass('Foobar', 'foobar'),
+                0,
+                1
             ],
         ];
 

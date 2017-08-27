@@ -26,6 +26,7 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Phpactor\WorseReflection\Core\Type;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -48,108 +49,43 @@ class WorseTolerantMethodFinder implements MethodFinder
     public function findMethods(SourceCode $source, ClassMethodQuery $query): MethodReferences
     {
         $rootNode = $this->parser->parseSourceFile((string) $source);
-        $expressions = $this->collectCallExpressions($rootNode, $query);
-
-        if ($query->hasClass()) {
-            $expressions = $this->filterByClass($query->class(), $expressions);
-        }
+        $methodNodes = $this->collectCallNodes($rootNode, $query);
 
         $references = [];
-        foreach ($expressions as $expression) {
-            if ($expression instanceof MethodDeclaration) {
-
-                if (false === $expression->name instanceof Token) {
-                    // todo: Log this
-                    continue;
-                }
-
-                $references[] = MethodReference::fromMethodNameAndPosition(
-                    MethodName::fromString((string) $expression->name->getText($expression->getFileContents())),
-                    Position::fromStartAndEnd(
-                        $expression->name->start,
-                        $expression->name->start + $expression->name->length - 1
-                    )
-                );
+        foreach ($methodNodes as $methodNode) {
+            if ($methodNode instanceof ScopedPropertyAccessExpression && $reference = $this->getScopedPropertyAccessReference($query, $methodNode)) {
+                $references[] = $reference;
                 continue;
             }
 
-            if (false === $expression->memberName instanceof Token) {
-                // todo: Log this
+            if ($methodNode instanceof MemberAccessExpression && $reference = $this->getMemberAccessReference($query, $methodNode)) {
+                $references[] = $reference;
                 continue;
             }
 
-            $references[] = MethodReference::fromMethodNameAndPosition(
-                MethodName::fromString((string) $expression->memberName->getText($expression->getFileContents())),
-                Position::fromStartAndEnd(
-                    $expression->memberName->start,
-                    $expression->memberName->start + $expression->memberName->length
-                )
-            );
+            if ($methodNode instanceof MethodDeclaration && $reference = $this->getMethodDeclarationReference($query, $methodNode)) {
+                $references[] = $reference;
+                continue;
+            }
         }
 
         return MethodReferences::fromMethodReferences($references);
     }
 
-    private function filterByClass(Class_ $class, array $expressions)
+    /**
+     * Collect all nodes which reference the method NAME.
+     * We will check if they belong to the requested class later.
+     */
+    private function collectCallNodes(Node $node, ClassMethodQuery $query): array
     {
-        return array_filter($expressions, function (Node $expression) use ($class) {
-            if ($expression instanceof MemberAccessExpression) {
-                return $this->isMemberAccessExpressionMemberOfClass($class, $expression);
-            }
-
-            if ($expression instanceof ScopedPropertyAccessExpression) {
-                return $this->isScopedPropertyAccessExpressionMemberOfClass($class, $expression);
-            }
-
-            if ($expression instanceof MethodDeclaration) {
-                // already matched
-                return true;
-            }
-        });
-    }
-
-    private function isScopedPropertyAccessExpressionMemberOfClass(Class_ $class, ScopedPropertyAccessExpression $expression)
-    {
-        if ((string) $expression->scopeResolutionQualifier->getResolvedName() == (string) $class) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isMemberAccessExpressionMemberOfClass(Class_ $class, MemberAccessExpression $expression)
-    {
-        $offset = $this->reflector->reflectOffset(
-            WorseSourceCode::fromString($expression->getFileContents()),
-            Offset::fromInt($expression->dereferencableExpression->getEndPosition())
-        );
-
-        $type = $offset->symbolInformation()->type();
-        if (false === $type->isClass() || false === $type->isDefined()) {
-            return false;
-        }
-
-        try {
-            $reflectionClass = $this->reflector->reflectClass($type->className());
-        } catch (NotFound $notFound) {
-            return false;
-        }
-
-        if ($reflectionClass->isInstanceOf(ClassName::fromString((string) $class))) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function collectCallExpressions(Node $node, ClassMethodQuery $query): array
-    {
-        $expressions = [];
+        $methodNodes = [];
         $methodName = null;
 
         if ($node instanceof MethodDeclaration) {
-            if ($this->isMatchingMethodDeclaration($node, $query)) {
-                $expressions[] = $node;
+            $methodName = $node->name->getText($node->getFileContents());
+
+            if ($query->matchesMethodName($methodName)) {
+                $methodNodes[] = $node;
             }
         }
 
@@ -157,49 +93,17 @@ class WorseTolerantMethodFinder implements MethodFinder
             $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
 
             if ($query->matchesMethodName($methodName)) {
-                $expressions[] = $node->callableExpression;
+                $methodNodes[] = $node->callableExpression;
             }
         }
 
         foreach ($node->getChildNodes() as $childNode) {
-            $expressions = array_merge($expressions, $this->collectCallExpressions($childNode, $query));
+            $methodNodes = array_merge($methodNodes, $this->collectCallNodes($childNode, $query));
         }
 
-        return $expressions;
+        return $methodNodes;
     }
 
-    private function isMatchingMethodDeclaration(MethodDeclaration $node, ClassMethodQuery $query)
-    {
-        if (false === $query->matchesMethodName($node->name->getText($node->getFileContents()))) {
-            return false;
-
-        }
-
-        if (false === $query->hasClass()) {
-            return true;
-        }
-
-        $classNode = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
-
-        if (null === $classNode) {
-            return false;
-        }
-
-        $className = ClassName::fromString($classNode->getNamespacedName());
-
-        try {
-            $reflectionClass = $this->reflector->reflectClass($className);
-        } catch (NotFound $notFound) {
-            return false;
-        }
-
-        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
-            return false;
-        }
-
-        return true;
-    }
-    
     private function isMethodCall(Node $node)
     {
         if (false === $node instanceof CallExpression) {
@@ -214,5 +118,110 @@ class WorseTolerantMethodFinder implements MethodFinder
             $node->callableExpression instanceof MemberAccessExpression || 
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
-}
 
+    private function getMethodDeclarationReference(ClassMethodQuery $query, MethodDeclaration $methodNode)
+    {
+        // we don't handle Variable calls yet.
+        if (false === $methodNode->name instanceof Token) {
+            return;
+        }
+
+        $reference = MethodReference::fromMethodNameAndPosition(
+            MethodName::fromString((string) $methodNode->name->getText($methodNode->getFileContents())),
+            Position::fromStartAndEnd(
+                $methodNode->name->start,
+                $methodNode->name->start + $methodNode->name->length - 1
+            )
+        );
+
+        $classNode = $methodNode->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
+
+        // if no class node found, then this is not valid
+        // TODO: Log this.
+        if (null === $classNode) {
+            return;
+        }
+
+        $className = ClassName::fromString($classNode->getNamespacedName());
+        $reference = $reference->withClass(Class_::fromString($className));
+
+        try {
+            $reflectionClass = $this->reflector->reflectClass($className);
+        } catch (NotFound $notFound) {
+            return;
+        }
+
+        // if the references class is not an instance of the requested class, then
+        // ignore it.
+        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+            return;
+        }
+
+        return $reference;
+    }
+
+    /**
+     * Get static method call.
+     * TODO: This does not support overridden static methods.
+     */
+    private function getScopedPropertyAccessReference(ClassMethodQuery $query, ScopedPropertyAccessExpression $methodNode)
+    {
+        $className = $methodNode->scopeResolutionQualifier->getResolvedName();
+
+        if ($className != (string) $query->class()) {
+            return;
+        }
+
+        return MethodReference::fromMethodNameAndPositionAndClass(
+            MethodName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
+            Position::fromStartAndEnd(
+                $methodNode->memberName->start,
+                $methodNode->memberName->start + $methodNode->memberName->length
+            ),
+            Class_::fromString($className)
+        );
+    }
+
+    private function getMemberAccessReference(ClassMethodQuery $query, MemberAccessExpression $methodNode)
+    {
+        if (false === $methodNode->memberName instanceof Token) {
+            return;
+        }
+
+        $reference = MethodReference::fromMethodNameAndPosition(
+            MethodName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
+            Position::fromStartAndEnd(
+                $methodNode->memberName->start,
+                $methodNode->memberName->start + $methodNode->memberName->length
+            )
+        );
+
+        $offset = $this->reflector->reflectOffset(
+            WorseSourceCode::fromString($methodNode->getFileContents()),
+            Offset::fromInt($methodNode->dereferencableExpression->getEndPosition())
+        );
+
+        $type = $offset->symbolInformation()->type();
+
+        if (Type::unknown() == $type) {
+            return $reference;
+        }
+
+        if (false === $type->isClass()) {
+            return false;
+        }
+
+        $reference = $reference->withClass(Class_::fromString((string) $type->className()));
+
+        try {
+            $reflectionClass = $this->reflector->reflectClass($type->className());
+
+            if ($query->hasClass() && false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+                return;
+            }
+        } catch (NotFound $notFound) {
+        }
+
+        return $reference;
+    }
+}
