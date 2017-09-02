@@ -159,7 +159,7 @@ class WorseTolerantMethodFinder implements MethodFinder
         }
 
         try {
-            $reflectionClass = $this->reflector->reflectClass($className);
+            $reflectionClass = $this->reflector->reflectClassLike($className);
         } catch (NotFound $notFound) {
             $this->logger->warning(sprintf('Could not find class "%s" for method declaration, ignoring it', (string) $className));
             return;
@@ -233,7 +233,7 @@ class WorseTolerantMethodFinder implements MethodFinder
         }
 
         try {
-            $reflectionClass = $this->reflector->reflectClass($type->className());
+            $reflectionClass = $this->reflector->reflectClassLike($type->className());
 
             if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
                 return;
