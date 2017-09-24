@@ -80,6 +80,7 @@ class WorseTolerantMethodFinder implements MethodFinder
             }
 
             if ($methodNode instanceof MethodDeclaration && $reference = $this->getMethodDeclarationReference($queryClassReflection, $methodNode)) {
+
                 $references[] = $reference;
                 continue;
             }
@@ -135,7 +136,7 @@ class WorseTolerantMethodFinder implements MethodFinder
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 
-    private function getMethodDeclarationReference(AbstractReflectionClass $queryClass, MethodDeclaration $methodNode)
+    private function getMethodDeclarationReference(AbstractReflectionClass $queryClass = null, MethodDeclaration $methodNode)
     {
         // we don't handle Variable calls yet.
         if (false === $methodNode->name instanceof Token) {
