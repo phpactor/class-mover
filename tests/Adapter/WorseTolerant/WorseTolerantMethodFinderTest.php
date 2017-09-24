@@ -5,12 +5,12 @@ namespace Phpactor\ClassMover\Tests\Adapter\WorseTolerant;
 use PHPUnit\Framework\TestCase;
 use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Reflector;
-use Phpactor\ClassMover\Domain\MethodFinder;
+use Phpactor\ClassMover\Domain\MemberFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
 use Phpactor\ClassMover\Domain\Model\Class_;
-use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodFinder;
+use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReference;
 use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 

@@ -12,7 +12,7 @@ use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 use Phpactor\ClassMover\Domain\Reference\MethodReference;
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Name\MethodName;
-use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodReplacer;
+use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberReplacer;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
 
 class WorseTolerantMethodReplacerTest extends WorseTolerantTestCase
@@ -28,7 +28,7 @@ class WorseTolerantMethodReplacerTest extends WorseTolerantTestCase
 
         $references = $finder->findMethods($source, ClassMethodQuery::fromScalarClassAndMethodName($classFqn, $methodName));
 
-        $replacer = new WorseTolerantMethodReplacer();
+        $replacer = new WorseTolerantMemberReplacer();
         $source = $replacer->replaceMethods($source, $references, $newMethodName);
         $this->assertContains($expectedSource, $source->__toString());
     }

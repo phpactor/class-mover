@@ -2,7 +2,7 @@
 
 namespace Phpactor\ClassMover\Adapter\WorseTolerant;
 
-use Phpactor\ClassMover\Domain\MethodFinder;
+use Phpactor\ClassMover\Domain\MemberFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
@@ -32,7 +32,7 @@ use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 
-class WorseTolerantMethodFinder implements MethodFinder
+class WorseTolerantMemberFinder implements MemberFinder
 {
     /**
      * @var Reflector
