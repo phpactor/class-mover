@@ -22,7 +22,7 @@ class WorseTolerantMethodFinderTest extends WorseTolerantTestCase
     public function testFindMethod(string $source, ClassMethodQuery $classMethod, int $expectedCount, int $expectedRiskyCount = 0)
     {
         $finder = $this->createFinder($source);
-        $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
+        $methods = $finder->findMembers(SourceCode::fromString($source), $classMethod);
         $this->assertCount($expectedCount, $methods->withClasses());
         $this->assertCount($expectedRiskyCount, $methods->withoutClasses());
     }
@@ -436,7 +436,7 @@ EOT
     public function testOffset(string $source, ClassMethodQuery $classMethod, \Closure $assertion)
     {
         $finder = $this->createFinder($source);
-        $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
+        $methods = $finder->findMembers(SourceCode::fromString($source), $classMethod);
         $assertion(iterator_to_array($methods));
     }
 

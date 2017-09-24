@@ -2,7 +2,7 @@
 
 namespace Phpactor\ClassMover\Adapter\WorseTolerant;
 
-use Phpactor\ClassMover\Domain\MemberFinder;
+use Phpactor\ClassMover\Domain\MethodFinder;
 use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
@@ -32,7 +32,7 @@ use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 
-class WorseTolerantMemberFinder implements MemberFinder
+class WorseTolerantMethodFinder implements MethodFinder
 {
     /**
      * @var Reflector
@@ -56,7 +56,7 @@ class WorseTolerantMemberFinder implements MemberFinder
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function findMembers(SourceCode $source, ClassMethodQuery $query): MethodReferences
+    public function findMethods(SourceCode $source, ClassMethodQuery $query): MethodReferences
     {
         $rootNode = $this->parser->parseSourceFile((string) $source);
         $methodNodes = $this->collectCallNodes($rootNode, $query);
@@ -286,7 +286,6 @@ class WorseTolerantMemberFinder implements MemberFinder
             return $queryClassReflection;
         }
 
-        // TODO: Support the case where interfaces both implement the same method
         foreach ($queryClassReflection->interfaces() as $interfaceReflection) {
             if ($interfaceReflection->methods()->has($query->methodName())) {
                 $queryClassReflection = $interfaceReflection;

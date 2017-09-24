@@ -7,5 +7,5 @@ use Phpactor\ClassMover\Domain\Reference\MethodReferences;
 
 interface MemberFinder
 {
-    public function findMethods(SourceCode $source, ClassMethodQuery $methodMethod): MethodReferences;
+    public function findMembers(SourceCode $source, ClassMethodQuery $methodMethod): MethodReferences;
 }
