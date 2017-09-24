@@ -29,7 +29,7 @@ class WorseTolerantMethodReplacerTest extends WorseTolerantTestCase
         $references = $finder->findMembers($source, ClassMethodQuery::fromScalarClassAndMethodName($classFqn, $methodName));
 
         $replacer = new WorseTolerantMemberReplacer();
-        $source = $replacer->replaceMethods($source, $references, $newMethodName);
+        $source = $replacer->replaceMembers($source, $references, $newMethodName);
         $this->assertContains($expectedSource, $source->__toString());
     }
 

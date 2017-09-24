@@ -8,5 +8,5 @@ use Phpactor\ClassMover\Domain\SourceCode;
 
 interface MemberReplacer
 {
-    public function replaceMethods(SourceCode $source, MethodReferences $references, string $newName): SourceCode;
+    public function replaceMembers(SourceCode $source, MethodReferences $references, string $newName): SourceCode;
 }

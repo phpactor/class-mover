@@ -16,7 +16,7 @@ use Phpactor\ClassMover\Domain\Reference\MethodReference;
 
 class WorseTolerantMemberReplacer implements MemberReplacer
 {
-    public function replaceMethods(SourceCode $source, MethodReferences $references, string $newName): SourceCode
+    public function replaceMembers(SourceCode $source, MethodReferences $references, string $newName): SourceCode
     {
         $edits = [];
         /** @var $reference MethodReference */
