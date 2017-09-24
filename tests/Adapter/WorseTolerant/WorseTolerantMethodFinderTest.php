@@ -149,7 +149,8 @@ EOT
             'From return types' => [
                 <<<'EOT'
 <?php
-class Goobee {}
+class Goobee {
+}
 class Foobar {}
 
 class Foobar
@@ -356,8 +357,77 @@ EOT
                 0,
                 1
             ],
-        ];
+            'Finds interface methods for implementation' => [
+                <<<'EOT'
+<?php
 
+interface AAA
+{
+    public function bbb();
+}
+
+class CCC implements AAA
+{
+    public function bbb();
+}
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('CCC', 'bbb'),
+                2,
+                0
+            ],
+            'Checks from perspective of declaring interface' => [
+                <<<'EOT'
+<?php
+
+interface AAA
+{
+    public function bbb();
+}
+
+class CCC implements AAA
+{
+    public function bbb();
+}
+
+class DDD implements AAA
+{
+    public function bbb();
+}
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('CCC', 'bbb'),
+                3,
+                0
+            ],
+            'Handles traits' => [
+                <<<'EOT'
+<?php
+
+interface AAA
+{
+    public function bbb();
+}
+
+trait AAATrait
+{
+    public function bbb();
+}
+
+class CCC implements AAA
+{
+    use AAATrait;
+}
+
+EOT
+                , 
+                ClassMethodQuery::fromScalarClassAndMethodName('CCC', 'bbb'),
+                2,
+                0
+            ],
+        ];
     }
 
     /**

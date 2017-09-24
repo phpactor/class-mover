@@ -29,6 +29,8 @@ use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\WorseReflection\Core\Type;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 
 class WorseTolerantMethodFinder implements MethodFinder
 {
@@ -59,6 +61,12 @@ class WorseTolerantMethodFinder implements MethodFinder
         $rootNode = $this->parser->parseSourceFile((string) $source);
         $methodNodes = $this->collectCallNodes($rootNode, $query);
 
+        $queryClassReflection = null;
+        // TODO: Factor this to a method
+        if ($query->hasClass()) {
+            $queryClassReflection = $this->resolveBaseReflectionClass($query);
+        }
+
         $references = [];
         foreach ($methodNodes as $methodNode) {
             if ($methodNode instanceof ScopedPropertyAccessExpression && $reference = $this->getScopedPropertyAccessReference($query, $methodNode)) {
@@ -71,7 +79,7 @@ class WorseTolerantMethodFinder implements MethodFinder
                 continue;
             }
 
-            if ($methodNode instanceof MethodDeclaration && $reference = $this->getMethodDeclarationReference($query, $methodNode)) {
+            if ($methodNode instanceof MethodDeclaration && $reference = $this->getMethodDeclarationReference($queryClassReflection, $methodNode)) {
                 $references[] = $reference;
                 continue;
             }
@@ -127,7 +135,7 @@ class WorseTolerantMethodFinder implements MethodFinder
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 
-    private function getMethodDeclarationReference(ClassMethodQuery $query, MethodDeclaration $methodNode)
+    private function getMethodDeclarationReference(AbstractReflectionClass $queryClass, MethodDeclaration $methodNode)
     {
         // we don't handle Variable calls yet.
         if (false === $methodNode->name instanceof Token) {
@@ -154,20 +162,18 @@ class WorseTolerantMethodFinder implements MethodFinder
         $className = ClassName::fromString($classNode->getNamespacedName());
         $reference = $reference->withClass(Class_::fromString($className));
 
-        if (false === $query->hasClass()) {
+        if (null === $queryClass) {
             return $reference;
         }
 
-        try {
-            $reflectionClass = $this->reflector->reflectClassLike($className);
-        } catch (NotFound $notFound) {
+        if (null === $reflectionClass = $this->reflectClass($className)) {
             $this->logger->warning(sprintf('Could not find class "%s" for method declaration, ignoring it', (string) $className));
             return;
         }
 
-        // if the references class is not an instance of the requested class, then
-        // ignore it.
-        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+        // if the references class is not an instance of the requested class, or the requested class is not
+        // an instance of the referenced class then ignore it.
+        if (false === $reflectionClass->isTrait() && false === $reflectionClass->isInstanceOf($queryClass->name())) {
             return;
         }
 
@@ -232,18 +238,62 @@ class WorseTolerantMethodFinder implements MethodFinder
             return $reference;
         }
 
-        try {
-            $reflectionClass = $this->reflector->reflectClassLike($type->className());
-
-            if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
-                return;
-            }
-        } catch (NotFound $notFound) {
+        if (null === $reflectionClass = $this->reflectClass($type->className())) {
             $this->logger->warning(sprintf('Could not find class "%s", logging as risky', (string) $type->className()));
             return $reference;
+        }
+        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+            // is not the correct class
+            return;
         }
 
         return $reference->withClass(Class_::fromString((string) $type->className()));
     }
-}
 
+    /**
+     * @return ReflectionClass
+     */
+    private function reflectClass(ClassName $className)
+    {
+        try {
+            return $this->reflector->reflectClassLike($className);
+        } catch (NotFound $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @return ReflectionClass
+     */
+    private function resolveBaseReflectionClass(ClassMethodQuery $query)
+    {
+        $queryClassReflection = $this->reflectClass(ClassName::fromString((string) $query->class()));
+        if (null === $queryClassReflection) {
+            return $queryClassReflection;
+        }
+
+        $methods = $queryClassReflection->methods();
+
+        if (false === $query->hasMethod()) {
+            return $queryClassReflection;
+        }
+
+        if (false === $methods->has($query->methodName())) {
+            return $queryClassReflection;
+        }
+
+        if (false === $queryClassReflection->isClass()) {
+            return $queryClassReflection;
+        }
+
+        // TODO: Support the case where interfaces both implement the same method
+        foreach ($queryClassReflection->interfaces() as $interfaceReflection) {
+            if ($interfaceReflection->methods()->has($query->methodName())) {
+                $queryClassReflection = $interfaceReflection;
+                break;
+            }
+        }
+
+        return $queryClassReflection;
+    }
+}
