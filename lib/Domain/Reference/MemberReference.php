@@ -3,11 +3,12 @@
 namespace Phpactor\ClassMover\Domain\Reference;
 
 use Phpactor\ClassMover\Domain\Reference\Position;
-use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
-use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
+use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\ClassMover\Domain\Model\Class_;
+use Phpactor\ClassMover\Domain\Reference\MemberReference;
 
-class MethodReference
+class MemberReference
 {
     /**
      * @var MethodName
@@ -24,24 +25,24 @@ class MethodReference
      */
     private $class;
 
-    private function __construct(MethodName $method, Position $position, Class_ $class = null)
+    private function __construct(MemberName $method, Position $position, Class_ $class = null)
     {
         $this->method = $method;
         $this->position = $position;
         $this->class = $class;
     }
 
-    public static function fromMethodNameAndPosition(MethodName $method, Position $position): MethodReference
+    public static function fromMethodNameAndPosition(MemberName $method, Position $position): MemberReference
     {
         return new self($method, $position);
     }
 
-    public static function fromMethodNameAndPositionAndClass(MethodName $method, Position $position, Class_ $class): MethodReference
+    public static function fromMethodNameAndPositionAndClass(MemberName $method, Position $position, Class_ $class): MemberReference
     {
         return new self($method, $position, $class);
     }
 
-    public function methodName(): MethodName
+    public function methodName(): MemberName
     {
         return $this->method;
     }

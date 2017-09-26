@@ -2,24 +2,24 @@
 
 namespace Phpactor\ClassMover\Adapter\WorseTolerant;
 
-use Phpactor\ClassMover\Domain\MethodFinder;
-use Phpactor\ClassMover\Domain\Reference\MethodReferences;
+use Phpactor\ClassMover\Domain\MemberFinder;
+use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
+use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
-use Phpactor\ClassMover\Domain\Reference\MethodReference;
+use Phpactor\ClassMover\Domain\Reference\MemberReference;
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\WorseReflection\Core\Offset;
 use Phpactor\ClassMover\Domain\Model\Class_;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Microsoft\PhpParser\Node\Expression\ScopedPropertyAccessExpression;
 use Phpactor\WorseReflection\Core\ClassName;
-use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\WorseReflection\Core\Exception\NotFound;
 use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\Node\MethodDeclaration;
@@ -32,7 +32,7 @@ use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 
-class WorseTolerantMethodFinder implements MethodFinder
+class WorseTolerantMethodFinder implements MemberFinder
 {
     /**
      * @var Reflector
@@ -56,7 +56,7 @@ class WorseTolerantMethodFinder implements MethodFinder
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function findMethods(SourceCode $source, ClassMethodQuery $query): MethodReferences
+    public function findMembers(SourceCode $source, ClassMemberQuery $query): MemberReferences
     {
         $rootNode = $this->parser->parseSourceFile((string) $source);
         $methodNodes = $this->collectCallNodes($rootNode, $query);
@@ -86,30 +86,30 @@ class WorseTolerantMethodFinder implements MethodFinder
             }
         }
 
-        return MethodReferences::fromMethodReferences($references);
+        return MemberReferences::fromMethodReferences($references);
     }
 
     /**
      * Collect all nodes which reference the method NAME.
      * We will check if they belong to the requested class later.
      */
-    private function collectCallNodes(Node $node, ClassMethodQuery $query): array
+    private function collectCallNodes(Node $node, ClassMemberQuery $query): array
     {
         $methodNodes = [];
-        $methodName = null;
+        $memberName = null;
 
         if ($node instanceof MethodDeclaration) {
-            $methodName = $node->name->getText($node->getFileContents());
+            $memberName = $node->name->getText($node->getFileContents());
 
-            if ($query->matchesMethodName($methodName)) {
+            if ($query->matchesMemberName($memberName)) {
                 $methodNodes[] = $node;
             }
         }
 
         if ($this->isMethodCall($node)) {
-            $methodName = $node->callableExpression->memberName->getText($node->getFileContents());
+            $memberName = $node->callableExpression->memberName->getText($node->getFileContents());
 
-            if ($query->matchesMethodName($methodName)) {
+            if ($query->matchesMemberName($memberName)) {
                 $methodNodes[] = $node->callableExpression;
             }
         }
@@ -144,8 +144,8 @@ class WorseTolerantMethodFinder implements MethodFinder
             return;
         }
 
-        $reference = MethodReference::fromMethodNameAndPosition(
-            MethodName::fromString((string) $methodNode->name->getText($methodNode->getFileContents())),
+        $reference = MemberReference::fromMethodNameAndPosition(
+            MemberName::fromString((string) $methodNode->name->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->name->start,
                 $methodNode->name->start + $methodNode->name->length - 1
@@ -185,7 +185,7 @@ class WorseTolerantMethodFinder implements MethodFinder
      * Get static method call.
      * TODO: This does not support overridden static methods.
      */
-    private function getScopedPropertyAccessReference(ClassMethodQuery $query, ScopedPropertyAccessExpression $methodNode)
+    private function getScopedPropertyAccessReference(ClassMemberQuery $query, ScopedPropertyAccessExpression $methodNode)
     {
         $className = $methodNode->scopeResolutionQualifier->getResolvedName();
 
@@ -193,8 +193,8 @@ class WorseTolerantMethodFinder implements MethodFinder
             return;
         }
 
-        return MethodReference::fromMethodNameAndPositionAndClass(
-            MethodName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
+        return MemberReference::fromMethodNameAndPositionAndClass(
+            MemberName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->memberName->start,
                 $methodNode->memberName->start + $methodNode->memberName->length
@@ -203,15 +203,15 @@ class WorseTolerantMethodFinder implements MethodFinder
         );
     }
 
-    private function getMemberAccessReference(ClassMethodQuery $query, MemberAccessExpression $methodNode)
+    private function getMemberAccessReference(ClassMemberQuery $query, MemberAccessExpression $methodNode)
     {
         if (false === $methodNode->memberName instanceof Token) {
             $this->logger->warning('Do not know how to infer method name from variable');
             return;
         }
 
-        $reference = MethodReference::fromMethodNameAndPosition(
-            MethodName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
+        $reference = MemberReference::fromMethodNameAndPosition(
+            MemberName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->memberName->start,
                 $methodNode->memberName->start + $methodNode->memberName->length
@@ -225,7 +225,7 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $type = $offset->symbolInformation()->type();
 
-        if ($query->hasMethod() && Type::unknown() == $type) {
+        if ($query->hasMember() && Type::unknown() == $type) {
             return $reference;
         }
 
@@ -266,7 +266,7 @@ class WorseTolerantMethodFinder implements MethodFinder
     /**
      * @return ReflectionClass
      */
-    private function resolveBaseReflectionClass(ClassMethodQuery $query)
+    private function resolveBaseReflectionClass(ClassMemberQuery $query)
     {
         $queryClassReflection = $this->reflectClass(ClassName::fromString((string) $query->class()));
         if (null === $queryClassReflection) {
@@ -275,11 +275,11 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         $methods = $queryClassReflection->methods();
 
-        if (false === $query->hasMethod()) {
+        if (false === $query->hasMember()) {
             return $queryClassReflection;
         }
 
-        if (false === $methods->has($query->methodName())) {
+        if (false === $methods->has($query->memberName())) {
             return $queryClassReflection;
         }
 
@@ -289,7 +289,7 @@ class WorseTolerantMethodFinder implements MethodFinder
 
         // TODO: Support the case where interfaces both implement the same method
         foreach ($queryClassReflection->interfaces() as $interfaceReflection) {
-            if ($interfaceReflection->methods()->has($query->methodName())) {
+            if ($interfaceReflection->methods()->has($query->memberName())) {
                 $queryClassReflection = $interfaceReflection;
                 break;
             }

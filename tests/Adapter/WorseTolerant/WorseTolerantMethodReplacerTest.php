@@ -8,28 +8,28 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Reference\MethodReferences;
-use Phpactor\ClassMover\Domain\Reference\MethodReference;
+use Phpactor\ClassMover\Domain\Reference\MemberReferences;
+use Phpactor\ClassMover\Domain\Reference\MemberReference;
 use Phpactor\ClassMover\Domain\Reference\Position;
-use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodReplacer;
-use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
+use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 
-class WorseTolerantMethodReplacerTest extends WorseTolerantTestCase
+class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
 {
     /**
-     * @testdox It replaces all method references
+     * @testdox It replaces all member references
      * @dataProvider provideTestReplace
      */
-    public function testReplace(string $classFqn, string $methodName, string $newMethodName, string $source, string $expectedSource)
+    public function testReplace(string $classFqn, string $memberName, string $newMemberName, string $source, string $expectedSource)
     {
         $finder = $this->createFinder($source);
         $source = SourceCode::fromString($source);
 
-        $references = $finder->findMethods($source, ClassMethodQuery::create()->withClass($classFqn)->withMethod($methodName));
+        $references = $finder->findMembers($source, ClassMemberQuery::create()->withClass($classFqn)->withMember($memberName));
 
         $replacer = new WorseTolerantMethodReplacer();
-        $source = $replacer->replaceMethods($source, $references, $newMethodName);
+        $source = $replacer->replaceMethods($source, $references, $newMemberName);
         $this->assertContains($expectedSource, $source->__toString());
     }
 
@@ -62,7 +62,7 @@ EOT
 $foobar->barfoo();
 EOT
             ],
-            'It replaces method declarations' => [
+            'It replaces member declarations' => [
                 'Foobar', 'foobar', 'barfoo',
                 <<<'EOT'
 <?php

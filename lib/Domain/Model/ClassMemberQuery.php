@@ -2,11 +2,11 @@
 
 namespace Phpactor\ClassMover\Domain\Model;
 
-use Phpactor\ClassMover\Domain\Name\MethodName;
+use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
+use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 
-final class ClassMethodQuery
+final class ClassMemberQuery
 {
     /**
      * @var Class_
@@ -14,17 +14,17 @@ final class ClassMethodQuery
     private $class;
 
     /**
-     * @var MethodName
+     * @var MemberName
      */
-    private $methodName;
+    private $memberName;
 
-    private function __construct(Class_ $class = null, MethodName $methodName = null)
+    private function __construct(Class_ $class = null, MemberName $memberName = null)
     {
         $this->class = $class;
-        $this->methodName = $methodName;
+        $this->memberName = $memberName;
     }
 
-    public static function create(): ClassMethodQuery
+    public static function create(): ClassMemberQuery
     {
         return new self();
     }
@@ -32,7 +32,7 @@ final class ClassMethodQuery
     /**
      * @var Class_|string
      */
-    public function withClass($className): ClassMethodQuery
+    public function withClass($className): ClassMemberQuery
     {
         if (false === is_string($className) && false === $className instanceof Class_) {
             throw new \InvalidArgumentException(sprintf(
@@ -43,40 +43,40 @@ final class ClassMethodQuery
 
         return new self(
             is_string($className) ? Class_::fromString($className) : $className,
-            $this->methodName
+            $this->memberName
         );
     }
 
     /**
-     * @var MethodName|string
+     * @var MemberName|string
      */
-    public function withMethod($methodName): ClassMethodQuery
+    public function withMember($memberName): ClassMemberQuery
     {
-        if (false === is_string($methodName) && false === $methodName instanceof MethodName) {
+        if (false === is_string($memberName) && false === $memberName instanceof MemberName) {
             throw new \InvalidArgumentException(sprintf(
-                'Method must be either a string or an instanceof MethodName, got: "%s"',
-                gettype($methodName)
+                'Member must be either a string or an instanceof MemberName, got: "%s"',
+                gettype($memberName)
             ));
         }
 
         return new self(
             $this->class,
-            is_string($methodName) ? MethodName::fromString($methodName) : $methodName
+            is_string($memberName) ? MemberName::fromString($memberName) : $memberName
         );
     }
 
-    public function methodName(): MethodName
+    public function memberName(): MemberName
     {
-        return $this->methodName;
+        return $this->memberName;
     }
 
-    public function matchesMethodName(string $methodName)
+    public function matchesMemberName(string $memberName)
     {
-        if (null === $this->methodName) {
+        if (null === $this->memberName) {
             return true;
         }
 
-        return $methodName == (string) $this->methodName;
+        return $memberName == (string) $this->memberName;
     }
 
     public function matchesClass(string $className)
@@ -98,9 +98,9 @@ final class ClassMethodQuery
         return null !== $this->class;
     }
 
-    public function hasMethod(): bool
+    public function hasMember(): bool
     {
-        return null !== $this->methodName;
+        return null !== $this->memberName;
     }
 
     public function __toString()

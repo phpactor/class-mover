@@ -5,32 +5,32 @@ namespace Phpactor\ClassMover\Tests\Adapter\WorseTolerant;
 use PHPUnit\Framework\TestCase;
 use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Reflector;
-use Phpactor\ClassMover\Domain\MethodFinder;
+use Phpactor\ClassMover\Domain\MemberFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
-use Phpactor\ClassMover\Domain\Model\ClassMethodQuery;
+use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\ClassMover\Domain\Model\Class_;
-use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodFinder;
-use Phpactor\ClassMover\Domain\Reference\MethodReference;
-use Phpactor\ClassMover\Domain\Reference\MethodReferences;
+use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberFinder;
+use Phpactor\ClassMover\Domain\Reference\MemberReference;
+use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 
-class WorseTolerantMethodFinderTest extends WorseTolerantTestCase
+class WorseTolerantMemberFinderTest extends WorseTolerantTestCase
 {
     /**
-     * @dataProvider provideFindMethod
+     * @dataProvider provideFindMember
      */
-    public function testFindMethod(string $source, ClassMethodQuery $classMethod, int $expectedCount, int $expectedRiskyCount = 0)
+    public function testFindMember(string $source, ClassMemberQuery $classMember, int $expectedCount, int $expectedRiskyCount = 0)
     {
         $finder = $this->createFinder($source);
-        $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
-        $this->assertCount($expectedCount, $methods->withClasses());
-        $this->assertCount($expectedRiskyCount, $methods->withoutClasses());
+        $members = $finder->findMembers(SourceCode::fromString($source), $classMember);
+        $this->assertCount($expectedCount, $members->withClasses());
+        $this->assertCount($expectedRiskyCount, $members->withoutClasses());
     }
 
-    public function provideFindMethod()
+    public function provideFindMember()
     {
         return [
-            'It returns zero references when there are no methods at all' => [
+            'It returns zero references when there are no members at all' => [
                 <<<'EOT'
 <?php
 class Foobar
@@ -38,10 +38,10 @@ class Foobar
 }
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
-            'It returns zero references when there are no matching methods' => [
+            'It returns zero references when there are no matching members' => [
                 <<<'EOT'
 <?php
 class Foobar
@@ -52,7 +52,7 @@ $foobar = new Foobar();
 $foobar->barfoo();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
             'Reference for static call' => [
@@ -61,7 +61,7 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 1
             ],
             'Reference for instantiated instance' => [
@@ -73,7 +73,7 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 1
             ],
             'Reference for instantiated instance of wrong class' => [
@@ -87,11 +87,11 @@ $foobar = new Barfoo();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 0
             ],
 
-            'Instance in method call in class' => [
+            'Instance in member call in class' => [
                 <<<'EOT'
 <?php
 
@@ -106,10 +106,10 @@ class Foobar
 }
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Beer')->withMethod('giveMe'),
+                ClassMemberQuery::create()->withClass('Beer')->withMember('giveMe'),
                 1
             ],
-            'Includes method declarations' => [
+            'Includes member declarations' => [
                 <<<'EOT'
 <?php
 
@@ -124,7 +124,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('hello'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('hello'),
                 2
             ],
             'Multiple references with false positives' => [
@@ -141,7 +141,7 @@ $foobar->foobar();
 ($foobar->foobar())->foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 2,
                 1
             ],
@@ -165,7 +165,7 @@ $foobar->goobee()->catma();
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Goobee')->withMethod('catma'),
+                ClassMemberQuery::create()->withClass('Goobee')->withMember('catma'),
                 1
             ],
 
@@ -189,10 +189,10 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
-            'Reference to overridden method' => [
+            'Reference to overridden member' => [
                 <<<'EOT'
 <?php
 
@@ -211,7 +211,7 @@ class Barfoo extends Foobar
 }
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
             'Reference to interface' => [
@@ -235,11 +235,11 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 3
             ],
 
-            'Returns all methods if no method specified' => [
+            'Returns all members if no member specified' => [
                 <<<'EOT'
 <?php
 
@@ -253,11 +253,11 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMethodQuery::fromScalarClass('Barfoo'),
+                ClassMemberQuery::fromScalarClass('Barfoo'),
                 2
             ],
 
-            'Returns all methods if no method specified, ignores unknown or other classes' => [
+            'Returns all members if no member specified, ignores unknown or other classes' => [
                 <<<'EOT'
 <?php
 
@@ -278,11 +278,11 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMethodQuery::fromScalarClass('Barfoo'),
+                ClassMemberQuery::fromScalarClass('Barfoo'),
                 2
             ],
 
-            'Returns all methods for all classes' => [
+            'Returns all members for all classes' => [
                 <<<'EOT'
 <?php
 
@@ -298,7 +298,7 @@ $stdClass->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::create(),
+                ClassMemberQuery::create(),
                 3,
                 0
             ],
@@ -316,7 +316,7 @@ $foobar->$foobarName();
 
 EOT
                 , 
-                ClassMethodQuery::create(),
+                ClassMemberQuery::create(),
                 0
             ],
 
@@ -329,7 +329,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::fromScalarClass('Foobar'),
+                ClassMemberQuery::fromScalarClass('Foobar'),
                 0
             ],
             'Ignore non-existing classes' => [
@@ -341,11 +341,11 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::fromScalarClass('Foobar'),
+                ClassMemberQuery::fromScalarClass('Foobar'),
                 0,
                 1
             ],
-            'Collects unknown methods' => [
+            'Collects unknown members' => [
                 <<<'EOT'
 <?php
 
@@ -353,11 +353,11 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 0,
                 1
             ],
-            'Finds interface methods for implementation' => [
+            'Finds interface members for implementation' => [
                 <<<'EOT'
 <?php
 
@@ -373,7 +373,7 @@ class CCC implements AAA
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('CCC')->withMethod('bbb'),
+                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
             ],
@@ -398,7 +398,7 @@ class DDD implements AAA
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('CCC')->withMethod('bbb'),
+                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
                 3,
                 0
             ],
@@ -423,7 +423,7 @@ class CCC implements AAA
 
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('CCC')->withMethod('bbb'),
+                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
             ],
@@ -433,11 +433,11 @@ EOT
     /**
      * @dataProvider provideOffset
      */
-    public function testOffset(string $source, ClassMethodQuery $classMethod, \Closure $assertion)
+    public function testOffset(string $source, ClassMemberQuery $classMember, \Closure $assertion)
     {
         $finder = $this->createFinder($source);
-        $methods = $finder->findMethods(SourceCode::fromString($source), $classMethod);
-        $assertion(iterator_to_array($methods));
+        $members = $finder->findMembers(SourceCode::fromString($source), $classMember);
+        $assertion(iterator_to_array($members));
     }
 
     public function provideOffset()
@@ -450,9 +450,9 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
-                function ($methods) {
-                    $first = reset($methods);
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                function ($members) {
+                    $first = reset($members);
                     $this->assertEquals(15, $first->position()->start());
                     $this->assertEquals(21, $first->position()->end());
                 }
@@ -467,23 +467,23 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
-                function ($methods) {
-                    $first = reset($methods);
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                function ($members) {
+                    $first = reset($members);
                     $this->assertEquals(89, $first->position()->start());
                     $this->assertEquals(95, $first->position()->end());
                 }
             ],
-            'Start and end from method declaration' => [
+            'Start and end from member declaration' => [
                 <<<'EOT'
 <?php
 
 class Foobar { public function foobar() {} }
 EOT
                 , 
-                ClassMethodQuery::create()->withClass('Foobar')->withMethod('foobar'),
-                function ($methods) {
-                    $first = reset($methods);
+                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                function ($members) {
+                    $first = reset($members);
                     $this->assertEquals(38, $first->position()->start());
                     $this->assertEquals(44, $first->position()->end());
                 }
