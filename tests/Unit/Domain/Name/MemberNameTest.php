@@ -5,7 +5,7 @@ namespace Phpactor\ClassMover\Tests\Unit\Domain\Name;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\Name\MemberName;
 
-class MethodNameTest extends TestCase
+class MemberNameTest extends TestCase
 {
     public function testValidName()
     {

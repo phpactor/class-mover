@@ -12,7 +12,7 @@ use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 use Phpactor\ClassMover\Domain\Reference\MemberReference;
 use Phpactor\ClassMover\Domain\Reference\Position;
 use Phpactor\ClassMover\Domain\Name\MemberName;
-use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMethodReplacer;
+use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberReplacer;
 use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 
 class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
@@ -28,8 +28,8 @@ class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
 
         $references = $finder->findMembers($source, ClassMemberQuery::create()->withClass($classFqn)->withMember($memberName));
 
-        $replacer = new WorseTolerantMethodReplacer();
-        $source = $replacer->replaceMethods($source, $references, $newMemberName);
+        $replacer = new WorseTolerantMemberReplacer();
+        $source = $replacer->replaceMembers($source, $references, $newMemberName);
         $this->assertContains($expectedSource, $source->__toString());
     }
 

@@ -16,7 +16,7 @@ final class MemberReferences implements \IteratorAggregate, \Countable
         }
     }
 
-    public static function fromMethodReferences(array $methodReferences): MemberReferences
+    public static function fromMemberReferences(array $methodReferences): MemberReferences
     {
          return new self($methodReferences);
     }
@@ -28,14 +28,14 @@ final class MemberReferences implements \IteratorAggregate, \Countable
 
     public function withClasses(): MemberReferences
     {
-        return self::fromMethodReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
+        return self::fromMemberReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
             return $reference->hasClass();
         }));
     }
 
     public function withoutClasses(): MemberReferences
     {
-        return self::fromMethodReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
+        return self::fromMemberReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
             return false === $reference->hasClass();
         }));
     }

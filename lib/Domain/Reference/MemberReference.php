@@ -11,7 +11,7 @@ use Phpactor\ClassMover\Domain\Reference\MemberReference;
 class MemberReference
 {
     /**
-     * @var MethodName
+     * @var MemberName
      */
     private $method;
 
@@ -32,12 +32,12 @@ class MemberReference
         $this->class = $class;
     }
 
-    public static function fromMethodNameAndPosition(MemberName $method, Position $position): MemberReference
+    public static function fromMemberNameAndPosition(MemberName $method, Position $position): MemberReference
     {
         return new self($method, $position);
     }
 
-    public static function fromMethodNameAndPositionAndClass(MemberName $method, Position $position, Class_ $class): MemberReference
+    public static function fromMemberNamePositionAndClass(MemberName $method, Position $position, Class_ $class): MemberReference
     {
         return new self($method, $position, $class);
     }

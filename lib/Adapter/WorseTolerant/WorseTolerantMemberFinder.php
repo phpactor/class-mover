@@ -32,7 +32,7 @@ use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 
-class WorseTolerantMethodFinder implements MemberFinder
+class WorseTolerantMemberFinder implements MemberFinder
 {
     /**
      * @var Reflector
@@ -86,7 +86,7 @@ class WorseTolerantMethodFinder implements MemberFinder
             }
         }
 
-        return MemberReferences::fromMethodReferences($references);
+        return MemberReferences::fromMemberReferences($references);
     }
 
     /**
@@ -144,7 +144,7 @@ class WorseTolerantMethodFinder implements MemberFinder
             return;
         }
 
-        $reference = MemberReference::fromMethodNameAndPosition(
+        $reference = MemberReference::fromMemberNameAndPosition(
             MemberName::fromString((string) $methodNode->name->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->name->start,
@@ -193,7 +193,7 @@ class WorseTolerantMethodFinder implements MemberFinder
             return;
         }
 
-        return MemberReference::fromMethodNameAndPositionAndClass(
+        return MemberReference::fromMemberNamePositionAndClass(
             MemberName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->memberName->start,
@@ -210,7 +210,7 @@ class WorseTolerantMethodFinder implements MemberFinder
             return;
         }
 
-        $reference = MemberReference::fromMethodNameAndPosition(
+        $reference = MemberReference::fromMemberNameAndPosition(
             MemberName::fromString((string) $methodNode->memberName->getText($methodNode->getFileContents())),
             Position::fromStartAndEnd(
                 $methodNode->memberName->start,

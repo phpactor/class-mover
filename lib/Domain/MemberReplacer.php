@@ -6,7 +6,7 @@ use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
 
-interface MethodReplacer
+interface MemberReplacer
 {
-    public function replaceMethods(SourceCode $source, MemberReferences $references, string $newName): SourceCode;
+    public function replaceMembers(SourceCode $source, MemberReferences $references, string $newName): SourceCode;
 }
