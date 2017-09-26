@@ -26,7 +26,7 @@ class WorseTolerantMethodReplacerTest extends WorseTolerantTestCase
         $finder = $this->createFinder($source);
         $source = SourceCode::fromString($source);
 
-        $references = $finder->findMethods($source, ClassMethodQuery::fromScalarClassAndMethodName($classFqn, $methodName));
+        $references = $finder->findMethods($source, ClassMethodQuery::create()->withClass($classFqn)->withMethod($methodName));
 
         $replacer = new WorseTolerantMethodReplacer();
         $source = $replacer->replaceMethods($source, $references, $newMethodName);

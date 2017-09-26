@@ -24,24 +24,45 @@ final class ClassMethodQuery
         $this->methodName = $methodName;
     }
 
-    public static function fromClassAndMethodName(Class_ $class, MethodName $methodName): ClassMethodQuery
-    {
-         return new self($class, $methodName);
-    }
-
-    public static function fromScalarClassAndMethodName(string $className, string $methodName): ClassMethodQuery
-    {
-        return new self(Class_::fromString($className), MethodName::fromString($methodName));
-    }
-
-    public static function fromScalarClass(string $className): ClassMethodQuery
-    {
-        return new self(Class_::fromFullyQualifiedName(FullyQualifiedName::fromString($className)));
-    }
-
-    public static function all(): ClassMethodQuery
+    public static function create(): ClassMethodQuery
     {
         return new self();
+    }
+
+    /**
+     * @var Class_|string
+     */
+    public function withClass($className): ClassMethodQuery
+    {
+        if (false === is_string($className) && false === $className instanceof Class_) {
+            throw new \InvalidArgumentException(sprintf(
+                'Class must be either a string or an instanceof Class_, got: "%s"',
+                gettype($className)
+            ));
+        }
+
+        return new self(
+            is_string($className) ? Class_::fromString($className) : $className,
+            $this->methodName
+        );
+    }
+
+    /**
+     * @var MethodName|string
+     */
+    public function withMethod($methodName): ClassMethodQuery
+    {
+        if (false === is_string($methodName) && false === $methodName instanceof MethodName) {
+            throw new \InvalidArgumentException(sprintf(
+                'Method must be either a string or an instanceof MethodName, got: "%s"',
+                gettype($methodName)
+            ));
+        }
+
+        return new self(
+            $this->class,
+            is_string($methodName) ? MethodName::fromString($methodName) : $methodName
+        );
     }
 
     public function methodName(): MethodName
