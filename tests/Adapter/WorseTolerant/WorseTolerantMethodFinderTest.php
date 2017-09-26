@@ -253,7 +253,7 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMemberQuery::fromScalarClass('Barfoo'),
+                ClassMemberQuery::create()->withClass('Barfoo'),
                 2
             ],
 
@@ -278,7 +278,7 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMemberQuery::fromScalarClass('Barfoo'),
+                ClassMemberQuery::create()->withClass('Barfoo'),
                 2
             ],
 
@@ -329,7 +329,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::fromScalarClass('Foobar'),
+                ClassMemberQuery::create()->withClass('Foobar'),
                 0
             ],
             'Ignore non-existing classes' => [
@@ -341,7 +341,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::fromScalarClass('Foobar'),
+                ClassMemberQuery::create()->withClass('Foobar'),
                 0,
                 1
             ],
