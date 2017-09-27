@@ -30,7 +30,7 @@ class WorseTolerantMemberFinderTest extends WorseTolerantTestCase
     public function provideFindMember()
     {
         return [
-            'It returns zero references when there are no members at all' => [
+            'It returns zero references when there are no methods at all' => [
                 <<<'EOT'
 <?php
 class Foobar
@@ -41,7 +41,7 @@ EOT
                 ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
-            'It returns zero references when there are no matching members' => [
+            'It returns zero references when there are no matching methods' => [
                 <<<'EOT'
 <?php
 class Foobar
@@ -91,7 +91,7 @@ EOT
                 0
             ],
 
-            'Instance in member call in class' => [
+            'Instance in method call in class' => [
                 <<<'EOT'
 <?php
 
@@ -109,7 +109,7 @@ EOT
                 ClassMemberQuery::create()->withClass('Beer')->withMember('giveMe'),
                 1
             ],
-            'Includes member declarations' => [
+            'Includes method declarations' => [
                 <<<'EOT'
 <?php
 
@@ -192,7 +192,7 @@ EOT
                 ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
-            'Reference to overridden member' => [
+            'Reference to overridden method' => [
                 <<<'EOT'
 <?php
 
@@ -239,7 +239,7 @@ EOT
                 3
             ],
 
-            'Returns all members if no member specified' => [
+            'Returns all methods if no method specified' => [
                 <<<'EOT'
 <?php
 
@@ -257,7 +257,7 @@ EOT
                 2
             ],
 
-            'Returns all members if no member specified, ignores unknown or other classes' => [
+            'Returns all methods if no method specified, ignores unknown or other classes' => [
                 <<<'EOT'
 <?php
 
@@ -282,7 +282,7 @@ EOT
                 2
             ],
 
-            'Returns all members for all classes' => [
+            'Returns all methods for all classes' => [
                 <<<'EOT'
 <?php
 
@@ -345,7 +345,7 @@ EOT
                 0,
                 1
             ],
-            'Collects unknown members' => [
+            'Collects unknown methods' => [
                 <<<'EOT'
 <?php
 
@@ -357,7 +357,7 @@ EOT
                 0,
                 1
             ],
-            'Finds interface members for implementation' => [
+            'Finds interface methods for implementation' => [
                 <<<'EOT'
 <?php
 
@@ -436,8 +436,8 @@ EOT
     public function testOffset(string $source, ClassMemberQuery $classMember, \Closure $assertion)
     {
         $finder = $this->createFinder($source);
-        $members = $finder->findMembers(SourceCode::fromString($source), $classMember);
-        $assertion(iterator_to_array($members));
+        $methods = $finder->findMembers(SourceCode::fromString($source), $classMember);
+        $assertion(iterator_to_array($methods));
     }
 
     public function provideOffset()
@@ -487,6 +487,26 @@ EOT
                     $this->assertEquals(38, $first->position()->start());
                     $this->assertEquals(44, $first->position()->end());
                 }
+            ],
+            'Properties' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    public $foobar;
+}
+
+$aaa = new AAA;
+$aaa->foobar;
+
+
+
+EOT
+                , 
+                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
+                2,
+                0
             ],
         ];
     }
