@@ -38,7 +38,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
             'It returns zero references when there are no matching methods' => [
@@ -52,7 +52,7 @@ $foobar = new Foobar();
 $foobar->barfoo();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
             'Reference for static call' => [
@@ -61,7 +61,7 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 1
             ],
             'Reference for instantiated instance' => [
@@ -73,7 +73,7 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 1
             ],
             'Reference for instantiated instance of wrong class' => [
@@ -87,7 +87,7 @@ $foobar = new Barfoo();
 $foobar->foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0
             ],
 
@@ -106,7 +106,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Beer')->withMember('giveMe'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Beer')->withMember('giveMe'),
                 1
             ],
             'Includes method declarations' => [
@@ -124,7 +124,7 @@ class Foobar
 }
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('hello'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('hello'),
                 2
             ],
             'Multiple references with false positives' => [
@@ -141,7 +141,7 @@ $foobar->foobar();
 ($foobar->foobar())->foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2,
                 1
             ],
@@ -165,7 +165,7 @@ $foobar->goobee()->catma();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Goobee')->withMember('catma'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Goobee')->withMember('catma'),
                 1
             ],
 
@@ -189,7 +189,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
             'Reference to overridden method' => [
@@ -211,7 +211,7 @@ class Barfoo extends Foobar
 }
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
             'Reference to interface' => [
@@ -235,7 +235,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 3
             ],
 
@@ -253,7 +253,7 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Barfoo'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Barfoo'),
                 2
             ],
 
@@ -278,7 +278,7 @@ $foobar->bar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Barfoo'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Barfoo'),
                 2
             ],
 
@@ -329,7 +329,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar'),
                 0
             ],
             'Ignore non-existing classes' => [
@@ -341,7 +341,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar'),
                 0,
                 1
             ],
@@ -353,7 +353,7 @@ $foobar->foobar();
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
                 1
             ],
@@ -373,7 +373,7 @@ class CCC implements AAA
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
             ],
@@ -398,7 +398,7 @@ class DDD implements AAA
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 3,
                 0
             ],
@@ -423,7 +423,7 @@ class CCC implements AAA
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
             ],
@@ -450,7 +450,7 @@ EOT
 Foobar::foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
                     $this->assertEquals(15, $first->position()->start());
@@ -467,7 +467,7 @@ $foobar = new Foobar();
 $foobar->foobar();
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
                     $this->assertEquals(89, $first->position()->start());
@@ -481,7 +481,7 @@ EOT
 class Foobar { public function foobar() {} }
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('Foobar')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
                     $this->assertEquals(38, $first->position()->start());
@@ -504,7 +504,7 @@ $aaa->foobar;
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('AAA')->withMember('foobar'),
+                ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
                     $this->assertEquals(38, $first->position()->start());

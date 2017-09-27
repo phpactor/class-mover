@@ -59,7 +59,7 @@ class WorseTolerantMemberFinder implements MemberFinder
     public function findMembers(SourceCode $source, ClassMemberQuery $query): MemberReferences
     {
         $rootNode = $this->parser->parseSourceFile((string) $source);
-        $methodNodes = $this->collectCallNodes($rootNode, $query);
+        $methodNodes = $this->collectMemberReferences($rootNode, $query);
 
         $queryClassReflection = null;
         // TODO: Factor this to a method
@@ -93,7 +93,7 @@ class WorseTolerantMemberFinder implements MemberFinder
      * Collect all nodes which reference the method NAME.
      * We will check if they belong to the requested class later.
      */
-    private function collectCallNodes(Node $node, ClassMemberQuery $query): array
+    private function collectMemberReferences(Node $node, ClassMemberQuery $query): array
     {
         $methodNodes = [];
         $memberName = null;
@@ -106,7 +106,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             }
         }
 
-        if ($this->isMethodCall($node)) {
+        if ($this->isMemberAccess($node)) {
             $memberName = $node->callableExpression->memberName->getText($node->getFileContents());
 
             if ($query->matchesMemberName($memberName)) {
@@ -115,13 +115,13 @@ class WorseTolerantMemberFinder implements MemberFinder
         }
 
         foreach ($node->getChildNodes() as $childNode) {
-            $methodNodes = array_merge($methodNodes, $this->collectCallNodes($childNode, $query));
+            $methodNodes = array_merge($methodNodes, $this->collectMemberReferences($childNode, $query));
         }
 
         return $methodNodes;
     }
 
-    private function isMethodCall(Node $node)
+    private function isMemberAccess(Node $node)
     {
         if (false === $node instanceof CallExpression) {
             return false;
