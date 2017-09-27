@@ -427,6 +427,44 @@ EOT
                 2,
                 0
             ],
+            'Properties' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    public $foobar;
+}
+
+$aaa = new AAA;
+$aaa->foobar;
+
+
+
+EOT
+                , 
+                ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
+                2,
+                0
+            ],
+            'Constants' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    const BBB = 'bbb';
+}
+
+AAA::BBB;
+
+
+EOT
+                , 
+                ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
+                2,
+                0
+            ],
         ];
     }
 
@@ -482,29 +520,6 @@ class Foobar { public function foobar() {} }
 EOT
                 , 
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
-                function ($members) {
-                    $first = reset($members);
-                    $this->assertEquals(38, $first->position()->start());
-                    $this->assertEquals(44, $first->position()->end());
-                }
-            ],
-            'Properties' => [
-                <<<'EOT'
-<?php
-
-class AAA
-{
-    public $foobar;
-}
-
-$aaa = new AAA;
-$aaa->foobar;
-
-
-
-EOT
-                , 
-                ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
                     $this->assertEquals(38, $first->position()->start());

@@ -121,7 +121,7 @@ final class ClassMemberQuery
             return true;
         }
 
-        return $memberName == (string) $this->memberName;
+        return $this->memberName->matches($memberName);
     }
 
     public function matchesClass(string $className)
