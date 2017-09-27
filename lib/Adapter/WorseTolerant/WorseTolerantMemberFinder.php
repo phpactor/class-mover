@@ -33,6 +33,9 @@ use Phpactor\WorseReflection\Core\Reflection\AbstractReflectionClass;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Expression\Variable;
+use Microsoft\PhpParser\Node\DelimitedList\ConstElementList;
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\ConstElement;
 
 class WorseTolerantMemberFinder implements MemberFinder
 {
@@ -86,7 +89,13 @@ class WorseTolerantMemberFinder implements MemberFinder
                 continue;
             }
 
+            // properties ...
             if ($memberNode instanceof Variable && $reference = $this->getMemberDeclarationReference($queryClassReflection, $memberNode)) {
+                $references[] = $reference;
+                continue;
+            }
+
+            if ($memberNode instanceof ConstElement && $reference = $this->getMemberDeclarationReference($queryClassReflection, $memberNode)) {
                 $references[] = $reference;
                 continue;
             }
@@ -104,38 +113,63 @@ class WorseTolerantMemberFinder implements MemberFinder
         $memberNodes = [];
         $memberName = null;
 
-        if ($node instanceof MethodDeclaration) {
-            $memberName = $node->name->getText($node->getFileContents());
+        if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_METHOD) {
+            if ($node instanceof MethodDeclaration) {
+                $memberName = $node->name->getText($node->getFileContents());
 
-            if ($query->matchesMemberName($memberName)) {
-                $memberNodes[] = $node;
+                if ($query->matchesMemberName($memberName)) {
+                    $memberNodes[] = $node;
+                }
             }
-        }
 
-        /** @var PropertyDeclaration $node */
-        if ($node instanceof PropertyDeclaration) {
-            if ($node->propertyElements) {
-                foreach ($node->propertyElements->getChildNodes() as $propertyElement) {
-                    $memberName = $propertyElement->name->getText($propertyElement->getFileContents());
-                    if ($query->matchesMemberName($memberName)) {
-                        $memberNodes[] = $propertyElement;
-                    }
+            if ($this->isMethodAccess($node)) {
+                $memberName = $node->callableExpression->memberName->getText($node->getFileContents());
+
+                if ($query->matchesMemberName($memberName)) {
+                    $memberNodes[] = $node->callableExpression;
                 }
             }
         }
 
-        if ($node instanceof MemberAccessExpression) {
-            $memberName = $node->memberName->getText($node->getFileContents());
-            if ($query->matchesMemberName($memberName)) {
-                $memberNodes[] = $node;
+        if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_PROPERTY) {
+            /** @var PropertyDeclaration $node */
+            if ($node instanceof PropertyDeclaration) {
+                if ($node->propertyElements) {
+                    foreach ($node->propertyElements->getChildNodes() as $propertyElement) {
+                        $memberName = $propertyElement->name->getText($propertyElement->getFileContents());
+                        if ($query->matchesMemberName($memberName)) {
+                            $memberNodes[] = $propertyElement;
+                        }
+                    }
+                }
+            }
+
+            // property access - only if it is not part of a call() expression
+            if ($node instanceof MemberAccessExpression && false === $node->parent instanceof CallExpression) {
+                $memberName = $node->memberName->getText($node->getFileContents());
+                if ($query->matchesMemberName($memberName)) {
+                    $memberNodes[] = $node;
+                }
             }
         }
 
-        if ($this->isMethodAccess($node)) {
-            $memberName = $node->callableExpression->memberName->getText($node->getFileContents());
+        if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_CONSTANT) {
+            if ($node instanceof ClassConstDeclaration) {
+                if ($node->constElements) {
+                    foreach ($node->constElements->getChildNodes() as $constElement) {
+                        $memberName = $constElement->name->getText($constElement->getFileContents());
+                        if ($query->matchesMemberName($memberName)) {
+                            $memberNodes[] = $constElement;
+                        }
+                    }
+                }
+            }
 
-            if ($query->matchesMemberName($memberName)) {
-                $memberNodes[] = $node->callableExpression;
+            if ($node instanceof ScopedPropertyAccessExpression) {
+                $memberName = $node->memberName->getText($node->getFileContents());
+                if ($query->matchesMemberName($memberName)) {
+                    $memberNodes[] = $node;
+                }
             }
         }
 
@@ -161,11 +195,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 
-<<<<<<< HEAD
-    private function getMethodDeclarationReference(AbstractReflectionClass $queryClass = null, MethodDeclaration $methodNode)
-=======
-    private function getMemberDeclarationReference(AbstractReflectionClass $queryClass, $memberNode)
->>>>>>> properties (with no filtering)
+    private function getMemberDeclarationReference(AbstractReflectionClass $queryClass = null, Node $memberNode)
     {
         // we don't handle Variable calls yet.
         if (false === $memberNode->name instanceof Token) {
