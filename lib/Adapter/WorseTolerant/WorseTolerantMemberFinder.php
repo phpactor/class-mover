@@ -36,6 +36,7 @@ use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\DelimitedList\ConstElementList;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ConstElement;
+use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 
 class WorseTolerantMemberFinder implements MemberFinder
 {
@@ -136,9 +137,16 @@ class WorseTolerantMemberFinder implements MemberFinder
             if ($node instanceof PropertyDeclaration) {
                 if ($node->propertyElements) {
                     foreach ($node->propertyElements->getChildNodes() as $propertyElement) {
-                        $memberName = $propertyElement->name->getText($propertyElement->getFileContents());
-                        if ($query->matchesMemberName($memberName)) {
-                            $memberNodes[] = $propertyElement;
+
+                        if ($propertyElement instanceof AssignmentExpression) {
+                            $propertyElement = $propertyElement->leftOperand;
+                        }
+
+                        if ($propertyElement instanceof Variable) {
+                            $memberName = $propertyElement->name->getText($propertyElement->getFileContents());
+                            if ($query->matchesMemberName($memberName)) {
+                                $memberNodes[] = $propertyElement;
+                            }
                         }
                     }
                 }

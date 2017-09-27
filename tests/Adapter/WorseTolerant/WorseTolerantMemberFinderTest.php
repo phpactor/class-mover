@@ -447,6 +447,26 @@ EOT
                 2,
                 0
             ],
+            'Properties with assignments' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    public $foobar = 'bar';
+}
+
+$aaa = new AAA;
+$aaa->foobar;
+
+
+
+EOT
+                , 
+                ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
+                2,
+                0
+            ],
             'Constants' => [
                 <<<'EOT'
 <?php
