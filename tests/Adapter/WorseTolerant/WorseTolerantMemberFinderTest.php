@@ -504,9 +504,12 @@ $aaa->foobar;
 
 EOT
                 , 
-                ClassMemberQuery::create()->withClass('CCC')->withMember('bbb'),
-                2,
-                0
+                ClassMemberQuery::create()->withClass('AAA')->withMember('foobar'),
+                function ($members) {
+                    $first = reset($members);
+                    $this->assertEquals(38, $first->position()->start());
+                    $this->assertEquals(44, $first->position()->end());
+                }
             ],
         ];
     }

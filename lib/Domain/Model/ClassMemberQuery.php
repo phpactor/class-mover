@@ -8,6 +8,16 @@ use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 
 final class ClassMemberQuery
 {
+    const TYPE_CONSTANT = 'constant';
+    const TYPE_METHOD = 'method';
+    const TYPE_PROPERTY = 'property';
+
+    private $validTypes = [
+        self::TYPE_CONSTANT,
+        self::TYPE_METHOD,
+        self::TYPE_PROPERTY
+    ];
+
     /**
      * @var Class_
      */
@@ -18,15 +28,48 @@ final class ClassMemberQuery
      */
     private $memberName;
 
-    private function __construct(Class_ $class = null, MemberName $memberName = null)
+    /**
+     * @var string
+     */
+    private $type;
+
+    private function __construct(Class_ $class = null, MemberName $memberName = null, string $type = null)
     {
         $this->class = $class;
         $this->memberName = $memberName;
+        $this->type = $type;
     }
 
     public static function create(): ClassMemberQuery
     {
         return new self();
+    }
+
+    public function onlyConstants()
+    {
+        return new self(
+            $this->class,
+            $this->memberName,
+            self::TYPE_CONSTANT
+        );
+    }
+
+    public function onlyMethods()
+    {
+        return new self(
+            $this->class,
+            $this->memberName,
+            self::TYPE_METHOD
+        );
+    }
+
+    public function onlyProperties()
+    {
+        return new self(
+            $this->class,
+            $this->memberName,
+            self::TYPE_PROPERTY
+        );
     }
 
     /**
@@ -43,7 +86,8 @@ final class ClassMemberQuery
 
         return new self(
             is_string($className) ? Class_::fromString($className) : $className,
-            $this->memberName
+            $this->memberName,
+            $this->type
         );
     }
 
@@ -61,7 +105,8 @@ final class ClassMemberQuery
 
         return new self(
             $this->class,
-            is_string($memberName) ? MemberName::fromString($memberName) : $memberName
+            is_string($memberName) ? MemberName::fromString($memberName) : $memberName,
+            $this->type
         );
     }
 
@@ -91,6 +136,16 @@ final class ClassMemberQuery
     public function class(): Class_
     {
         return $this->class;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+    public function hasType(): bool
+    {
+        return null !== $this->type;
     }
 
     public function hasClass(): bool
