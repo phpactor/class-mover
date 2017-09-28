@@ -260,8 +260,14 @@ class WorseTolerantMemberFinder implements MemberFinder
             return;
         }
 
+        if ($memberNode->memberName instanceof Variable) {
+            return;
+        }
+
+        $memberName = (string) $memberNode->memberName->getText($memberNode->getFileContents());
+
         return MemberReference::fromMemberNamePositionAndClass(
-            MemberName::fromString((string) $memberNode->memberName->getText($memberNode->getFileContents())),
+            MemberName::fromString($memberName),
             Position::fromStartAndEnd(
                 $memberNode->memberName->start,
                 $memberNode->memberName->start + $memberNode->memberName->length

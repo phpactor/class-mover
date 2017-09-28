@@ -37,6 +37,14 @@ final class ClassMemberQuery
     {
         $this->class = $class;
         $this->memberName = $memberName;
+
+        if (null !== $type && false === in_array($type, $this->validTypes)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid member type "%s", valid types: "%s"',
+                $type, implode('", "', $this->validTypes)
+            ));
+        }
+
         $this->type = $type;
     }
 
@@ -107,6 +115,15 @@ final class ClassMemberQuery
             $this->class,
             is_string($memberName) ? MemberName::fromString($memberName) : $memberName,
             $this->type
+        );
+    }
+
+    public function withType(string $memberType): ClassMemberQuery
+    {
+        return new self(
+            $this->class,
+            $this->memberName,
+            $memberType
         );
     }
 
