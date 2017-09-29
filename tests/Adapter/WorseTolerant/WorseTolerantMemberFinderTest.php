@@ -467,6 +467,22 @@ EOT
                 2,
                 0
             ],
+            'Scoped property access with variable' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    public static $foobar = 'bar';
+}
+
+AAA::$foobar;
+EOT
+                , 
+                ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
+                2,
+                0
+            ],
             'Constants' => [
                 <<<'EOT'
 <?php
@@ -483,6 +499,31 @@ EOT
                 , 
                 ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
                 2,
+                0
+            ],
+            'All members for all classes' => [
+                <<<'EOT'
+<?php
+
+class Barfoo
+{
+    const A;
+    public $pubA;
+
+    public function methodA()
+    {
+    }
+}
+
+$foobar = new Barfoo();
+$foobar->methodA();
+$foobar->pubA;
+Barfoo::A;
+
+EOT
+                , 
+                ClassMemberQuery::create(),
+                6,
                 0
             ],
         ];

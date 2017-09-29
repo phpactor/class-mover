@@ -264,7 +264,12 @@ class WorseTolerantMemberFinder implements MemberFinder
             return;
         }
 
-        if ($memberNode->memberName instanceof Variable) {
+        $memberNameToken = $memberNode->memberName;
+        if ($memberNameToken instanceof Variable) {
+            $memberNameToken = $memberNameToken->name;
+        }
+
+        if (false === $memberNameToken instanceof Token) {
             return;
         }
 
@@ -273,8 +278,8 @@ class WorseTolerantMemberFinder implements MemberFinder
         return MemberReference::fromMemberNamePositionAndClass(
             MemberName::fromString($memberName),
             Position::fromStartAndEnd(
-                $memberNode->memberName->start,
-                $memberNode->memberName->start + $memberNode->memberName->length
+                $memberNameToken->start,
+                $memberNameToken->start + $memberNameToken->length
             ),
             Class_::fromString($className)
         );
