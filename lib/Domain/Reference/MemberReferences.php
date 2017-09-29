@@ -2,7 +2,10 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-final class MethodReferences implements \IteratorAggregate, \Countable
+use Phpactor\ClassMover\Domain\Reference\MemberReference;
+use Phpactor\ClassMover\Domain\Reference\MemberReferences;
+
+final class MemberReferences implements \IteratorAggregate, \Countable
 {
     private $methodReferences = [];
 
@@ -13,7 +16,7 @@ final class MethodReferences implements \IteratorAggregate, \Countable
         }
     }
 
-    public static function fromMethodReferences(array $methodReferences): MethodReferences
+    public static function fromMemberReferences(array $methodReferences): MemberReferences
     {
          return new self($methodReferences);
     }
@@ -23,21 +26,21 @@ final class MethodReferences implements \IteratorAggregate, \Countable
         return new \ArrayIterator($this->methodReferences);
     }
 
-    public function withClasses(): MethodReferences
+    public function withClasses(): MemberReferences
     {
-        return self::fromMethodReferences(array_filter($this->methodReferences, function (MethodReference $reference) {
+        return self::fromMemberReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
             return $reference->hasClass();
         }));
     }
 
-    public function withoutClasses(): MethodReferences
+    public function withoutClasses(): MemberReferences
     {
-        return self::fromMethodReferences(array_filter($this->methodReferences, function (MethodReference $reference) {
+        return self::fromMemberReferences(array_filter($this->methodReferences, function (MemberReference $reference) {
             return false === $reference->hasClass();
         }));
     }
 
-    private function add(MethodReference $item)
+    private function add(MemberReference $item)
     {
         $this->methodReferences[] = $item;
     }
