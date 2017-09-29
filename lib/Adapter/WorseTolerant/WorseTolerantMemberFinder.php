@@ -159,6 +159,15 @@ class WorseTolerantMemberFinder implements MemberFinder
                     $memberNodes[] = $node;
                 }
             }
+
+            if ($node instanceof ScopedPropertyAccessExpression && false === $node->parent instanceof CallExpression) {
+                $memberName = $node->memberName->getText($node->getFileContents());
+
+                // TODO: Some better way to determine if member names are properties
+                if (substr($memberName, 0, 1) == '$' && $query->matchesMemberName($memberName)) {
+                    $memberNodes[] = $node;
+                }
+            }
         }
 
         if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_CONSTANT) {
