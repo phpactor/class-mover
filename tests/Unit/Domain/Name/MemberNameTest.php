@@ -12,4 +12,14 @@ class MemberNameTest extends TestCase
         $name = MemberName::fromString('foobar');
         $this->assertEquals('foobar', (string) $name);
     }
+
+    public function testCompareDollars()
+    {
+        $name = MemberName::fromString('$foobar');
+        $this->assertTrue($name->matches('foobar'));
+        $this->assertTrue($name->matches('$foobar'));
+
+        $name = MemberName::fromString('foobar');
+        $this->assertTrue($name->matches('$foobar'));
+    }
 }

@@ -6,11 +6,10 @@ class MemberName extends Label
 {
     public function matches(string $name)
     {
-        if ((string) $this == $name) {
-            return true;
-        }
+        $compare = ltrim($name, '$');
+        $thisName = ltrim((string) $this, '$');
 
-        if ('$' . (string) $this == $name) {
+        if ($thisName == $compare) {
             return true;
         }
 
