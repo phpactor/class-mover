@@ -254,6 +254,10 @@ class WorseTolerantMemberFinder implements MemberFinder
      */
     private function getScopedPropertyAccessReference(ClassMemberQuery $query, ScopedPropertyAccessExpression $memberNode)
     {
+        if ($memberNode->scopeResolutionQualifier instanceof Variable) {
+            return;
+        }
+
         $className = $memberNode->scopeResolutionQualifier->getResolvedName();
 
         if ($query->hasClass() && $className != (string) $query->class()) {
