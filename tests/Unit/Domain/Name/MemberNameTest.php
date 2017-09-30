@@ -21,5 +21,8 @@ class MemberNameTest extends TestCase
 
         $name = MemberName::fromString('foobar');
         $this->assertTrue($name->matches('$foobar'));
+
+        $name = MemberName::fromString('foobar');
+        $this->assertTrue($name->matches('foobar'));
     }
 }

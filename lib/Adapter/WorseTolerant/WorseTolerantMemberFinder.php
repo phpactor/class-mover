@@ -37,6 +37,7 @@ use Microsoft\PhpParser\Node\DelimitedList\ConstElementList;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ConstElement;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionOffset;
 
 class WorseTolerantMemberFinder implements MemberFinder
 {
@@ -267,12 +268,6 @@ class WorseTolerantMemberFinder implements MemberFinder
             return;
         }
 
-        $className = $memberNode->scopeResolutionQualifier->getResolvedName();
-
-        if ($query->hasClass() && $className != (string) $query->class()) {
-            return;
-        }
-
         $memberNameToken = $memberNode->memberName;
         if ($memberNameToken instanceof Variable) {
             $memberNameToken = $memberNameToken->name;
@@ -284,14 +279,20 @@ class WorseTolerantMemberFinder implements MemberFinder
 
         $memberName = (string) $memberNode->memberName->getText($memberNode->getFileContents());
 
-        return MemberReference::fromMemberNamePositionAndClass(
+        $reference = MemberReference::fromMemberNameAndPosition(
             MemberName::fromString($memberName),
             Position::fromStartAndEnd(
                 $memberNameToken->start,
                 $memberNameToken->start + $memberNameToken->length
-            ),
-            Class_::fromString($className)
+            )
         );
+
+        $offset = $this->reflector->reflectOffset(
+            WorseSourceCode::fromString($memberNode->getFileContents()),
+            Offset::fromInt($memberNode->scopeResolutionQualifier->getEndPosition())
+        );
+
+        return $this->attachClassInfoToReference($reference, $query, $offset);
     }
 
     private function getMemberAccessReference(ClassMemberQuery $query, MemberAccessExpression $memberNode)
@@ -314,32 +315,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             Offset::fromInt($memberNode->dereferencableExpression->getEndPosition())
         );
 
-        $type = $offset->symbolInformation()->type();
-
-        if ($query->hasMember() && Type::unknown() == $type) {
-            return $reference;
-        }
-
-        if (false === $type->isClass()) {
-            return;
-        }
-
-
-        if (false === $query->hasClass()) {
-            $reference = $reference->withClass(Class_::fromString((string) $type->className()));
-            return $reference;
-        }
-
-        if (null === $reflectionClass = $this->reflectClass($type->className())) {
-            $this->logger->warning(sprintf('Could not find class "%s", logging as risky', (string) $type->className()));
-            return $reference;
-        }
-        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
-            // is not the correct class
-            return;
-        }
-
-        return $reference->withClass(Class_::fromString((string) $type->className()));
+        return $this->attachClassInfoToReference($reference, $query, $offset);
     }
 
     /**
@@ -387,5 +363,34 @@ class WorseTolerantMemberFinder implements MemberFinder
         }
 
         return $queryClassReflection;
+    }
+
+    private function attachClassInfoToReference(MemberReference $reference, ClassMemberQuery $query, ReflectionOffset $offset)
+    {
+        $type = $offset->symbolInformation()->type();
+
+        if ($query->hasMember() && Type::unknown() == $type) {
+            return $reference;
+        }
+
+        if (false === $type->isClass()) {
+            return;
+        }
+
+        if (false === $query->hasClass()) {
+            $reference = $reference->withClass(Class_::fromString((string) $type->className()));
+            return $reference;
+        }
+
+        if (null === $reflectionClass = $this->reflectClass($type->className())) {
+            $this->logger->warning(sprintf('Could not find class "%s", logging as risky', (string) $type->className()));
+            return $reference;
+        }
+        if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
+            // is not the correct class
+            return;
+        }
+
+        return $reference->withClass(Class_::fromString((string) $type->className()));
     }
 }

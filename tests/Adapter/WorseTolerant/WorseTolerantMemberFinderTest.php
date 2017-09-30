@@ -58,11 +58,15 @@ EOT
             'Reference for static call' => [
                 <<<'EOT'
 <?php
+class Foobar
+{
+    public static function foobar() {}
+}
 Foobar::foobar();
 EOT
                 , 
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
-                1
+                2
             ],
             'Reference for instantiated instance' => [
                 <<<'EOT'
@@ -495,6 +499,25 @@ class AAA
 AAA::BBB;
 
 
+EOT
+                , 
+                ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
+                2,
+                0
+            ],
+            'Constants from self' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    const BBB = 'bbb';
+
+    public function getBBB()
+    {
+        return self::BBB;
+    }
+}
 EOT
                 , 
                 ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
