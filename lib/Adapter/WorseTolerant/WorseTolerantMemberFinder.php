@@ -183,7 +183,7 @@ class WorseTolerantMemberFinder implements MemberFinder
                 }
             }
 
-            if ($node instanceof ScopedPropertyAccessExpression) {
+            if ($node instanceof ScopedPropertyAccessExpression && false === $node->parent instanceof CallExpression) {
                 $memberName = $node->memberName->getText($node->getFileContents());
                 if ($query->matchesMemberName($memberName)) {
                     $memberNodes[] = $node;

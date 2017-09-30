@@ -524,6 +524,24 @@ EOT
                 2,
                 0
             ],
+            'Static method with no restrictions' => [
+                <<<'EOT'
+<?php
+
+class AAA
+{
+    public static function BBB()
+    {
+    }
+}
+
+AAA::BBB();
+EOT
+                , 
+                ClassMemberQuery::create()->withClass('AAA')->withMember('BBB'),
+                2,
+                0
+            ],
             'All members for all classes' => [
                 <<<'EOT'
 <?php
