@@ -131,6 +131,10 @@ class TolerantClassFinder implements ClassFinder
 
     private function populateUseImportRefs(NamespaceUseDeclaration $useDeclaration, &$useImportRefs)
     {
+        if (null === $useDeclaration->useClauses) {
+            return;
+        }
+
         foreach ($useDeclaration->useClauses->getElements() as $useClause) {
             $importedName = ImportedName::fromString($useClause->namespaceName->getText());
             $alias = $importedName;
