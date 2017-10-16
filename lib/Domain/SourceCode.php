@@ -13,33 +13,38 @@ class SourceCode
         $this->source = $source;
     }
 
-    public static function fromString(string $source)
+    public static function fromString(string $source): SourceCode
     {
         return new self($source);
     }
 
+    public function addNamespace(FullyQualifiedName $namespace): SourceCode
+    {
+        list($phpDeclarationLineNb, $namespaceLineNb) = $this->significantLineNumbers();
+
+        if (null !== $namespaceLineNb) {
+            return $this;
+        }
+
+        if (null !== $phpDeclarationLineNb) {
+            return $this->insertAfter(
+                $phpDeclarationLineNb,
+                PHP_EOL . sprintf('namespace %s;',(string) $namespace)
+            );
+        }
+
+        return new self($this->source);
+    }
+
     public function addUseStatement(FullyQualifiedName $classToUse): SourceCode
     {
-        $lines = explode(PHP_EOL, $this->source);
         $useStmt = 'use '.$classToUse->__toString().';';
 
         $namespaceLineNb = null;
         $lastUseLineNb = null;
         $phpDeclarationLineNb = null;
 
-        foreach ($lines as $index => $line) {
-            if (preg_match('{^<\?php}', $line)) {
-                $phpDeclarationLineNb = $index;
-            }
-
-            if (preg_match('{^namespace}', $line)) {
-                $namespaceLineNb = $index;
-            }
-
-            if (preg_match('{^use}', $line)) {
-                $lastUseLineNb = $index;
-            }
-        }
+        list($phpDeclarationLineNb, $namespaceLineNb, $lastUseLineNb) = $this->significantLineNumbers();
 
         if ($lastUseLineNb) {
             return $this->insertAfter($lastUseLineNb, $useStmt);
@@ -85,4 +90,27 @@ class SourceCode
     {
         return $this->source;
     }
+
+    private function significantLineNumbers()
+    {
+        $lines = explode(PHP_EOL, $this->source);
+        $phpDeclarationLineNb = $namespaceLineNb = $lastUseLineNb = null;
+
+        foreach ($lines as $index => $line) {
+            if (preg_match('{^<\?php}', $line)) {
+                $phpDeclarationLineNb = $index;
+            }
+
+            if (preg_match('{^namespace}', $line)) {
+                $namespaceLineNb = $index;
+            }
+
+            if (preg_match('{^use}', $line)) {
+                $lastUseLineNb = $index;
+            }
+        }
+
+        return [ $phpDeclarationLineNb, $namespaceLineNb, $lastUseLineNb ];
+    }
 }
+

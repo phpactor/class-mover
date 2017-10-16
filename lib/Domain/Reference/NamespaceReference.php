@@ -4,6 +4,7 @@ namespace Phpactor\ClassMover\Domain\Reference;
 
 use Phpactor\ClassMover\Domain\Name\Namespace_;
 use Phpactor\ClassMover\Domain\Reference\Position;
+use PHPUnit_Framework_MockObject_Builder_Namespace;
 
 final class NamespaceReference
 {
@@ -19,7 +20,7 @@ final class NamespaceReference
         return $new;
     }
 
-    public static function forRoot()
+    public static function forRoot(): NamespaceReference
     {
         $new = new self();
         $new->namespace = Namespace_::root();
@@ -32,12 +33,12 @@ final class NamespaceReference
         return (string) $this->namespace;
     }
 
-    public function position()
+    public function position(): Position
     {
         return $this->position;
     }
 
-    public function namespace()
+    public function namespace(): Namespace_
     {
         return $this->namespace;
     }
