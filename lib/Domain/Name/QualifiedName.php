@@ -11,7 +11,7 @@ class QualifiedName
         $this->parts = $parts;
     }
 
-    public static function root()
+    public static function root(): QualifiedName
     {
         return new static([]);
     }

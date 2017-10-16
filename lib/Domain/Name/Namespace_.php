@@ -8,4 +8,9 @@ class Namespace_ extends QualifiedName
     {
         return FullyQualifiedName::fromString($this->__toString().'\\'.$name->__toString());
     }
+
+    public function isRoot(): bool
+    {
+        return count($this->parts) === 0;
+    }
 }

@@ -19,6 +19,7 @@ class TolerantClassReplacer implements ClassReplacer
     ): SourceCode {
         $edits = [];
         $addUse = false;
+        $addNamespace = false;
 
         foreach ($classRefList as $classRef) {
             if (
@@ -30,11 +31,11 @@ class TolerantClassReplacer implements ClassReplacer
 
             // if the class is the original instance, change its namespace
             if ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName)) {
-                $edits[] = new TextEdit(
-                    $classRefList->namespaceRef()->position()->start(),
-                    $classRefList->namespaceRef()->position()->length(),
-                    $newName->parentNamespace()->__toString()
-                );
+                if ($classRefList->namespaceRef()->namespace()->isRoot()) {
+                    $addNamespace = true;
+                } else {
+                    $edits[] = $this->replaceOriginalInstanceNamespace($classRefList, $newName);
+                }
             }
 
             $edits[] = new TextEdit(
@@ -54,6 +55,19 @@ class TolerantClassReplacer implements ClassReplacer
             $source = $source->addUseStatement($newName);
         }
 
+        if (true === $addNamespace) {
+            $source = $source->addNamespace($newName->parentNamespace());
+        }
+
         return $source;
+    }
+
+    private function replaceOriginalInstanceNamespace(NamespacedClassReferences $classRefList, FullyQualifiedName $newName)
+    {
+        return new TextEdit(
+            $classRefList->namespaceRef()->position()->start(),
+            $classRefList->namespaceRef()->position()->length(),
+            $newName->parentNamespace()->__toString()
+        );
     }
 }

@@ -80,4 +80,61 @@ EOT
             ]
         ];
     }
+
+    /**
+     * @dataProvider provideNamespaceAdd
+     */
+    public function testNamespaceAdd($source, $expected)
+    {
+        $source = SourceCode::fromString($source);
+        $source = $source->addNamespace(FullyQualifiedName::fromString('NS1'));
+        $this->assertEquals($expected, $source->__toString());
+    }
+
+    public function provideNamespaceAdd()
+    {
+        return [
+            'Add namespace' => [
+                <<<'EOT'
+<?php
+
+class
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+namespace NS1;
+
+class
+EOT
+            ],
+            'Ignore existing' => [
+                <<<'EOT'
+<?php
+
+namespace NS1;
+
+class
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+namespace NS1;
+
+class
+EOT
+            ],
+            'Ignore no tag' => [
+                <<<'EOT'
+class
+EOT
+                ,
+                <<<'EOT'
+class
+EOT
+            ]
+        ];
+    }
 }

@@ -133,6 +133,34 @@ EOT
 class Example8
 EOT
             ],
+            'Self class with no namespace to a namespace' => [
+                'Example8.php',
+                'ClassOne',
+                'Phpactor\ClassMover\Example8',
+                <<<'EOT'
+namespace Phpactor\ClassMover;
+
+class Example8
+{
+    public function build()
+    {
+        return new self();
+    }
+}
+EOT
+            ],
+            'Class with no namespace to a namespace' => [
+                'Example9.php',
+                'Example',
+                'Phpactor\ClassMover\Example',
+                <<<'EOT'
+use Phpactor\ClassMover\Example;
+
+class ClassOne
+{
+    public function build(): Example
+EOT
+            ],
         ];
     }
 }
