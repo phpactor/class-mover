@@ -75,6 +75,19 @@ EOT
 class Foobar { function barfoo() {} }
 EOT
             ],
+            'It replaces property declarations' => [
+                'Foobar', 'foobar', 'barfoo',
+                <<<'EOT'
+<?php
+class Foobar { protected $foobar; {} }
+
+$foobar = new Foobar();
+$foobar->foobar;
+EOT
+                , <<<'EOT'
+class Foobar { protected $barfoo; {} }
+EOT
+            ],
         ];
     }
 }

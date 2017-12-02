@@ -221,10 +221,11 @@ class WorseTolerantMemberFinder implements MemberFinder
             return;
         }
 
+        $memberName = MemberName::fromString((string) $memberNode->name->getText($memberNode->getFileContents()));
         $reference = MemberReference::fromMemberNameAndPosition(
-            MemberName::fromString((string) $memberNode->name->getText($memberNode->getFileContents())),
+            $memberName,
             Position::fromStartAndEnd(
-                $memberNode->name->start,
+                $this->memberStartPosition($memberNode),
                 $memberNode->name->start + $memberNode->name->length - 1
             )
         );
@@ -384,13 +385,25 @@ class WorseTolerantMemberFinder implements MemberFinder
 
         if (null === $reflectionClass = $this->reflectClass($type->className())) {
             $this->logger->warning(sprintf('Could not find class "%s", logging as risky', (string) $type->className()));
+
             return $reference;
         }
+
         if (false === $reflectionClass->isInstanceOf(ClassName::fromString((string) $query->class()))) {
             // is not the correct class
             return;
         }
 
         return $reference->withClass(Class_::fromString((string) $type->className()));
+    }
+
+    private function memberStartPosition(Node $memberNode)
+    {
+        $start = $memberNode->name->start;
+        if ($memberNode->getFirstAncestor(PropertyDeclaration::class)) {
+            return $start + 1; // ignore the dollar sign
+        }
+
+        return $start;
     }
 }
