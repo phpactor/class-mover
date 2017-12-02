@@ -8,6 +8,7 @@ use Microsoft\PhpParser\TextEdit;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
+use Phpactor\ClassMover\Domain\Reference\ClassReference;
 
 class TolerantClassReplacer implements ClassReplacer
 {
@@ -18,22 +19,16 @@ class TolerantClassReplacer implements ClassReplacer
         FullyQualifiedName $newName
     ): SourceCode {
         $edits = [];
-        $addUse = false;
+        $importClass = false;
         $addNamespace = false;
 
         foreach ($classRefList as $classRef) {
-            if (
-                ImportedNameReference::none() == $classRef->importedNameRef() &&
-                false === ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName))
-            ) {
-                $addUse = true;
-            }
+            $importClass = $this->shouldImportClass($classRef, $originalName);
 
-            // if the class is the original instance, change its namespace
-            if ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName)) {
-                if ($classRefList->namespaceRef()->namespace()->isRoot()) {
-                    $addNamespace = true;
-                } else {
+            if ($this->classIsTheOriginalInstance($classRef, $originalName)) {
+                $addNamespace = $classRefList->namespaceRef()->namespace()->isRoot();
+
+                if (false === $addNamespace) {
                     $edits[] = $this->replaceOriginalInstanceNamespace($classRefList, $newName);
                 }
             }
@@ -51,7 +46,7 @@ class TolerantClassReplacer implements ClassReplacer
         });
 
         $source = $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
-        if (true === $addUse) {
+        if (true === $importClass) {
             $source = $source->addUseStatement($newName);
         }
 
@@ -69,5 +64,16 @@ class TolerantClassReplacer implements ClassReplacer
             $classRefList->namespaceRef()->position()->length(),
             $newName->parentNamespace()->__toString()
         );
+    }
+
+    private function shouldImportClass(ClassReference $classRef, FullyQualifiedName $originalName)
+    {
+        return ImportedNameReference::none() == $classRef->importedNameRef() &&
+            false === ($classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName));
+    }
+
+    private function classIsTheOriginalInstance($classRef, $originalName)
+    {
+        return $classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName);
     }
 }
