@@ -60,6 +60,11 @@ class TolerantClassFinder implements ClassFinder
                 $namespace = $node->getNamespaceDefinition();
 
                 $name = $node->name->getText($node->getFileContents());
+
+                if (!$name) {
+                    continue;
+                }
+
                 $classRefs[] = ClassReference::fromNameAndPosition(
                     QualifiedName::fromString($name),
                     FullyQualifiedName::fromString(($namespace && $namespace->name ? $namespace->name->getText().'\\' : '').$name),
