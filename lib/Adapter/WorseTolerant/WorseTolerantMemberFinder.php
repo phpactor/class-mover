@@ -27,6 +27,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\WorseReflection\Core\Type;
+use Phpactor\WorseReflection\ReflectorBuilder;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
@@ -58,7 +59,7 @@ class WorseTolerantMemberFinder implements MemberFinder
 
     public function __construct(Reflector $reflector = null, Parser $parser = null, LoggerInterface $logger = null)
     {
-        $this->reflector = $reflector ?: Reflector::create(new StringSourceLocator(WorseSourceCode::fromString('')));
+        $this->reflector = $reflector ?: ReflectorBuilder::create()->addSource(WorseSourceCode::fromString(''));
         $this->parser = $parser ?: new Parser();
         $this->logger = $logger ?: new NullLogger();
     }
@@ -156,7 +157,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             // property access - only if it is not part of a call() expression
             if ($node instanceof MemberAccessExpression && false === $node->parent instanceof CallExpression) {
                 $memberName = $node->memberName->getText($node->getFileContents());
-                if ($query->matchesMemberName($memberName)) {
+                if (is_string($memberName) && $query->matchesMemberName($memberName)) {
                     $memberNodes[] = $node;
                 }
             }
@@ -175,6 +176,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             if ($node instanceof ClassConstDeclaration) {
                 if ($node->constElements) {
                     foreach ($node->constElements->getChildNodes() as $constElement) {
+                        assert($constElement instanceof ConstElement);
                         $memberName = $constElement->name->getText($constElement->getFileContents());
                         if ($query->matchesMemberName($memberName)) {
                             $memberNodes[] = $constElement;
@@ -215,6 +217,7 @@ class WorseTolerantMemberFinder implements MemberFinder
 
     private function getMemberDeclarationReference(ReflectionClassLike $queryClass = null, Node $memberNode)
     {
+        assert($memberNode instanceof MethodDeclaration || $memberNode instanceof ConstElement || $memberNode instanceof Variable);
         // we don't handle Variable calls yet.
         if (false === $memberNode->name instanceof Token) {
             $this->logger->warning('Do not know how to infer method name from variable');
@@ -225,7 +228,7 @@ class WorseTolerantMemberFinder implements MemberFinder
         $reference = MemberReference::fromMemberNameAndPosition(
             $memberName,
             Position::fromStartAndEnd(
-                $this->memberStartPosition($memberNode),
+                $this->memberStartPosition($memberNode->name),
                 $memberNode->name->start + $memberNode->name->length - 1
             )
         );
@@ -399,6 +402,7 @@ class WorseTolerantMemberFinder implements MemberFinder
 
     private function memberStartPosition(Node $memberNode)
     {
+        assert($memberNode instanceof MethodDeclaration || $memberNode instanceof ConstElement || $memberNode instanceof Variable);
         $start = $memberNode->name->start;
         if ($memberNode->getFirstAncestor(PropertyDeclaration::class)) {
             return $start + 1; // ignore the dollar sign

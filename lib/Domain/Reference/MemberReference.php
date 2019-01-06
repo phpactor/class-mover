@@ -69,7 +69,12 @@ class MemberReference
 
     public function __toString()
     {
-        return sprintf('[%s:%s] %s', $this->position->start(), $this->position->end(), (string) $this->methodName);
+        return sprintf(
+            '[%s:%s] %s',
+            $this->position->start(),
+            $this->position->end(),
+            (string) $this->method
+        );
     }
 }
 
