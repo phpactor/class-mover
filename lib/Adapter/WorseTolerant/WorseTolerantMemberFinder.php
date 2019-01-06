@@ -228,7 +228,7 @@ class WorseTolerantMemberFinder implements MemberFinder
         $reference = MemberReference::fromMemberNameAndPosition(
             $memberName,
             Position::fromStartAndEnd(
-                $this->memberStartPosition($memberNode->name),
+                $this->memberStartPosition($memberNode),
                 $memberNode->name->start + $memberNode->name->length - 1
             )
         );
