@@ -2,17 +2,8 @@
 
 namespace Phpactor\ClassMover\Tests\Adapter\WorseTolerant;
 
-use PHPUnit\Framework\TestCase;
-use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
-use Phpactor\WorseReflection\Reflector;
-use Phpactor\ClassMover\Domain\MemberFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
-use Phpactor\ClassMover\Domain\Model\Class_;
-use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberFinder;
-use Phpactor\ClassMover\Domain\Reference\MemberReference;
-use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 
 class WorseTolerantMemberFinderTest extends WorseTolerantTestCase
 {
@@ -37,7 +28,7 @@ class Foobar
 {
 }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
@@ -51,7 +42,7 @@ class Foobar
 $foobar = new Foobar();
 $foobar->barfoo();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
             ],
@@ -64,7 +55,7 @@ class Foobar
 }
 Foobar::foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
@@ -76,7 +67,7 @@ class Foobar {}
 $foobar = new Foobar();
 $foobar->foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 1
             ],
@@ -90,7 +81,7 @@ class Barfoo {}
 $foobar = new Barfoo();
 $foobar->foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0
             ],
@@ -109,7 +100,7 @@ class Foobar
     }
 }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Beer')->withMember('giveMe'),
                 1
             ],
@@ -127,7 +118,7 @@ class Foobar
     }
 }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('hello'),
                 2
             ],
@@ -144,7 +135,7 @@ $foobar->foobar();
 
 ($foobar->foobar())->foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2,
                 1
@@ -168,7 +159,7 @@ $foobar = new Foobar();
 $foobar->goobee()->catma();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Goobee')->withMember('catma'),
                 1
             ],
@@ -192,7 +183,7 @@ $foobar = new Barfoo();
 $foobar->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
@@ -214,7 +205,7 @@ class Barfoo extends Foobar
     }
 }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 2
             ],
@@ -238,7 +229,7 @@ $foobar = new Barfoo();
 $foobar->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 3
             ],
@@ -256,7 +247,7 @@ $foobar->foobar();
 $foobar->bar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Barfoo'),
                 2
             ],
@@ -281,7 +272,7 @@ $foobar->foobar();
 $foobar->bar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Barfoo'),
                 2
             ],
@@ -301,7 +292,7 @@ $stdClass = new \stdClass;
 $stdClass->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create(),
                 3,
                 0
@@ -319,7 +310,7 @@ $foobar = new Barfoo();
 $foobar->$foobarName();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create(),
                 0
             ],
@@ -332,7 +323,7 @@ $foobar = 'hello';
 $foobar->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar'),
                 0
             ],
@@ -344,7 +335,7 @@ $foobar = new HarHar();
 $foobar->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar'),
                 0,
                 1
@@ -356,7 +347,7 @@ EOT
 $foobar->foobar();
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 0,
                 1
@@ -376,7 +367,7 @@ class CCC implements AAA
 }
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
@@ -401,7 +392,7 @@ class DDD implements AAA
 }
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 3,
                 0
@@ -426,7 +417,7 @@ class CCC implements AAA
 }
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('CCC')->withMember('bbb'),
                 2,
                 0
@@ -446,7 +437,7 @@ $aaa->foobar;
 
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
                 2,
                 0
@@ -466,7 +457,7 @@ $aaa->foobar;
 
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
                 2,
                 0
@@ -482,7 +473,7 @@ class AAA
 
 AAA::$foobar;
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyProperties()->withClass('AAA')->withMember('foobar'),
                 2,
                 0
@@ -500,7 +491,7 @@ AAA::BBB;
 
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
                 2,
                 0
@@ -519,7 +510,7 @@ class AAA
     }
 }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyConstants()->withClass('AAA')->withMember('BBB'),
                 2,
                 0
@@ -537,7 +528,7 @@ class AAA
 
 AAA::BBB();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->withClass('AAA')->withMember('BBB'),
                 2,
                 0
@@ -562,7 +553,7 @@ $foobar->pubA;
 Barfoo::A;
 
 EOT
-                , 
+                ,
                 ClassMemberQuery::create(),
                 6,
                 0
@@ -589,7 +580,7 @@ EOT
 
 Foobar::foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
@@ -606,7 +597,7 @@ class Foobar () { public function foobar() {} }
 $foobar = new Foobar();
 $foobar->foobar();
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);
@@ -620,7 +611,7 @@ EOT
 
 class Foobar { public function foobar() {} }
 EOT
-                , 
+                ,
                 ClassMemberQuery::create()->onlyMethods()->withClass('Foobar')->withMember('foobar'),
                 function ($members) {
                     $first = reset($members);

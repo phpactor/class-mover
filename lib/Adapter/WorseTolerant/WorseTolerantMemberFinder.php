@@ -7,7 +7,6 @@ use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\WorseReflection\Reflector;
-use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\Node;
@@ -31,10 +30,8 @@ use Phpactor\WorseReflection\ReflectorBuilder;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\DelimitedList\ConstElementList;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ConstElement;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
@@ -126,7 +123,10 @@ class WorseTolerantMemberFinder implements MemberFinder
             }
 
             if ($this->isMethodAccess($node)) {
-                $memberName = $node->callableExpression->memberName->getText($node->getFileContents());
+                assert($node instanceof CallExpression);
+                $callableExpression = $node->callableExpression;
+                assert($callableExpression instanceof ScopedPropertyAccessExpression || $callableExpression instanceof MemberAccessExpression);
+                $memberName = $callableExpression->memberName->getText($node->getFileContents());
 
                 if ($query->matchesMemberName($memberName)) {
                     $memberNodes[] = $node->callableExpression;
@@ -137,9 +137,8 @@ class WorseTolerantMemberFinder implements MemberFinder
         if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_PROPERTY) {
             /** @var PropertyDeclaration $node */
             if ($node instanceof PropertyDeclaration) {
-                if ($node->propertyElements) {
+                if ($node->propertyElements->children) {
                     foreach ($node->propertyElements->getChildNodes() as $propertyElement) {
-
                         if ($propertyElement instanceof AssignmentExpression) {
                             $propertyElement = $propertyElement->leftOperand;
                         }
@@ -174,7 +173,7 @@ class WorseTolerantMemberFinder implements MemberFinder
 
         if (false === $query->hasType() || $query->type() === ClassMemberQuery::TYPE_CONSTANT) {
             if ($node instanceof ClassConstDeclaration) {
-                if ($node->constElements) {
+                if ($node->constElements->children) {
                     foreach ($node->constElements->getChildNodes() as $constElement) {
                         assert($constElement instanceof ConstElement);
                         $memberName = $constElement->name->getText($constElement->getFileContents());
@@ -210,8 +209,8 @@ class WorseTolerantMemberFinder implements MemberFinder
             return false;
         }
 
-        return 
-            $node->callableExpression instanceof MemberAccessExpression || 
+        return
+            $node->callableExpression instanceof MemberAccessExpression ||
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 
@@ -233,6 +232,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             )
         );
 
+        /** @var ClassDeclaration|InterfaceDeclaration|TraitDeclaration|null $classNode */
         $classNode = $memberNode->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class, TraitDeclaration::class);
 
         // if no class node found, then this is not valid, don't know how to reproduce this, probably
@@ -301,7 +301,9 @@ class WorseTolerantMemberFinder implements MemberFinder
 
     private function getMemberAccessReference(ClassMemberQuery $query, MemberAccessExpression $memberNode)
     {
-        if (false === $memberNode->memberName instanceof Token) {
+        /** @var Token|null */
+        $memberName = $memberNode->memberName;
+        if (false === $memberName instanceof Token) {
             $this->logger->warning('Do not know how to infer method name from variable');
             return;
         }
@@ -322,9 +324,6 @@ class WorseTolerantMemberFinder implements MemberFinder
         return $this->attachClassInfoToReference($reference, $query, $offset);
     }
 
-    /**
-     * @return ReflectionClass
-     */
     private function reflectClass(ClassName $className)
     {
         try {
@@ -334,12 +333,10 @@ class WorseTolerantMemberFinder implements MemberFinder
         }
     }
 
-    /**
-     * @return ReflectionClass
-     */
-    private function resolveBaseReflectionClass(ClassMemberQuery $query)
+    private function resolveBaseReflectionClass(ClassMemberQuery $query): ?ReflectionClassLike
     {
         $queryClassReflection = $this->reflectClass(ClassName::fromString((string) $query->class()));
+
         if (null === $queryClassReflection) {
             return $queryClassReflection;
         }

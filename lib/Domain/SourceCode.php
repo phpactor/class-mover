@@ -29,7 +29,7 @@ class SourceCode
         if (null !== $phpDeclarationLineNb) {
             return $this->insertAfter(
                 $phpDeclarationLineNb,
-                PHP_EOL . sprintf('namespace %s;',(string) $namespace)
+                PHP_EOL . sprintf('namespace %s;', (string) $namespace)
             );
         }
 
@@ -113,4 +113,3 @@ class SourceCode
         return [ $phpDeclarationLineNb, $namespaceLineNb, $lastUseLineNb ];
     }
 }
-

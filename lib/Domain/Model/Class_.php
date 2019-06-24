@@ -31,4 +31,3 @@ class Class_
         return (string) $this->name;
     }
 }
-

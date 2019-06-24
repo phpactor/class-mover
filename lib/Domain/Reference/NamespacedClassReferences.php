@@ -6,7 +6,7 @@ use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
 final class NamespacedClassReferences implements \IteratorAggregate
 {
-    private $classRefs = array();
+    private $classRefs = [];
     private $namespaceRef;
 
     private function __construct(NamespaceReference $namespaceRef, array $classRefs)

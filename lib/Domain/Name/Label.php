@@ -13,7 +13,7 @@ class Label
 
     public static function fromString(string $label): Label
     {
-         return new static($label);
+        return new static($label);
     }
 
     public function __toString()
