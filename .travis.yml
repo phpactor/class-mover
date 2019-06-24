@@ -1,12 +1,11 @@
 language: php
-
+php:
+    - 7.1
+    - 7.2
+    - 7.3
+    
 sudo: false
 
-php:
-        - 7.1
-        - 7.2
-        - 7.3
-    
 cache:
     directories:
         - $HOME/.composer/cache
@@ -15,7 +14,7 @@ before_script:
     - composer install
 
 script:
-        - ./vendor/bin/php-cs-fixer fix --dry-run
-        - ./vendor/bin/phpstan analyse lib -c phpstan.neon
-        - ./vendor/bin/phpunit --process-isolation
+    - ./vendor/bin/php-cs-fixer fix --dry-run
+    - ./vendor/bin/phpstan analyse lib -c phpstan.neon
+    - ./vendor/bin/phpunit
     

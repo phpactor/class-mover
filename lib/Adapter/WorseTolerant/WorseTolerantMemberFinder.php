@@ -30,7 +30,6 @@ use Phpactor\WorseReflection\ReflectorBuilder;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
@@ -334,7 +333,7 @@ class WorseTolerantMemberFinder implements MemberFinder
         }
     }
 
-    private function resolveBaseReflectionClass(ClassMemberQuery $query): ?ReflectionClass
+    private function resolveBaseReflectionClass(ClassMemberQuery $query): ?ReflectionClassLike
     {
         $queryClassReflection = $this->reflectClass(ClassName::fromString((string) $query->class()));
 
