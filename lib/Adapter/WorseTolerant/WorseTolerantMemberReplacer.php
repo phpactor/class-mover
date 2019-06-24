@@ -14,7 +14,7 @@ class WorseTolerantMemberReplacer implements MemberReplacer
     public function replaceMembers(SourceCode $source, MemberReferences $references, string $newName): SourceCode
     {
         $edits = [];
-        /** @var $reference MemberReference */
+        /** @var MemberReference $reference */
         foreach ($references as $reference) {
             $edits[] = new TextEdit($reference->position()->start(), $reference->position()->length(), $newName);
         }
