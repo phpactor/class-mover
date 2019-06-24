@@ -7,7 +7,6 @@ use Phpactor\ClassMover\Domain\Reference\MemberReferences;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\WorseReflection\Reflector;
-use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\Node;
@@ -34,7 +33,6 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\DelimitedList\ConstElementList;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ConstElement;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
@@ -139,7 +137,6 @@ class WorseTolerantMemberFinder implements MemberFinder
             if ($node instanceof PropertyDeclaration) {
                 if ($node->propertyElements) {
                     foreach ($node->propertyElements->getChildNodes() as $propertyElement) {
-
                         if ($propertyElement instanceof AssignmentExpression) {
                             $propertyElement = $propertyElement->leftOperand;
                         }
@@ -210,8 +207,8 @@ class WorseTolerantMemberFinder implements MemberFinder
             return false;
         }
 
-        return 
-            $node->callableExpression instanceof MemberAccessExpression || 
+        return
+            $node->callableExpression instanceof MemberAccessExpression ||
             $node->callableExpression instanceof ScopedPropertyAccessExpression;
     }
 

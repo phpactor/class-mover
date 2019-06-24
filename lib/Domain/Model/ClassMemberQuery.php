@@ -3,8 +3,6 @@
 namespace Phpactor\ClassMover\Domain\Model;
 
 use Phpactor\ClassMover\Domain\Name\MemberName;
-use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 
 final class ClassMemberQuery
 {
@@ -41,7 +39,8 @@ final class ClassMemberQuery
         if (null !== $type && false === in_array($type, $this->validTypes)) {
             throw new \InvalidArgumentException(sprintf(
                 'Invalid member type "%s", valid types: "%s"',
-                $type, implode('", "', $this->validTypes)
+                $type,
+                implode('", "', $this->validTypes)
             ));
         }
 

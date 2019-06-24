@@ -2,9 +2,6 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Reference\MemberReference;
-use Phpactor\ClassMover\Domain\Reference\MemberReferences;
-
 final class MemberReferences implements \IteratorAggregate, \Countable
 {
     private $methodReferences = [];
@@ -18,7 +15,7 @@ final class MemberReferences implements \IteratorAggregate, \Countable
 
     public static function fromMemberReferences(array $methodReferences): MemberReferences
     {
-         return new self($methodReferences);
+        return new self($methodReferences);
     }
 
     public function getIterator()
@@ -53,4 +50,3 @@ final class MemberReferences implements \IteratorAggregate, \Countable
         return count($this->methodReferences);
     }
 }
-

@@ -2,16 +2,7 @@
 
 namespace Phpactor\ClassMover\Tests\Adapter\WorseTolerant;
 
-use Microsoft\PhpParser\Parser;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplaceer;
-use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
-use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
-use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Phpactor\ClassMover\Domain\Reference\MemberReferences;
-use Phpactor\ClassMover\Domain\Reference\MemberReference;
-use Phpactor\ClassMover\Domain\Reference\Position;
-use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\ClassMover\Adapter\WorseTolerant\WorseTolerantMemberReplacer;
 use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 

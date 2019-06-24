@@ -2,11 +2,8 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
-use Phpactor\ClassMover\Domain\Reference\Position;
-use Phpactor\ClassMover\Domain\Model\ClassMemberQuery;
 use Phpactor\ClassMover\Domain\Name\MemberName;
 use Phpactor\ClassMover\Domain\Model\Class_;
-use Phpactor\ClassMover\Domain\Reference\MemberReference;
 
 class MemberReference
 {
@@ -77,4 +74,3 @@ class MemberReference
         );
     }
 }
-
