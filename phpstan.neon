@@ -1,0 +1,9 @@
+includes:
+    - vendor/phpstan/phpstan/conf/config.level4.neon
+
+parameters:
+    ignoreErrors:
+        - '#Microsoft.PhpParser.Node::getText.* invoked with 1 parameter, 0 required#'
+    paths:
+        - lib
+

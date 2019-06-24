@@ -1,5 +1,7 @@
-vendor/
-composer.lock
-phpunit.xml
-composer.phar
-tests/Assets/workspace
+/vendor
+/tests/Workspace
+/tests/Assets/workspace
+/phpbench.json
+/composer.lock
+/.php_cs.cache
+/.php_cs.dist
