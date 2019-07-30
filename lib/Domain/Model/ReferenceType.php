@@ -38,4 +38,15 @@ class ReferenceType
     {
         return new self('qualified_name');
     }
+
+    public function in(ReferenceType ...$types)
+    {
+        foreach ($types as $type) {
+            if ($type->referenceType === $this->referenceType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -3,6 +3,7 @@
 namespace Phpactor\ClassMover\Domain\Reference;
 
 use OutOfBoundsException;
+use Phpactor\ClassMover\Domain\Model\ReferenceType;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use RuntimeException;
 
@@ -33,6 +34,13 @@ final class NamespacedClassReferences implements \IteratorAggregate
     {
         return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassReference $classRef) use ($name) {
             return $classRef->fullName()->isEqualTo($name);
+        }));
+    }
+
+    public function filterForReferenceTypeIn(ReferenceType ...$types): NamespacedClassReferences
+    {
+        return new self($this->namespaceRef, array_filter($this->classRefs, function (ClassReference $classRef) use ($types) {
+            return $classRef->referenceType()->in(...$types);
         }));
     }
 
