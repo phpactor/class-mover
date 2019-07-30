@@ -2,6 +2,7 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
+use Phpactor\ClassMover\Domain\Model\ReferenceType;
 use Phpactor\ClassMover\Domain\Name\QualifiedName;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
@@ -12,22 +13,33 @@ final class ClassReference
     private $name;
     private $isClassDeclaration;
     private $importedNameRef;
+    private $referenceType;
+
+    private function __construct(
+        QualifiedName $name,
+        FullyQualifiedName $fullName,
+        Position $position,
+        ImportedNameReference $importedNameRef,
+        ReferenceType $referenceType,
+        bool $isClassDeclaration = false
+    ) {
+        $this->name = $name;
+        $this->fullName = $fullName;
+        $this->position = $position;
+        $this->importedNameRef = $importedNameRef;
+        $this->referenceType = $referenceType;
+        $this->isClassDeclaration = $isClassDeclaration;
+    }
 
     public static function fromNameAndPosition(
         QualifiedName $referencedName,
         FullyQualifiedName $fullName,
         Position $position,
         ImportedNameReference $importedNameRef,
+        ReferenceType $referenceType,
         bool $isClassDeclaration = false
     ) {
-        $new = new self();
-        $new->position = $position;
-        $new->name = $referencedName;
-        $new->fullName = $fullName;
-        $new->importedNameRef = $importedNameRef;
-        $new->isClassDeclaration = $isClassDeclaration;
-
-        return $new;
+        return new self($referencedName, $fullName, $position, $importedNameRef, $referenceType, $isClassDeclaration);
     }
 
     public function __toString()
@@ -58,5 +70,10 @@ final class ClassReference
     public function isClassDeclaration(): bool
     {
         return $this->isClassDeclaration;
+    }
+
+    public function referenceType(): ReferenceType
+    {
+        return $this->referenceType;
     }
 }

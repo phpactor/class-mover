@@ -3,6 +3,7 @@
 namespace Phpactor\ClassMover\Tests\Unit\Domain\Name;
 
 use PHPUnit\Framework\TestCase;
+use Phpactor\ClassMover\Domain\Model\ReferenceType;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\Reference\ClassReference;
 use Phpactor\ClassMover\Domain\Name\QualifiedName;
@@ -26,19 +27,22 @@ class NamespacedClassRefListTest extends TestCase
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameReference::none()
+                    ImportedNameReference::none(),
+                    ReferenceType::CLASS()
                 ),
                 ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Foo'),
                     FullyQualifiedName::fromString('Foo\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameReference::none()
+                    ImportedNameReference::none(),
+                    ReferenceType::CLASS()
                 ),
                 ClassReference::fromNameAndPosition(
                     QualifiedName::fromString('Bar'),
                     FullyQualifiedName::fromString('Bar\\Bar'),
                     Position::fromStartAndEnd(10, 12),
-                    ImportedNameReference::none()
+                    ImportedNameReference::none(),
+                    ReferenceType::CLASS()
                 ),
             ]
         );

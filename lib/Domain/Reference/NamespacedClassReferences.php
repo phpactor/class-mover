@@ -2,7 +2,9 @@
 
 namespace Phpactor\ClassMover\Domain\Reference;
 
+use OutOfBoundsException;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use RuntimeException;
 
 final class NamespacedClassReferences implements \IteratorAggregate
 {
@@ -52,5 +54,15 @@ final class NamespacedClassReferences implements \IteratorAggregate
     private function add(ClassReference $classRef)
     {
         $this->classRefs[] = $classRef;
+    }
+
+    public function at(int $int): ClassReference
+    {
+        if (!isset($this->classRefs[$int])) {
+            throw new OutOfBoundsException(sprintf(
+                'No references exists at offset "%s"', $int
+            ));
+        }
+        return $this->classRefs[$int];
     }
 }

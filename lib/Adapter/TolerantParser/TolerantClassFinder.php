@@ -12,6 +12,7 @@ use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Parser;
+use Phpactor\ClassMover\Domain\Model\ReferenceType;
 use Phpactor\ClassMover\Domain\Reference\ClassReference;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\Name\ImportedName;
@@ -52,11 +53,7 @@ class TolerantClassFinder implements ClassFinder
         $nodes = $ast->getDescendantNodes();
 
         foreach ($nodes as $node) {
-            if (
-                $node instanceof ClassDeclaration ||
-                $node instanceof InterfaceDeclaration ||
-                $node instanceof TraitDeclaration
-            ) {
+            if (null !== $classReferenceType = $this->resolveClassType($node)) {
                 $namespace = $node->getNamespaceDefinition();
 
                 $name = (string) $node->name->getText($node->getFileContents());
@@ -70,6 +67,7 @@ class TolerantClassFinder implements ClassFinder
                     FullyQualifiedName::fromString(($namespace && $namespace->name ? $namespace->name->getText().'\\' : '').$name),
                     Position::fromStartAndEnd($node->name->start, $node->name->start + $node->name->length - 1),
                     ImportedNameReference::none(),
+                    $classReferenceType,
                     true
                 );
                 continue;
@@ -95,7 +93,8 @@ class TolerantClassFinder implements ClassFinder
                     FullyQualifiedName::fromString($node->getText()),
                     FullyQualifiedName::fromString($node->getText()),
                     Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
-                    ImportedNameReference::none()
+                    ImportedNameReference::none(),
+                    ReferenceType::CLASS_IMPORT()
                 );
                 continue;
             }
@@ -113,7 +112,8 @@ class TolerantClassFinder implements ClassFinder
                 $qualifiedName,
                 $resolvedClassName,
                 Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
-                $env->isNameImported($qualifiedName) ? $env->getImportedNameRefFor($qualifiedName) : ImportedNameReference::none()
+                $env->isNameImported($qualifiedName) ? $env->getImportedNameRefFor($qualifiedName) : ImportedNameReference::none(),
+                ReferenceType::QUALIFIED_NAME()
             );
         }
 
@@ -176,5 +176,22 @@ class TolerantClassFinder implements ClassFinder
                 $namespace->name->getEndPosition()
             )
         );
+    }
+
+    private function resolveClassType($node)
+    {
+        if ($node instanceof ClassDeclaration) {
+            return ReferenceType::CLASS();
+        }
+
+        if ($node instanceof InterfaceDeclaration) {
+            return ReferenceType::INTERFACE();
+        }
+
+        if ($node instanceof TraitDeclaration) {
+            return ReferenceType::TRAIT();
+        }
+
+        return null;
     }
 }
