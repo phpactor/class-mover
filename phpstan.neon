@@ -4,7 +4,7 @@ includes:
 parameters:
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
-        - '#Microsoft.PhpParser.Node::getText.* invoked with 1 parameter, 0 required#'
+        - "#Method Microsoft.PhpParser.Node::getText.. invoked with 1 parameter, 0 required#"
         
     paths:
         - lib
