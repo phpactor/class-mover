@@ -273,20 +273,22 @@ class WorseTolerantMemberFinder implements MemberFinder
         }
 
         $memberNameToken = $memberNode->memberName;
+        $startOffset = 0;
         if ($memberNameToken instanceof Variable) {
             $memberNameToken = $memberNameToken->name;
+            $startOffset++; // do not include the $
         }
 
         if (false === $memberNameToken instanceof Token) {
             return;
         }
 
-        $memberName = (string) $memberNode->memberName->getText($memberNode->getFileContents());
+        $memberName = (string) $memberNameToken->getText($memberNode->getFileContents());
 
         $reference = MemberReference::fromMemberNameAndPosition(
             MemberName::fromString($memberName),
             Position::fromStartAndEnd(
-                $memberNameToken->start,
+                $memberNameToken->start + $startOffset,
                 $memberNameToken->start + $memberNameToken->length
             )
         );
@@ -401,6 +403,7 @@ class WorseTolerantMemberFinder implements MemberFinder
     {
         assert($memberNode instanceof MethodDeclaration || $memberNode instanceof ConstElement || $memberNode instanceof Variable);
         $start = $memberNode->name->start;
+
         if ($memberNode->getFirstAncestor(PropertyDeclaration::class)) {
             return $start + 1; // ignore the dollar sign
         }

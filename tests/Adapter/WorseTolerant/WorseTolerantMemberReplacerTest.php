@@ -79,6 +79,20 @@ EOT
 class Foobar { protected $barfoo; {} }
 EOT
             ],
+            'It replaces static property declarations' => [
+                'Foobar', 'foobar', 'barfoo',
+                <<<'EOT'
+<?php
+class Foobar { public static $foobar; {} }
+
+Foobar::$foobar;
+EOT
+                , <<<'EOT'
+class Foobar { public static $barfoo; {} }
+
+Foobar::$barfoo;
+EOT
+            ],
         ];
     }
 }
