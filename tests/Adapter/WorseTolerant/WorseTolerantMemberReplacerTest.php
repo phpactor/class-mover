@@ -93,6 +93,21 @@ class Foobar { public static $barfoo; {} }
 Foobar::$barfoo;
 EOT
             ],
+            'It replaces constants' => [
+                'Foobar', 'BARFOO', 'FOO',
+                <<<'EOT'
+<?php
+class Foobar { const BARFOO = 1; {} }
+
+Foobar::BARFOO;
+EOT
+                , <<<'EOT'
+<?php
+class Foobar { const FOO = 1; {} }
+
+Foobar::FOO;
+EOT
+            ],
         ];
     }
 }
