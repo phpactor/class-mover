@@ -49,4 +49,15 @@ final class MemberReferences implements \IteratorAggregate, \Countable
     {
         return count($this->methodReferences);
     }
+
+    public function unique(): self
+    {
+        $members = [];
+        return self::fromMemberReferences(array_filter($this->methodReferences, function (MemberReference $reference) use (&$members) {
+            $hash = sprintf('%s.%s.%s', $reference->methodName(), $reference->position()->start(), $reference->position()->end());
+            $inArray = false === in_array($hash, $members);
+            $members[] = $hash;
+            return $inArray;
+        }));
+    }
 }

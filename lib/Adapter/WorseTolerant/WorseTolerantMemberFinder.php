@@ -101,7 +101,7 @@ class WorseTolerantMemberFinder implements MemberFinder
             }
         }
 
-        return MemberReferences::fromMemberReferences($references);
+        return MemberReferences::fromMemberReferences($references)->unique();
     }
 
     /**
