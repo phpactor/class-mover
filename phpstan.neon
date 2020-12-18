@@ -2,8 +2,6 @@ includes:
     - phpstan-baseline.neon
 parameters:
     inferPrivatePropertyTypeFromConstructor: true
-    ignoreErrors:
-        - '#Method Microsoft.PhpParser.Node::getText.. invoked with 1 parameter, 0 required#'
     paths:
         - lib
-    level: '4'
+    level: 7

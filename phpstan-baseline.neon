@@ -1,6 +1,101 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:findIn\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:resolveClassNames\\(\\) has parameter \\$ast with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:resolveClassNames\\(\\) has parameter \\$source with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:resolveClassNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:getClassEnvironment\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:populateUseImportRefs\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:populateUseImportRefs\\(\\) has parameter \\$useImportRefs with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:replaceReferences\\(\\) has parameter \\$classRefList with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:replaceOriginalInstanceNamespace\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:replaceOriginalInstanceNamespace\\(\\) has parameter \\$classRefList with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:shouldImportClass\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:classIsTheOriginalInstance\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:classIsTheOriginalInstance\\(\\) has parameter \\$classRef with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassReplacer\\:\\:classIsTheOriginalInstance\\(\\) has parameter \\$originalName with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantClassReplacer.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:\\$reflector \\(Phpactor\\\\WorseReflection\\\\Reflector\\) does not accept Phpactor\\\\WorseReflection\\\\Reflector\\|Phpactor\\\\WorseReflection\\\\ReflectorBuilder\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:findMembers\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:collectMemberReferences\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Parameter \\#1 \\$memberName of method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:matchesMemberName\\(\\) expects string, bool\\|string\\|null given\\.$#"
+			count: 5
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Microsoft\\\\PhpParser\\\\Node\\:\\:getText\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 3
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
 			message: "#^Instanceof between Microsoft\\\\PhpParser\\\\Node\\\\PropertyDeclaration and Microsoft\\\\PhpParser\\\\Node\\\\Expression\\\\MemberAccessExpression will always evaluate to false\\.$#"
 			count: 1
 			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
@@ -16,9 +111,194 @@ parameters:
 			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
 
 		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:isMethodAccess\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:getMemberDeclarationReference\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Parameter \\#1 \\$method of static method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReference\\:\\:fromMemberNameAndPosition\\(\\) expects Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\MemberName, Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\Label given\\.$#"
+			count: 3
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:getScopedPropertyAccessReference\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:getMemberAccessReference\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:reflectClass\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:attachClassInfoToReference\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberFinder\\:\\:memberStartPosition\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\\\Expression\\\\BracedExpression\\|Microsoft\\\\PhpParser\\\\Node\\\\Expression\\\\Variable\\|Microsoft\\\\PhpParser\\\\Token\\:\\:\\$start\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\WorseTolerant\\\\WorseTolerantMemberReplacer\\:\\:replaceMembers\\(\\) has parameter \\$references with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\ClassFinder\\:\\:findIn\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Domain/ClassFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\ClassReplacer\\:\\:replaceReferences\\(\\) has parameter \\$classRefList with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Domain/ClassReplacer.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\MemberFinder\\:\\:findMembers\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/MemberFinder.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\MemberReplacer\\:\\:replaceMembers\\(\\) has parameter \\$references with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/MemberReplacer.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:\\$validTypes has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:onlyConstants\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:onlyMethods\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:onlyProperties\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:withClass\\(\\) has parameter \\$className with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:withMember\\(\\) has parameter \\$memberName with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Parameter \\#2 \\$memberName of class Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery constructor expects Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\MemberName\\|null, Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\Label given\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:matchesMemberName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\ClassMemberQuery\\:\\:matchesClass\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/ClassMemberQuery.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\Class_\\:\\:fromFullyQualifiedName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/Class_.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Model\\\\Class_\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Model/Class_.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\FullyQualifiedName\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/FullyQualifiedName.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\ImportedName\\:\\:\\$alias has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/ImportedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\ImportedName\\:\\:qualifies\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/ImportedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\ImportedName\\:\\:withAlias\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/ImportedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\ImportedName\\:\\:isAlias\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/ImportedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\ImportedName\\:\\:fromStringAsAlias\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/ImportedName.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\Label\\:\\:\\$label has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/Label.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\Label\\:\\:__construct\\(\\) has parameter \\$label with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/Label.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: lib/Domain/Name/Label.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\MemberName\\:\\:matches\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/MemberName.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:\\$importedNameRefs has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:fromImportedNameRefs\\(\\) has parameter \\$importedNameRefs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:isNameImported\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
 
 		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:getImportedNameRefFor\\(\\) should return Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference but return statement is missing\\.$#"
@@ -26,7 +306,282 @@ parameters:
 			path: lib/Domain/Name/NameImportTable.php
 
 		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:resolveClassName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:isAliased\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:__construct\\(\\) has parameter \\$importedNamespaceNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:addImportedName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:\\$parts has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:__construct\\(\\) has parameter \\$parts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 3
 			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:isEqualTo\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:base\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:equals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:head\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:transpose\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:parts\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\QualifiedName\\:\\:isAlone\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Name/QualifiedName.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:\\$position has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:\\$fullName has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:\\$name has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:\\$isClassDeclaration has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:\\$importedNameRef has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ClassReference\\:\\:fromNameAndPosition\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ClassReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ImportedNameReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference\\:\\:exists\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ImportedNameReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference\\:\\:position\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ImportedNameReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference\\:\\:importedName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/ImportedNameReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReference\\:\\:withClass\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReference.php
+
+		-
+			message: "#^Class Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:\\$methodReferences has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:__construct\\(\\) has parameter \\$methodReferences with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:fromMemberReferences\\(\\) has parameter \\$methodReferences with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:fromMemberReferences\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:getIterator\\(\\) return type has no value type specified in iterable type Traversable\\<mixed, mixed\\>\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:withClasses\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:withoutClasses\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:unique\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/MemberReferences.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespaceReference\\:\\:\\$position has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespaceReference.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespaceReference\\:\\:\\$namespace has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespaceReference.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespaceReference\\:\\:fromNameAndPosition\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespaceReference.php
+
+		-
+			message: "#^Class Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:\\$classRefs has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:__construct\\(\\) has parameter \\$classRefs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:fromNamespaceAndClassRefs\\(\\) has parameter \\$classRefs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:fromNamespaceAndClassRefs\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:empty\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:filterForName\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:getIterator\\(\\) return type has no value type specified in iterable type Traversable\\<mixed, mixed\\>\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/NamespacedClassReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\Position\\:\\:fromStartAndEnd\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Reference/Position.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:insertAfter\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:insertAfter\\(\\) has parameter \\$text with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:replaceSource\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:significantLineNumbers\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/SourceCode.php
+
+		-
+			message: "#^Property Phpactor\\\\ClassMover\\\\FoundReferences\\:\\:\\$references type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/FoundReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\FoundReferences\\:\\:__construct\\(\\) has parameter \\$list with no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/FoundReferences.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\FoundReferences\\:\\:references\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\.$#"
+			count: 1
+			path: lib/FoundReferences.php
 
