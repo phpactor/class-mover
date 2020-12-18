@@ -1,0 +1,32 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Instanceof between Microsoft\\\\PhpParser\\\\Node\\\\PropertyDeclaration and Microsoft\\\\PhpParser\\\\Node\\\\Expression\\\\MemberAccessExpression will always evaluate to false\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 2
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Instanceof between Microsoft\\\\PhpParser\\\\Node\\\\PropertyDeclaration and Microsoft\\\\PhpParser\\\\Node\\\\Expression\\\\ScopedPropertyAccessExpression will always evaluate to false\\.$#"
+			count: 1
+			path: lib/Adapter/WorseTolerant/WorseTolerantMemberFinder.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Name/Label.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:getImportedNameRefFor\\(\\) should return Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\ImportedNameReference but return statement is missing\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 3
+			path: lib/Domain/Name/QualifiedName.php
+
