@@ -20,7 +20,7 @@
         "symfony/console": "^3.0",
         "phpactor/worse-reflection": "~0.1",
         "friendsofphp/php-cs-fixer": "~2.15.0",
-        "phpstan/phpstan": "~0.11.0"
+        "phpstan/phpstan": "~0.12.0"
     },
     "autoload": {
         "psr-4": {
