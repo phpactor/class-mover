@@ -25,7 +25,7 @@ class TolerantRefRepalcerTest extends TestCase
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
         $replacer = new TolerantClassReplacer();
         $source = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
-        $this->assertContains($expectedSource, $source->__toString());
+        $this->assertStringContainsString($expectedSource, $source->__toString());
     }
 
     public function provideTestFind()
