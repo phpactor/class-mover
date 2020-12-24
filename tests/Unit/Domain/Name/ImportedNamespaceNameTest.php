@@ -28,11 +28,11 @@ class ImportedNamespaceNameTest extends TestCase
 
     /**
      * @testdox It does not allow empty namespace.
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Name cannot be empty
      */
     public function testEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Name cannot be empty');
         ImportedName::fromString('');
     }
 }

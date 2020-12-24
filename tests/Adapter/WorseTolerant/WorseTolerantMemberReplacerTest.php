@@ -21,7 +21,7 @@ class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
 
         $replacer = new WorseTolerantMemberReplacer();
         $source = $replacer->replaceMembers($source, $references, $newMemberName);
-        $this->assertContains($expectedSource, $source->__toString());
+        $this->assertStringContainsString($expectedSource, $source->__toString());
     }
 
     public function provideTestReplace()

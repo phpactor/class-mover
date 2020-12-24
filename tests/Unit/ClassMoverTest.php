@@ -17,7 +17,7 @@ class ClassMoverTest extends TestCase
     private $finder;
     private $replacer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->finder = $this->prophesize(ClassFinder::class);
         $this->replacer = $this->prophesize(ClassReplacer::class);
