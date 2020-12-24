@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpactor\ClassMover\Tests\Microsoft\TolerantParser;
+namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
@@ -9,7 +9,7 @@ use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 
-class TolerantRefRepalcerTest extends TestCase
+class TolerantClassReplacerTest extends TestCase
 {
     /**
      * @testdox It finds all class references.
@@ -25,7 +25,7 @@ class TolerantRefRepalcerTest extends TestCase
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
         $replacer = new TolerantClassReplacer();
         $source = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
-        $this->assertContains($expectedSource, $source->__toString());
+        $this->assertStringContainsString($expectedSource, $source->__toString());
     }
 
     public function provideTestFind()
