@@ -10,9 +10,6 @@
         <testsuite name="Class Mover Code">
             <directory>./tests</directory>
         </testsuite>
-        <testsuite name="Tolerant Parser">
-            <directory>./bridge/microsoft/tolerant-parser/tests</directory>
-        </testsuite>
     </testsuites>
 
     <filter>
