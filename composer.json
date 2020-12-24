@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "microsoft/tolerant-php-parser": "@dev",
         "psr/log": "~1.0",
         "symfony/filesystem": "^2.7 || ^3.0 || ^4.0 || ^5.0"
