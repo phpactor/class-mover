@@ -11,13 +11,13 @@ class Label
         $this->label = $label;
     }
 
-    public static function fromString(string $label): Label
-    {
-        return new static($label);
-    }
-
     public function __toString()
     {
         return $this->label;
+    }
+
+    public static function fromString(string $label): Label
+    {
+        return new static($label);
     }
 }

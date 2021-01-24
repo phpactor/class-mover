@@ -7,13 +7,13 @@ use Phpactor\ClassMover\Domain\Name\MemberName;
 
 class MemberNameTest extends TestCase
 {
-    public function testValidName()
+    public function testValidName(): void
     {
         $name = MemberName::fromString('foobar');
         $this->assertEquals('foobar', (string) $name);
     }
 
-    public function testCompareDollars()
+    public function testCompareDollars(): void
     {
         $name = MemberName::fromString('$foobar');
         $this->assertTrue($name->matches('foobar'));

@@ -9,6 +9,14 @@ class NameImportTable
     private $namespace;
     private $importedNameRefs = [];
 
+    private function __construct(Namespace_ $namespace, array $importedNamespaceNames)
+    {
+        $this->namespace = $namespace;
+        foreach ($importedNamespaceNames as $importedNamespaceName) {
+            $this->addImportedName($importedNamespaceName);
+        }
+    }
+
     public static function fromImportedNameRefs(Namespace_ $namespace, array $importedNameRefs): NameImportTable
     {
         return new self($namespace, $importedNameRefs);
@@ -65,15 +73,7 @@ class NameImportTable
         return false;
     }
 
-    private function __construct(Namespace_ $namespace, array $importedNamespaceNames)
-    {
-        $this->namespace = $namespace;
-        foreach ($importedNamespaceNames as $importedNamespaceName) {
-            $this->addImportedName($importedNamespaceName);
-        }
-    }
-
-    private function addImportedName(ImportedNameReference $importedNameRef)
+    private function addImportedName(ImportedNameReference $importedNameRef): void
     {
         $this->importedNameRefs[] = $importedNameRef;
     }

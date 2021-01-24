@@ -3,8 +3,10 @@
 namespace Phpactor\ClassMover\Domain\Reference;
 
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use IteratorAggregate;
+use ArrayIterator;
 
-final class NamespacedClassReferences implements \IteratorAggregate
+final class NamespacedClassReferences implements IteratorAggregate
 {
     private $classRefs = [];
     private $namespaceRef;
@@ -41,7 +43,7 @@ final class NamespacedClassReferences implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->classRefs);
+        return new ArrayIterator($this->classRefs);
     }
 
     public function namespaceRef(): NamespaceReference
@@ -49,7 +51,7 @@ final class NamespacedClassReferences implements \IteratorAggregate
         return $this->namespaceRef;
     }
 
-    private function add(ClassReference $classRef)
+    private function add(ClassReference $classRef): void
     {
         $this->classRefs[] = $classRef;
     }

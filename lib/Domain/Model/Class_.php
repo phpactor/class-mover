@@ -16,6 +16,11 @@ class Class_
         $this->name = $name;
     }
 
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
+
     public static function fromFullyQualifiedName(FullyQualifiedName $name)
     {
         return new self($name);
@@ -24,10 +29,5 @@ class Class_
     public static function fromString(string $name)
     {
         return self::fromFullyQualifiedName(FullyQualifiedName::fromString($name));
-    }
-
-    public function __toString()
-    {
-        return (string) $this->name;
     }
 }

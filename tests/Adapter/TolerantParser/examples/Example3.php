@@ -6,7 +6,7 @@ use Acme\ClassMover\RefFinder\RefFinder\TolerantRefFinder;
 
 class Hello
 {
-    public function something()
+    public function something(): void
     {
         TolerantRefFinder::foobar();
     }

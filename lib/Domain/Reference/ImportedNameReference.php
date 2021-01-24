@@ -27,6 +27,11 @@ final class ImportedNameReference
         $this->importedName = $importedName;
     }
 
+    public function __toString()
+    {
+        return (string) $this->importedName;
+    }
+
     public static function none()
     {
         $new = new self();
@@ -43,11 +48,6 @@ final class ImportedNameReference
     public function exists()
     {
         return $this->exists;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->importedName;
     }
 
     public function position()

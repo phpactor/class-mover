@@ -2,6 +2,8 @@
 
 namespace Phpactor\ClassMover\Domain\Name;
 
+use InvalidArgumentException;
+
 class QualifiedName
 {
     protected $parts;
@@ -9,6 +11,11 @@ class QualifiedName
     protected function __construct(array $parts)
     {
         $this->parts = $parts;
+    }
+
+    public function __toString()
+    {
+        return implode('\\', $this->parts);
     }
 
     public static function root(): QualifiedName
@@ -24,7 +31,7 @@ class QualifiedName
     public static function fromString(string $string)
     {
         if (empty($string)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Name cannot be empty'
             );
         }
@@ -83,10 +90,5 @@ class QualifiedName
     public function isAlone()
     {
         return count($this->parts) === 1;
-    }
-
-    public function __toString()
-    {
-        return implode('\\', $this->parts);
     }
 }

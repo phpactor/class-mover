@@ -12,7 +12,7 @@ class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
      * @testdox It replaces all member references
      * @dataProvider provideTestReplace
      */
-    public function testReplace(string $classFqn, string $memberName, string $newMemberName, string $source, string $expectedSource)
+    public function testReplace(string $classFqn, string $memberName, string $newMemberName, string $source, string $expectedSource): void
     {
         $finder = $this->createFinder($source);
         $source = SourceCode::fromString($source);
@@ -30,83 +30,83 @@ class WorseTolerantMemberReplacerTest extends WorseTolerantTestCase
             'It returns unmodified if no references' => [
                 'Foobar', 'zzzzz', 'barfoo',
                 <<<'EOT'
-<?php
-$foobar = new Foobar();
-$foobar->foobar();
-EOT
+                    <?php
+                    $foobar = new Foobar();
+                    $foobar->foobar();
+                    EOT
                 , <<<'EOT'
-<?php
-$foobar = new Foobar();
-$foobar->foobar();
-EOT
+                    <?php
+                    $foobar = new Foobar();
+                    $foobar->foobar();
+                    EOT
             ],
             'It replaces references' => [
                 'Foobar', 'foobar', 'barfoo',
                 <<<'EOT'
-<?php
-class Foobar { function foobar() {} }
+                    <?php
+                    class Foobar { function foobar() {} }
 
-$foobar = new Foobar();
-$foobar->foobar();
-EOT
+                    $foobar = new Foobar();
+                    $foobar->foobar();
+                    EOT
                 , <<<'EOT'
-$foobar->barfoo();
-EOT
+                    $foobar->barfoo();
+                    EOT
             ],
             'It replaces member declarations' => [
                 'Foobar', 'foobar', 'barfoo',
                 <<<'EOT'
-<?php
-class Foobar { function foobar() {} }
+                    <?php
+                    class Foobar { function foobar() {} }
 
-$foobar = new Foobar();
-$foobar->foobar();
-EOT
+                    $foobar = new Foobar();
+                    $foobar->foobar();
+                    EOT
                 , <<<'EOT'
-class Foobar { function barfoo() {} }
-EOT
+                    class Foobar { function barfoo() {} }
+                    EOT
             ],
             'It replaces property declarations' => [
                 'Foobar', 'foobar', 'barfoo',
                 <<<'EOT'
-<?php
-class Foobar { protected $foobar; {} }
+                    <?php
+                    class Foobar { protected $foobar; {} }
 
-$foobar = new Foobar();
-$foobar->foobar;
-EOT
+                    $foobar = new Foobar();
+                    $foobar->foobar;
+                    EOT
                 , <<<'EOT'
-class Foobar { protected $barfoo; {} }
-EOT
+                    class Foobar { protected $barfoo; {} }
+                    EOT
             ],
             'It replaces static property declarations' => [
                 'Foobar', 'foobar', 'barfoo',
                 <<<'EOT'
-<?php
-class Foobar { public static $foobar; {} }
+                    <?php
+                    class Foobar { public static $foobar; {} }
 
-Foobar::$foobar;
-EOT
+                    Foobar::$foobar;
+                    EOT
                 , <<<'EOT'
-class Foobar { public static $barfoo; {} }
+                    class Foobar { public static $barfoo; {} }
 
-Foobar::$barfoo;
-EOT
+                    Foobar::$barfoo;
+                    EOT
             ],
             'It replaces constants' => [
                 'Foobar', 'BARFOO', 'FOO',
                 <<<'EOT'
-<?php
-class Foobar { const BARFOO = 1; {} }
+                    <?php
+                    class Foobar { const BARFOO = 1; {} }
 
-Foobar::BARFOO;
-EOT
+                    Foobar::BARFOO;
+                    EOT
                 , <<<'EOT'
-<?php
-class Foobar { const FOO = 1; {} }
+                    <?php
+                    class Foobar { const FOO = 1; {} }
 
-Foobar::FOO;
-EOT
+                    Foobar::FOO;
+                    EOT
             ],
         ];
     }

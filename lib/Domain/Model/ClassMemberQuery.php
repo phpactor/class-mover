@@ -3,6 +3,7 @@
 namespace Phpactor\ClassMover\Domain\Model;
 
 use Phpactor\ClassMover\Domain\Name\MemberName;
+use InvalidArgumentException;
 
 final class ClassMemberQuery
 {
@@ -37,7 +38,7 @@ final class ClassMemberQuery
         $this->memberName = $memberName;
 
         if (null !== $type && false === in_array($type, $this->validTypes)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Invalid member type "%s", valid types: "%s"',
                 $type,
                 implode('", "', $this->validTypes)
@@ -45,6 +46,11 @@ final class ClassMemberQuery
         }
 
         $this->type = $type;
+    }
+
+    public function __toString()
+    {
+        return $this->class;
     }
 
     public static function create(): ClassMemberQuery
@@ -85,7 +91,7 @@ final class ClassMemberQuery
     public function withClass($className): ClassMemberQuery
     {
         if (false === is_string($className) && false === $className instanceof Class_) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Class must be either a string or an instanceof Class_, got: "%s"',
                 gettype($className)
             ));
@@ -104,7 +110,7 @@ final class ClassMemberQuery
     public function withMember($memberName): ClassMemberQuery
     {
         if (false === is_string($memberName) && false === $memberName instanceof MemberName) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Member must be either a string or an instanceof MemberName, got: "%s"',
                 gettype($memberName)
             ));
@@ -172,10 +178,5 @@ final class ClassMemberQuery
     public function hasMember(): bool
     {
         return null !== $this->memberName;
-    }
-
-    public function __toString()
-    {
-        return $this->class;
     }
 }

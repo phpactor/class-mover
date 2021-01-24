@@ -12,7 +12,7 @@ class SourceCodeTest extends TestCase
      * It should add a use statement.
      * @dataProvider provideAddUse
      */
-    public function testAddUse($source, $expected)
+    public function testAddUse($source, $expected): void
     {
         $source = SourceCode::fromString($source);
         $source = $source->addUseStatement(FullyQualifiedName::fromString('Foobar'));
@@ -24,59 +24,59 @@ class SourceCodeTest extends TestCase
         return [
             'No namespace' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-<?php
+                    <?php
 
-use Foobar;
+                    use Foobar;
 
-class
-EOT
+                    class
+                    EOT
             ],
             'Namespace, no use statements' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Acme;
+                    namespace Acme;
 
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Acme;
+                    namespace Acme;
 
-use Foobar;
+                    use Foobar;
 
-class
-EOT
+                    class
+                    EOT
             ],
             'Use statements' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Acme;
+                    namespace Acme;
 
-use Acme\BarBar;
+                    use Acme\BarBar;
 
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Acme;
+                    namespace Acme;
 
-use Acme\BarBar;
-use Foobar;
+                    use Acme\BarBar;
+                    use Foobar;
 
-class
-EOT
+                    class
+                    EOT
             ]
         ];
     }
@@ -84,7 +84,7 @@ EOT
     /**
      * @dataProvider provideNamespaceAdd
      */
-    public function testNamespaceAdd($source, $expected)
+    public function testNamespaceAdd($source, $expected): void
     {
         $source = SourceCode::fromString($source);
         $source = $source->addNamespace(FullyQualifiedName::fromString('NS1'));
@@ -96,44 +96,44 @@ EOT
         return [
             'Add namespace' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace NS1;
+                    namespace NS1;
 
-class
-EOT
+                    class
+                    EOT
             ],
             'Ignore existing' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace NS1;
+                    namespace NS1;
 
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace NS1;
+                    namespace NS1;
 
-class
-EOT
+                    class
+                    EOT
             ],
             'Ignore no tag' => [
                 <<<'EOT'
-class
-EOT
+                    class
+                    EOT
                 ,
                 <<<'EOT'
-class
-EOT
+                    class
+                    EOT
             ]
         ];
     }

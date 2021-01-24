@@ -29,6 +29,16 @@ class MemberReference
         $this->class = $class;
     }
 
+    public function __toString()
+    {
+        return sprintf(
+            '[%s:%s] %s',
+            $this->position->start(),
+            $this->position->end(),
+            (string) $this->method
+        );
+    }
+
     public static function fromMemberNameAndPosition(MemberName $method, Position $position): MemberReference
     {
         return new self($method, $position);
@@ -62,15 +72,5 @@ class MemberReference
     public function class(): Class_
     {
         return $this->class;
-    }
-
-    public function __toString()
-    {
-        return sprintf(
-            '[%s:%s] %s',
-            $this->position->start(),
-            $this->position->end(),
-            (string) $this->method
-        );
     }
 }

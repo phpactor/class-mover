@@ -26,11 +26,6 @@ parameters:
 			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
 
 		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:populateUseImportRefs\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
-
-		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Adapter\\\\TolerantParser\\\\TolerantClassFinder\\:\\:populateUseImportRefs\\(\\) has parameter \\$useImportRefs with no typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/TolerantClassFinder.php
@@ -291,6 +286,11 @@ parameters:
 			path: lib/Domain/Name/NameImportTable.php
 
 		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:__construct\\(\\) has parameter \\$importedNamespaceNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Name/NameImportTable.php
+
+		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:fromImportedNameRefs\\(\\) has parameter \\$importedNameRefs with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Domain/Name/NameImportTable.php
@@ -312,16 +312,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:isAliased\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Name/NameImportTable.php
-
-		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:__construct\\(\\) has parameter \\$importedNamespaceNames with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Domain/Name/NameImportTable.php
-
-		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Name\\\\NameImportTable\\:\\:addImportedName\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Name/NameImportTable.php
 
@@ -476,11 +466,6 @@ parameters:
 			path: lib/Domain/Reference/MemberReferences.php
 
 		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:add\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Reference/MemberReferences.php
-
-		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\:\\:unique\\(\\) return type has no value type specified in iterable type Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\MemberReferences\\.$#"
 			count: 1
 			path: lib/Domain/Reference/MemberReferences.php
@@ -541,14 +526,14 @@ parameters:
 			path: lib/Domain/Reference/NamespacedClassReferences.php
 
 		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\NamespacedClassReferences\\:\\:add\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Reference/NamespacedClassReferences.php
-
-		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\Reference\\\\Position\\:\\:fromStartAndEnd\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Reference/Position.php
+
+		-
+			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:replaceSource\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/SourceCode.php
 
 		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:insertAfter\\(\\) has no return typehint specified\\.$#"
@@ -557,11 +542,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:insertAfter\\(\\) has parameter \\$text with no typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/SourceCode.php
-
-		-
-			message: "#^Method Phpactor\\\\ClassMover\\\\Domain\\\\SourceCode\\:\\:replaceSource\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/SourceCode.php
 
