@@ -9,6 +9,11 @@ final class NamespaceReference
     private $position;
     private $namespace;
 
+    public function __toString()
+    {
+        return (string) $this->namespace;
+    }
+
     public static function fromNameAndPosition(Namespace_ $namespace, Position $position)
     {
         $new = new self();
@@ -24,11 +29,6 @@ final class NamespaceReference
         $new->namespace = Namespace_::root();
 
         return $new;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->namespace;
     }
 
     public function position(): Position

@@ -3,6 +3,7 @@
 namespace Phpactor\ClassMover\Domain;
 
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use InvalidArgumentException;
 
 class SourceCode
 {
@@ -11,6 +12,11 @@ class SourceCode
     public function __construct(string $source)
     {
         $this->source = $source;
+    }
+
+    public function __toString()
+    {
+        return $this->source;
     }
 
     public static function fromString(string $source): SourceCode
@@ -58,9 +64,14 @@ class SourceCode
             return $this->insertAfter($phpDeclarationLineNb, PHP_EOL.$useStmt);
         }
 
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             'Could not find <?php start tag'
         );
+    }
+
+    public function replaceSource(string $source)
+    {
+        return new self($source);
     }
 
     private function insertAfter(int $lineNb, $text)
@@ -79,16 +90,6 @@ class SourceCode
         }
 
         return $this->replaceSource(implode(PHP_EOL, $newLines));
-    }
-
-    public function replaceSource(string $source)
-    {
-        return new self($source);
-    }
-
-    public function __toString()
-    {
-        return $this->source;
     }
 
     private function significantLineNumbers()

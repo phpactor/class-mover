@@ -4,7 +4,7 @@ namespace Acme;
 
 class Hello
 {
-    public function something()
+    public function something(): void
     {
         Barfoo::foobar();
     }

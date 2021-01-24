@@ -54,7 +54,7 @@ class ClassMoverTest extends TestCase
      *
      * @depends testFindReferences
      */
-    public function testReplaceReferences(FoundReferences $references)
+    public function testReplaceReferences(FoundReferences $references): void
     {
         $newFqn = 'SomethingElse';
 

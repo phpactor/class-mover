@@ -13,6 +13,11 @@ final class ClassReference
     private $isClassDeclaration;
     private $importedNameRef;
 
+    public function __toString()
+    {
+        return (string) $this->fullName;
+    }
+
     public static function fromNameAndPosition(
         QualifiedName $referencedName,
         FullyQualifiedName $fullName,
@@ -28,11 +33,6 @@ final class ClassReference
         $new->isClassDeclaration = $isClassDeclaration;
 
         return $new;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->fullName;
     }
 
     public function position(): Position

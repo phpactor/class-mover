@@ -8,7 +8,7 @@ use Acme\Barfoo as ZedZed;
 
 class Hello
 {
-    public function something()
+    public function something(): void
     {
         $foo = new Warble();
         $bar = new Demo();

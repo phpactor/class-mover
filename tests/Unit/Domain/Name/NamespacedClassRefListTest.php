@@ -17,7 +17,7 @@ class NamespacedClassRefListTest extends TestCase
     /**
      * It should filter for name.
      */
-    public function testFilterForName()
+    public function testFilterForName(): void
     {
         $refList = NamespacedClassReferences::fromNamespaceAndClassRefs(
             NamespaceReference::fromNameAndPosition(Namespace_::fromString('Foo'), Position::fromStartAndEnd(1, 2)),

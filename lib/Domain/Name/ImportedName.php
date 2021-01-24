@@ -6,6 +6,11 @@ final class ImportedName extends Namespace_
 {
     private $alias;
 
+    public function __toString()
+    {
+        return implode('\\', $this->parts);
+    }
+
     public function getShortName(): string
     {
         return end($this->parts);
@@ -35,11 +40,6 @@ final class ImportedName extends Namespace_
     public function isAlias()
     {
         return null !== $this->alias;
-    }
-
-    public function __toString()
-    {
-        return implode('\\', $this->parts);
     }
 
     public static function fromStringAsAlias(string $string)

@@ -12,7 +12,7 @@ class TolerantClassFinderTest extends TestCase
     /**
      * @testdox It finds all class references.
      */
-    public function testFind()
+    public function testFind(): void
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantClassFinder($parser);
