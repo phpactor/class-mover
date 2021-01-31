@@ -42,7 +42,7 @@ class TolerantClassReplacerTest extends TestCase
 
                     class Hello
                     {
-                        public function something()
+                        public function something(): void
                         {
                             $foo = new Hello();
                     EOT
@@ -86,7 +86,7 @@ class TolerantClassReplacerTest extends TestCase
 
                     class Hello
                     {
-                        public function something()
+                        public function something(): void
                         {
                             Barfoo::foobar();
                         }
