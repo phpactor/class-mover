@@ -13,7 +13,7 @@
         "microsoft/tolerant-php-parser": "@dev",
         "psr/log": "~1.0",
         "symfony/filesystem": "^4.2 || ^5.0",
-        "phpactor/worse-reflection": "~0.4.4"
+        "phpactor/worse-reflection": "^0.4.5"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.0",
