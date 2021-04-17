@@ -2,18 +2,31 @@
 
 namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
-use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\ClassMover\Domain\Name\QualifiedName;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 use Phpactor\ClassMover\Domain\Reference\ClassReference;
+use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\CodeBuilder\Domain\Code;
+use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextEdit;
 use Phpactor\TextDocument\TextEdits;
 
 class TolerantClassReplacer implements ClassReplacer
 {
+    /**
+     * @var Updater
+     */
+    private $updater;
+
+    public function __construct(Updater $updater)
+    {
+        $this->updater = $updater;
+    }
+
     public function replaceReferences(
         TextDocument $source,
         NamespacedClassReferences $classRefList,
@@ -47,15 +60,16 @@ class TolerantClassReplacer implements ClassReplacer
             return $a->start()->toInt() <=> $b->start()->toInt();
         });
 
+        $edits = TextEdits::fromTextEdits($edits);
         if (true === $importClass) {
-            $edits[] = $this->addUseStatement($source, $newName);
+            $edits = $edits->merge($this->addUseStatement($source, $newName));
         }
 
-        //if (true === $addNamespace) {
-        //    $edits[] = $source->addNamespace($newName->parentNamespace());
-        //}
+        if (true === $addNamespace) {
+            $edits = $edits->merge($this->addNamespace($source, $newName->parentNamespace()));
+        }
 
-        return TextEdits::fromTextEdits($edits);
+        return $edits;
     }
 
     private function replaceOriginalInstanceNamespace(NamespacedClassReferences $classRefList, FullyQualifiedName $newName)
@@ -78,7 +92,13 @@ class TolerantClassReplacer implements ClassReplacer
         return $classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName);
     }
 
-    private function addUseStatement(FullyQualifiedName $newName, TextDocument $source)
+    private function addUseStatement(TextDocument $source, FullyQualifiedName $newName): TextEdits
     {
+        return $this->updater->textEditsFor(SourceCodeBuilder::create()->use($newName->__toString())->build(), Code::fromString($source->__toString()));
+    }
+
+    private function addNamespace(TextDocument $source, QualifiedName $qualifiedName): TextEdits
+    {
+        return $this->updater->textEditsFor(SourceCodeBuilder::create()->namespace($qualifiedName->__toString())->build(), Code::fromString($source->__toString()));
     }
 }

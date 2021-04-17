@@ -5,9 +5,10 @@ namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 use Microsoft\PhpParser\Parser;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TolerantUpdater;
+use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
 class TolerantClassReplacerTest extends TestCase
@@ -24,7 +25,10 @@ class TolerantClassReplacerTest extends TestCase
         $originalName = FullyQualifiedName::fromString($classFqn);
 
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
-        $replacer = new TolerantClassReplacer();
+
+        $updater = new TolerantUpdater(new TwigRenderer());
+
+        $replacer = new TolerantClassReplacer($updater);
         $edits = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
         $this->assertStringContainsString($expectedSource, $edits->apply($source->__toString()));
     }
@@ -82,8 +86,8 @@ class TolerantClassReplacerTest extends TestCase
                 'Acme\\Definee\\Barfoo',
                 <<<'EOT'
                     namespace Acme;
-
                     use Acme\Definee\Barfoo;
+
 
                     class Hello
                     {
@@ -141,6 +145,7 @@ class TolerantClassReplacerTest extends TestCase
                 <<<'EOT'
                     namespace Phpactor\ClassMover;
 
+
                     class Example8
                     {
                         public function build()
@@ -155,8 +160,8 @@ class TolerantClassReplacerTest extends TestCase
                 'Example',
                 'Phpactor\ClassMover\Example',
                 <<<'EOT'
-                    use Phpactor\ClassMover\Example;
 
+                    use Phpactor\ClassMover\Example;
                     class ClassOne
                     {
                         public function build(): Example

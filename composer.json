@@ -13,7 +13,9 @@
         "microsoft/tolerant-php-parser": "@dev",
         "psr/log": "~1.0",
         "symfony/filesystem": "^4.2 || ^5.0",
-        "phpactor/worse-reflection": "~0.4.4"
+        "phpactor/worse-reflection": "~0.4.4",
+        "phpactor/text-document": "^1.2",
+        "phpactor/code-builder": "^0.4.1"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.0",
@@ -42,7 +44,7 @@
     "prefer-stable": true,
     "scripts": {
         "integrate": [
-            "./vendor/bin/php-cs-fixer fix",
+            "./vendor/bin/php-cs-fixer fix --allow-risky=yes",
             "./vendor/bin/phpstan analyse",
             "./vendor/bin/phpunit"
         ]

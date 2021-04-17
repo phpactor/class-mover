@@ -6,13 +6,16 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\ClassFinder;
 use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\ClassMover;
-use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\FoundReferences;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\TextDocument\TextDocumentBuilder;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ClassMoverTest extends TestCase
 {
+    use ProphecyTrait;
+
     private $mover;
     private $finder;
     private $replacer;
@@ -33,7 +36,7 @@ class ClassMoverTest extends TestCase
      */
     public function testFindReferences()
     {
-        $source = SourceCode::fromString('<?php echo "hello";');
+        $source = TextDocumentBuilder::create('<?php echo "hello";')->build();
         $fullName = 'Something';
         $refList = NamespacedClassReferences::empty();
 

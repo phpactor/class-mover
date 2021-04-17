@@ -5,7 +5,6 @@ namespace Phpactor\ClassMover\Tests\Adapter\TolerantParser;
 use Microsoft\PhpParser\Parser;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
-use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
 class TolerantClassFinderTest extends TestCase
