@@ -8,10 +8,18 @@ use Phpactor\ClassMover\Domain\ClassFinder;
 use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
+use Phpactor\TextDocument\TextEdits;
 
 class ClassMover
 {
+    /**
+     * @var ClassFinder
+     */
     private $finder;
+
+    /**
+     * @var ClassReplacer
+     */
     private $replacer;
 
     public function __construct(ClassFinder $finder = null, ClassReplacer $replacer = null)
@@ -30,7 +38,7 @@ class ClassMover
         return new FoundReferences($source, $name, $references);
     }
 
-    public function replaceReferences(FoundReferences $foundReferences, string $newFullyQualifiedName): SourceCode
+    public function replaceReferences(FoundReferences $foundReferences, string $newFullyQualifiedName): TextEdits
     {
         $newName = FullyQualifiedName::fromString($newFullyQualifiedName);
         return $this->replacer->replaceReferences(

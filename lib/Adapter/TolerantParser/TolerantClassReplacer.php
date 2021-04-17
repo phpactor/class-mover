@@ -4,20 +4,22 @@ namespace Phpactor\ClassMover\Adapter\TolerantParser;
 
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
-use Microsoft\PhpParser\TextEdit;
 use Phpactor\ClassMover\Domain\Reference\NamespacedClassReferences;
 use Phpactor\ClassMover\Domain\ClassReplacer;
 use Phpactor\ClassMover\Domain\Reference\ImportedNameReference;
 use Phpactor\ClassMover\Domain\Reference\ClassReference;
+use Phpactor\TextDocument\TextDocument;
+use Phpactor\TextDocument\TextEdit;
+use Phpactor\TextDocument\TextEdits;
 
 class TolerantClassReplacer implements ClassReplacer
 {
     public function replaceReferences(
-        SourceCode $source,
+        TextDocument $source,
         NamespacedClassReferences $classRefList,
         FullyQualifiedName $originalName,
         FullyQualifiedName $newName
-    ): SourceCode {
+    ): TextEdits {
         $edits = [];
         $importClass = false;
         $addNamespace = false;
@@ -33,7 +35,7 @@ class TolerantClassReplacer implements ClassReplacer
                 }
             }
 
-            $edits[] = new TextEdit(
+            $edits[] = TextEdit::create(
                 $classRef->position()->start(),
                 $classRef->position()->length(),
                 $classRef->name()->transpose($newName)->__toString()
@@ -42,24 +44,23 @@ class TolerantClassReplacer implements ClassReplacer
 
         // make sure the edits are ordered
         usort($edits, function (TextEdit $a, TextEdit $b) {
-            return $a->start <=> $b->start;
+            return $a->start()->toInt() <=> $b->start()->toInt();
         });
 
-        $source = $source->replaceSource(TextEdit::applyEdits($edits, $source->__toString()));
         if (true === $importClass) {
-            $source = $source->addUseStatement($newName);
+            $edits[] = $this->addUseStatement($source, $newName);
         }
 
-        if (true === $addNamespace) {
-            $source = $source->addNamespace($newName->parentNamespace());
-        }
+        //if (true === $addNamespace) {
+        //    $edits[] = $source->addNamespace($newName->parentNamespace());
+        //}
 
-        return $source;
+        return TextEdits::fromTextEdits($edits);
     }
 
     private function replaceOriginalInstanceNamespace(NamespacedClassReferences $classRefList, FullyQualifiedName $newName)
     {
-        return new TextEdit(
+        return TextEdit::create(
             $classRefList->namespaceRef()->position()->start(),
             $classRefList->namespaceRef()->position()->length(),
             $newName->parentNamespace()->__toString()
@@ -75,5 +76,9 @@ class TolerantClassReplacer implements ClassReplacer
     private function classIsTheOriginalInstance($classRef, $originalName)
     {
         return $classRef->isClassDeclaration() && $classRef->fullName()->equals($originalName);
+    }
+
+    private function addUseStatement(FullyQualifiedName $newName, TextDocument $source)
+    {
     }
 }

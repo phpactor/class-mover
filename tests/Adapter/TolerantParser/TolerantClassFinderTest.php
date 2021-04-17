@@ -6,6 +6,7 @@ use Microsoft\PhpParser\Parser;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassFinder;
 use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
+use Phpactor\TextDocument\TextDocumentBuilder;
 
 class TolerantClassFinderTest extends TestCase
 {
@@ -16,7 +17,7 @@ class TolerantClassFinderTest extends TestCase
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantClassFinder($parser);
-        $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/Example1.php'));
+        $source = TextDocumentBuilder::fromUri(__DIR__ . '/examples/Example1.php')->build();
         $names = iterator_to_array($tolerantRefFinder->findIn($source));
 
         $this->assertCount(8, $names);

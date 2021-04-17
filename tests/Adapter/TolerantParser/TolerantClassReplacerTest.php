@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Adapter\TolerantParser\TolerantClassReplacer;
 use Phpactor\ClassMover\Domain\Name\FullyQualifiedName;
+use Phpactor\TextDocument\TextDocumentBuilder;
 
 class TolerantClassReplacerTest extends TestCase
 {
@@ -19,13 +20,13 @@ class TolerantClassReplacerTest extends TestCase
     {
         $parser = new Parser();
         $tolerantRefFinder = new TolerantClassFinder($parser);
-        $source = SourceCode::fromString(file_get_contents(__DIR__ . '/examples/' . $fileName));
+        $source = TextDocumentBuilder::fromUri(__DIR__ . '/examples/' . $fileName)->build();
         $originalName = FullyQualifiedName::fromString($classFqn);
 
         $names = $tolerantRefFinder->findIn($source)->filterForName($originalName);
         $replacer = new TolerantClassReplacer();
-        $source = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
-        $this->assertStringContainsString($expectedSource, $source->__toString());
+        $edits = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
+        $this->assertStringContainsString($expectedSource, $edits->apply($source->__toString()));
     }
 
     public function provideTestFind()

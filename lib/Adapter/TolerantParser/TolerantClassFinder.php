@@ -24,6 +24,7 @@ use Phpactor\ClassMover\Domain\ClassFinder;
 use Phpactor\ClassMover\Domain\SourceCode;
 use Phpactor\ClassMover\Domain\Name\NameImportTable;
 use Phpactor\ClassMover\Domain\Name\Namespace_;
+use Phpactor\TextDocument\TextDocument;
 
 class TolerantClassFinder implements ClassFinder
 {
@@ -34,7 +35,7 @@ class TolerantClassFinder implements ClassFinder
         $this->parser = $parser ?: new Parser();
     }
 
-    public function findIn(SourceCode $source): NamespacedClassReferences
+    public function findIn(TextDocument $source): NamespacedClassReferences
     {
         $ast = $this->parser->parseSourceFile($source->__toString());
 
