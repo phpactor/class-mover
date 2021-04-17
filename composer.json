@@ -15,7 +15,8 @@
         "symfony/filesystem": "^4.2 || ^5.0",
         "phpactor/worse-reflection": "~0.4.4",
         "phpactor/text-document": "^1.2",
-        "phpactor/code-builder": "^0.4.1"
+        "phpactor/code-builder": "^0.4.1",
+        "phpactor/container": "^2.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.0",
