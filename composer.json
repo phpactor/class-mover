@@ -16,7 +16,8 @@
         "phpactor/worse-reflection": "~0.4.4",
         "phpactor/text-document": "^1.2",
         "phpactor/code-builder": "^0.4.1",
-        "phpactor/container": "^2.0"
+        "phpactor/container": "^2.0",
+        "phpactor/code-transform-extension": "^0.2.1"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.0",
