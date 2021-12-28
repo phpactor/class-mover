@@ -30,7 +30,12 @@ class TolerantClassReplacerTest extends TestCase
 
         $replacer = new TolerantClassReplacer($updater);
         $edits = $replacer->replaceReferences($source, $names, $originalName, FullyQualifiedName::fromString($replaceWithFqn));
-        $this->assertStringContainsString($expectedSource, $edits->apply($source->__toString()));
+        $stripEmptyLines = function (string $source) {
+            return implode("\n", array_filter(explode("\n", $source), function (string $line) {
+                return $line !== '';
+            }));
+        };
+        $this->assertStringContainsString($stripEmptyLines($expectedSource), $stripEmptyLines($edits->apply($source->__toString())));
     }
 
     public function provideTestFind()
@@ -86,8 +91,8 @@ class TolerantClassReplacerTest extends TestCase
                 'Acme\\Definee\\Barfoo',
                 <<<'EOT'
                     namespace Acme;
-                    use Acme\Definee\Barfoo;
 
+                    use Acme\Definee\Barfoo;
 
                     class Hello
                     {
@@ -162,6 +167,7 @@ class TolerantClassReplacerTest extends TestCase
                 <<<'EOT'
 
                     use Phpactor\ClassMover\Example;
+
                     class ClassOne
                     {
                         public function build(): Example

@@ -94,7 +94,7 @@ class TolerantClassFinder implements ClassFinder
                 $classRefs[] = ClassReference::fromNameAndPosition(
                     FullyQualifiedName::fromString($node->getText()),
                     FullyQualifiedName::fromString($node->getText()),
-                    Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
+                    Position::fromStartAndEnd($node->getStartPosition(), $node->getEndPosition()),
                     ImportedNameReference::none()
                 );
                 continue;
@@ -112,7 +112,7 @@ class TolerantClassFinder implements ClassFinder
             $classRefs[] = ClassReference::fromNameAndPosition(
                 $qualifiedName,
                 $resolvedClassName,
-                Position::fromStartAndEnd($node->getStart(), $node->getEndPosition()),
+                Position::fromStartAndEnd($node->getStartPosition(), $node->getEndPosition()),
                 $env->isNameImported($qualifiedName) ? $env->getImportedNameRefFor($qualifiedName) : ImportedNameReference::none()
             );
         }
@@ -150,7 +150,7 @@ class TolerantClassFinder implements ClassFinder
             }
 
             $useImportRefs[] = ImportedNameReference::fromImportedNameAndPosition($importedName, Position::fromStartAndEnd(
-                $useDeclaration->getStart(),
+                $useDeclaration->getStartPosition(),
                 $useDeclaration->getEndPosition()
             ));
         }
@@ -172,7 +172,7 @@ class TolerantClassFinder implements ClassFinder
         return NamespaceReference::fromNameAndPosition(
             Namespace_::fromString($namespace->name->getText()),
             Position::fromStartAndEnd(
-                $namespace->name->getStart(),
+                $namespace->name->getStartPosition(),
                 $namespace->name->getEndPosition()
             )
         );

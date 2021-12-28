@@ -10,12 +10,12 @@
     ],
     "require": {
         "php": "^7.3 || ^8.0",
-        "microsoft/tolerant-php-parser": "@dev",
+        "microsoft/tolerant-php-parser": "^0.1",
         "psr/log": "~1.0",
         "symfony/filesystem": "^4.2 || ^5.0",
-        "phpactor/worse-reflection": "~0.4.4",
+        "phpactor/worse-reflection": "^0.4.7",
         "phpactor/text-document": "^1.2",
-        "phpactor/code-builder": "^0.4.1",
+        "phpactor/code-builder": "^0.4.3",
         "phpactor/container": "^2.0",
         "phpactor/code-transform-extension": "^0.2.1"
     },
