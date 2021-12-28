@@ -86,8 +86,8 @@ class TolerantClassReplacerTest extends TestCase
                 'Acme\\Definee\\Barfoo',
                 <<<'EOT'
                     namespace Acme;
-                    use Acme\Definee\Barfoo;
 
+                    use Acme\Definee\Barfoo;
 
                     class Hello
                     {
@@ -162,6 +162,7 @@ class TolerantClassReplacerTest extends TestCase
                 <<<'EOT'
 
                     use Phpactor\ClassMover\Example;
+
                     class ClassOne
                     {
                         public function build(): Example
